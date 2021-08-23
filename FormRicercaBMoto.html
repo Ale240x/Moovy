@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel='stylesheet' type='text/css' media='screen' href='RicercaVeicolo.css'>
+    
+    <link rel="icon" href="public/images/logo1.png">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <title>Moovy</title>
+</head>
+<body>
+    <img class="img-fluid" src="public/images/banner2.png" width="100%">
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: rgba(3, 78, 13, 0.795);">
+        <a class="navbar-brand" href="#"><img class="img-fluid" src="public/images/logo2+.png" width="50px"></a>
+        <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#collapsibleNavId" aria-controls="collapsibleNavId"
+            aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="collapsibleNavId">
+            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Veicoli</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Area Personale</a>
+                </li>  
+            </ul>
+            <ul class="navbar-nav justify-content-end">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="dropdownId" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Accedi</a>
+                    <div class="dropdown-menu" aria-labelledby="dropdownId">
+                        <a class="dropdown-item" href="#">Login</a>
+                        <a class="dropdown-item" href="#">Recupera Password</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Registrati</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!--form-->
+    <div class="container mx-auto p-3">
+        <div class="row">
+            <div class="card card-body border-success" style="width: 516px;">
+                <form>
+                    
+                    <div class="col-md-4 mb-4 col-form-label mx-auto">
+                        <div class="form-outline">
+                            <label for="modello_auto">Categoria</label>
+                            <select id="modello_auto" name="modello_moto" class="form-control">
+                              <option value="Ciclomotore - 50cc">Ciclomotore - 50cc</option>
+                              <option value="‘Scooter - 125cc">Scooter - 125cc</option>
+                              <option value="Turistica - 600cc">Turistica - 600cc</option>
+                              <option value="Adventure - 1200cc">Adventure - 1200cc</option>
+                            </select>
+                        </div>
+                    </div>                        
+        
+                    <div class="col-md-4 mb-4 col-form-label mx-auto">
+                        <div class="form-outline">
+                            <label for="ordine">Ordina per prezzo:</label>
+                            <select id="ordine" name="ordine" class="form-control">
+                                <option value="ASC">Crescente</option>
+                                <option value="DESC">Decrescente</option>
+                            </select>
+                        </div>       
+                    </div>
+        
+                    <div class="col-md-4 mb-4 col-form-label mx-auto">
+                        <div class="form-outline">
+                            <label for="prezzo">Prezzi</label>
+                            <select id="prezzo" name="prezzo" class="form-control">
+                                <option value="5-10">€5 - €10 /ora</option>
+                                <option value="10-15">€10 - €15 /ora</option>
+                                <option value="15-20">€15 - €20 /ora</option>
+                            </select>
+                        </div>       
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-4 col-form-label mx-auto text-left">
+                            <button type="submit" class="btn btn-success my-3">Conferma</button>
+                        </div>
+                    </div>
+                        
+                    <br>
+                </form>
+            </div>
+        </div>
+        
+        
+    </div>
+        
+    <footer class="text-center text-lg-start bg-light text-muted">
+        <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05);">
+            <p>Contattaci: Tel + 01 234 567 88</p>
+          © 2021 Copyright AMIL
+        </div>
+      </footer>
+</body>
+</html>

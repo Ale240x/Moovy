@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="RicercaVeicolo.css">
+    <!--script per la mappa mapbox-->
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.css" rel="stylesheet">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.js"></script>
+    <!-- Geocoder -->
+    <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.0/mapbox-gl-geocoder.min.js"></script>
+    <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.0/mapbox-gl-geocoder.css" type="text/css">
+    <!-- Promise polyfill script is required -->
+    <!-- to use Mapbox GL Geocoder in IE 11. -->
+    <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.min.js"></script>
+
+    <!-- Import jQuery -->
+    <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
+
+    <style>
+        #mappa { height: 500px; width: 80%; }
+    </style>
+
+    <link rel="icon" href="public/images/logo1.png">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <title>Moovy</title>
+</head>
+<body>
+    <img class="img-fluid" src="public/images/banner2.png" width="100%">
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: rgba(3, 78, 13, 0.795);">
+        <a class="navbar-brand" href="#"><img class="img-fluid" src="public/images/logo2+.png" width="50px"></a>
+        <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#collapsibleNavId" aria-controls="collapsibleNavId"
+            aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="collapsibleNavId">
+            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Veicoli</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Area Personale</a>
+                </li>  
+            </ul>
+            <ul class="navbar-nav justify-content-end">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="dropdownId" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Accedi</a>
+                    <div class="dropdown-menu" aria-labelledby="dropdownId">
+                        <a class="dropdown-item" href="#">Login</a>
+                        <a class="dropdown-item" href="#">Recupera Password</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Registrati</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container mx-auto p-3">
+        <div class="row">
+            <div class="card card-body border-success">
+                <form action="#" method="POST">
+                    <% if (tipo_veicolo == 'Automobile'){ %>
+                        <div class="row">
+                            <div class="col-md-4 col-form-label text-right">
+                                <h6>Autista:</h6>
+                            </div>
+                            <div class="col-md-4 col-form-label ">
+                                <input type="radio" id="aut-si" name="autista" value="1" required>
+                                <label for="aut-si">Sì</label>
+
+                                <input type="radio" id="aut-no" name="autista" value="null" required>
+                                <label for="aut-no">No</label>
+                            </div>
+                        </div>
+                    <% } %>
+                    
+                    <div class="row">
+                        <div id="geocoder3" class="col-sm-4 mx-auto">
+                            <label for="luogoPartenza">Luogo di partenza</label>
+                            <!--<input type="text" class="form-control" id="luogoRitiro" name="luogoRitiro">-->
+                        </div>
+                        <div id="geocoder4" class="col-sm-4 mx-auto">
+                            <label for="luogoArrivo">Luogo di arrivo</label>
+                            <!--<input type="text" class="form-control" id="luogoRiconsegna" name="luogoRiconsegna">-->
+                        </div>                        
+                    </div>
+
+                    <div class="row">
+                        <div id="geocoder1" class="col-sm-4 mx-auto">
+                            <label for="luogoRitiro">Luogo di ritiro</label>
+                            <!--<input type="text" class="form-control" id="luogoRitiro" name="luogoRitiro">-->
+                        </div>
+                        <div id="geocoder2" class="col-sm-4 mx-auto">
+                            <label for="luogoRiconsegna">Luogo di riconsegna</label>
+                            <!--<input type="text" class="form-control" id="luogoRiconsegna" name="luogoRiconsegna">-->
+                        </div>                        
+                    </div>
+                    <br>
+                    <div class="text-center">
+                        <button id="apriMappa" type="button" class="btn btn-success">Chiudi la mappa</button></button>
+                    </div>
+                    <br><br>
+                    <div id="mappa" class="mx-auto"></div>
+                    <br>
+                    <div class="row">
+                        <div class="col-sm-4 mx-auto">
+                            <label for="dataRitiro">Data di ritiro</label>
+                            <input type="date" class="form-control" id="dataRitiro" name="dataRitiro" min="<%= new Date() %>" required>
+                        </div>
+                        <div class="col-sm-4 mx-auto">
+                            <label for="oraRitiro">Ora di ritiro</label>
+                            <input type="time" class="form-control" id="oraRitiro" name="oraRitiro" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-4 mx-auto">
+                            <label for="dataRiconsegna">Data di riconsegna</label>
+                            <input type="date" class="form-control" id="dataRiconsegna" name="dataRiconsegna" required>
+                        </div>
+                        <div class="col-sm-4 mx-auto">
+                            <label for="oraRiconsegna">Ora di riconsegna</label>
+                            <input type="time" class="form-control" id="oraRiconsegna" name="oraRiconsegna" required>
+                        </div>
+                    </div>
+                    <% if(tipo_veicolo == 'Automobile'){ %>
+                        <div class="col-md-4 mb-4 col-form-label mx-auto">
+                            <div class="form-outline">
+                                <label for="modello_auto">Categoria</label>
+                                <select id="modello_auto" name="modello_auto" class="form-control">
+                                  <option value="Suv">Suv</option>
+                                  <option value="Utilitaria">Utilitaria</option>
+                                  <option value="Berlina">Berlina</option>
+                                </select>
+                            </div>
+                        </div>
+                    <% } else if(tipo_veicolo == 'Moto'){ %>
+                        <div class="col-md-4 mb-4 col-form-label mx-auto">
+                            <div class="form-outline">
+                                <label for="modello_auto">Categoria</label>
+                                <select id="modello_auto" name="modello_moto" class="form-control">
+                                  <option value="Ciclomotore - 50cc">Ciclomotore - 50cc</option>
+                                  <option value="‘Scooter - 125cc">Scooter - 125cc</option>
+                                  <option value="Turistica - 600cc">Turistica - 600cc</option>
+                                  <option value="Adventure - 1200cc">Adventure - 1200cc</option>
+                                </select>
+                            </div>
+                        </div>
+                    <% } %>
+                    <br>
+                    <div class="mx-auto px-4 text-right">   
+                        <button type="submit" class="btn btn-success mt-3">Conferma</button>    
+                    </div>  
+                </form>
+            </div>
+        </div>
+           
+    </div>
+    <!--<div id="mappa" class="mx-auto"></div>-->
+
+    <footer class="text-center text-lg-start bg-light text-muted">
+        <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05);">
+            <p class="">Contattaci: Tel + 01 234 567 88</p>
+          © 2021 Copyright AMIL
+        </div>
+    </footer>
+
+    <script> //mappa
+        
+        mapboxgl.accessToken = 'pk.eyJ1IjoiYWxlMjQweCIsImEiOiJja3IwdTRqem0xdjM3MnpxYTJneHVuNXptIn0.mZ7elTikfESfGCOnYRUMsg';
+        var map = new mapboxgl.Map({
+        container: 'mappa',
+        style: 'mapbox://styles/ale240x/ckrbvpq3l0xna18q9nd2ol3l5',
+        center: [13.355607408018551, 38.11816843527191], // starting position [lng, lat]
+        zoom: 13
+        });
+
+        var marker1 = new mapboxgl.Marker().setLngLat([13.352136, 38.106084])
+        .setPopup(new mapboxgl.Popup({ offset: [0, -15], closeButton: false })
+        .setHTML('<h5>' + 'Parcheggio Basile' + '</h5>' +
+                 '<p>' + 'Via Basile, 110' + '</p>'))
+        .addTo(map);
+
+        var marker2 = new mapboxgl.Marker().setLngLat([13.348418, 38.110394])
+        .setPopup(new mapboxgl.Popup({ offset: [0, -15], closeButton: false })
+        .setHTML('<h5>' + 'Parcheggio Calatafimi' + '</h5>' +
+                 '<p>' + 'Corso Calatafimi, 9' + '</p>'))
+        .addTo(map);
+
+        var marker3 = new mapboxgl.Marker().setLngLat([13.366112, 38.108526])
+        .setPopup(new mapboxgl.Popup({ offset: [0, -15], closeButton: false })
+        .setHTML('<h5>' + 'Parcheggio Oreto' + '</h5>' +
+                 '<p>' + 'Via Oreto, 20' + '</p>'))
+        .addTo(map);
+
+        var marker4 = new mapboxgl.Marker().setLngLat([13.364408, 38.114987])
+        .setPopup(new mapboxgl.Popup({ offset: [0, -15], closeButton: false })
+        .setHTML('<h5>' + 'Parcheggio Roma' + '</h5>' +
+                 '<p>' + 'Via Roma, 97' + '</p>'))
+        .addTo(map);
+
+        
+
+        /*map.on('click', function(e) { //click sulle features aggiunte come tileset
+
+        var features = map.queryRenderedFeatures(e.point, { layers: ['symbols'] });
+        if (!features.length) {
+            return;
+        }
+        var feature = features[0];*/
+
+        var geolocate = new mapboxgl.GeolocateControl({
+            positionOptions: {
+            enableHighAccuracy: true
+            },
+            showAccuracyCircle: false
+        });
+        map.addControl(geolocate);
+
+        // Load custom data to supplement the search results.
+        var parkings = {
+            'features': [
+            {
+                'type': 'Feature',
+                'place_name': 'Parcheggio Basile, Via Basile 110, Palermo',
+                'address': 'Via Basile 110',
+                'properties': {
+                    'title': 'Parcheggio Basile'
+                },
+                'geometry': {
+                    'coordinates': [13.352136 , 38.106084],
+                    'type': 'Point'
+                }
+            },
+            {
+                'type': 'Feature',
+                'place_name': 'Parcheggio Calatafimi, Corso Calatafimi 9, Palermo',
+                'address': 'Corso Calatafimi 9',
+                'properties': {
+                    'title': 'Parcheggio Calatafimi'
+                },
+                'geometry': {
+                'coordinates': [13.348418, 38.110394],
+                'type': 'Point'
+                }
+            },
+            {
+                'type': 'Feature',
+                'place_name': 'Parcheggio Oreto, Via Oreto 20, Palermo',
+                'address': 'Via Oreto 20',
+                'properties': {
+                    'title': 'Parcheggio Oreto'
+                },
+                'geometry': {
+                'coordinates': [13.366112, 38.108526],
+                'type': 'Point'
+                }
+            },
+            {
+                'type': 'Feature',
+                'place_name': 'Parcheggio Roma, Via Roma 97, Palermo',
+                'address': 'Via Roma 97',
+                'properties': {
+                    'title': 'Parcheggio Roma'
+                },
+                'geometry': {
+                'coordinates': [13.364408, 38.114987],
+                'type': 'Point'
+                }
+            }],
+            'type': 'FeatureCollection'
+            };
+ 
+        function forwardGeocoder(query) { //per ricercare i parcheggi personalizzati
+            var matchingFeatures = [];
+            for (var i = 0; i < parkings.features.length; i++) {
+
+                var feature = parkings.features[i];
+                if (feature.properties.title.toLowerCase()
+                .search(query.toLowerCase()) !== -1 ||
+                feature.address.toLowerCase()
+                .search(query.toLowerCase()) !== -1) {
+
+                    feature['center'] = feature.geometry.coordinates;
+                    matchingFeatures.push(feature);
+                }
+            }
+            return matchingFeatures;
+        }
+
+        map.on('load', function() {
+            geolocate.trigger();
+            var {longitude, latitude} = map.getCenter();
+            var options = {
+            accessToken: mapboxgl.accessToken,
+            mapboxgl: mapboxgl,
+            localGeocoder: forwardGeocoder,
+            localGeocoderOnly: true, //mostra solo i risultati dei parcheggi
+            zoom: 14, // Set the zoom level for geocoding results
+            placeholder: "Inserisci un indirizzo",
+            bbox: [13.306134, 38.092523, 13.376527, 38.151488], // Set a bounding box
+            proximity: { longitude: longitude , latitude: latitude },
+            trackProximity: true
+            }
+            var geocoder1 = new MapboxGeocoder(options); //luogo di ritiro
+            var geocoder2 = new MapboxGeocoder(options); //luogo di riconsegna
+        
+            var luogoRitiro = document.getElementById('geocoder1').appendChild(geocoder1.onAdd(map));
+            luogoRitiro.id = "luogoRitiro";
+            var luogoRiconsegna = document.getElementById('geocoder2').appendChild(geocoder2.onAdd(map));
+            luogoRiconsegna.id = "luogoRiconsegna";
+
+            var opt = {
+                accessToken: mapboxgl.accessToken,
+                mapboxgl: mapboxgl,
+                localGeocoder: forwardGeocoder,
+                localGeocoderOnly: false, //mostra anche i risultati standard della mappa
+                zoom: 14, // Set the zoom level for geocoding results
+                placeholder: "Inserisci un indirizzo",
+                bbox: [13.306134, 38.092523, 13.376527, 38.151488], // Set a bounding box
+                proximity: { longitude: longitude , latitude: latitude },
+                trackProximity: true
+            }
+            var geocoder3 = new MapboxGeocoder(opt); //luogo di partenza della corsa con autista
+            var geocoder4 = new MapboxGeocoder(opt); //luogo di arrivo della corsa con autista
+
+            var luogoPartenza = document.getElementById('geocoder3').appendChild(geocoder3.onAdd(map));
+            luogoPartenza.id = "luogoPartenza"; //inserire display none
+            var luogoArrivo = document.getElementById('geocoder4').appendChild(geocoder4.onAdd(map));
+            luogoArrivo.id = "luogoArrivo";
+        });         
+
+        var marker = new mapboxgl.Marker();
+
+        geocoder.on('result', function(data) {
+            var point = data.result.center;
+
+            marker.setLngLat(point).addTo(map);
+            marker.setPopup(new mapboxgl.Popup({ offset: [0, -15], closeButton: false })
+            .setHTML('<h5>' + 'prova' + '</h5>' +
+                     '<p>' + 'pp' + '</p>')).addTo(map);
+
+        });
+
+        
+
+    </script>
+
+    <script>
+        button = document.getElementById('apriMappa');
+        mappa = document.getElementById('mappa');
+        button.addEventListener('click', () =>{
+            if(mappa.style.display == "none"){
+                mappa.style.display = "";
+                button.innerHTML = "Chiudi la mappa";
+            }
+            else{
+                mappa.style.display = "none";
+                button.innerHTML = "Apri la mappa";
+            }
+            
+        })
+    </script>
+</body>
+</html>
