@@ -12,6 +12,10 @@ controller.getDisconnetti = (req, res) => {
     res.redirect("/home");
 };
 
+controller.getLogout = (req, res) => {  
+    res.render('general/Logout.ejs');   
+};
+
 //Regione Area Personale
 controller.getAreaPersonaleAdd = (req, res) => {
     res.render('/addetto/AreaPersonaleAdd.ejs');
@@ -19,8 +23,7 @@ controller.getAreaPersonaleAdd = (req, res) => {
 
 //Regione Ritiro Veicolo
 controller.getVeicoliPrenotatiAdd = async(req, res) => {
-    res.render('/addetto/RitiroVeicolo.ejs');
-
+   
     var dbPool = req.dbPool;
     var id_addetto = req.session.utente.id_account;
     try{
@@ -28,7 +31,7 @@ controller.getVeicoliPrenotatiAdd = async(req, res) => {
         let parcheggioAdd = await accountModel.getParcheggioAdd(dbPool, id_addetto);
         let veicoliDaRitirareAdd = await prenotazioneModel.getVeicoliDaRitirareAdd(dbPool, parcheggioAdd);
 
-        res.render('VeicoliPrenotatiAddetto.ejs', {'veicoli' : veicoliDaRitirareAdd});
+        res.render('Addetto/VeicoliPrenotatiAddetto.ejs', {'veicoli' : veicoliDaRitirareAdd});
 
     }
     catch(error){
@@ -43,16 +46,22 @@ controller.getVeicoliPrenotatiAdd = async(req, res) => {
 };
 
 controller.postInfoRitiro = (req, res) =>{
-    var info_veicolo = req.body.info_veicolo; //è una riga della query getVeicoliDaRitirareAdd del metodo precedente
-    res.render('InfoRitiro.ejs', {'info_veicolo' : info_veicolo});
+    var veicolo = req.body.veicolo; 
+    res.render('general/InfoRitiro.ejs', {'veicolo' : veicolo});
 };
 
-controller.postRitiroVeicolo = async (req, res) => {
+controller.postRitiroVeicolo = async (req, res) => { 
     var dbPool = req.dbPool;
-    var id_prenotazione = req.params.id_prenotazione; //può essere params se nella route c'è /:id, altrimenti è body
+    var codice = req.body.codice;
+    var idPrenotazione = req.params.id_prenotazione;
+    var veicolo = req.body.veicolo;
 
     try{
-        await prenotazioneModel.setStatoPrenotazione(dbPool, id_prenotazione, 'Veicolo ritirato');
+        if (veicolo.id_veicolo == codice){
+            await prenotazioneModel.setStatoPrenotazione(dbPool,idPrenotazione, "Ritirato");
+        } 
+    
+       
     }
     catch(error){
         req.session.alert = {
@@ -62,17 +71,17 @@ controller.postRitiroVeicolo = async (req, res) => {
     
         }
     }
-    res.render('AreaPersonaleAdd.ejs');
+    res.redirect("addetto/AreaPersonaleAdd");
 };
 
 //Regione Riconsegna Veicolo
 controller.getVeicoliRitiratiAdd = async (req, res) =>{
-    res.render('/addetto/RiconsegnaVeicolo.ejs');
+
     var dbPool = req.dbPool;
 
     try{
         let veicoliDaRiconsegnareAdd = await prenotazioneModel.getVeicoliDaRiconsegnareAdd(dbPool);
-        res.render('VeicoliRitiratiAdd.ejs', {'veicoli' : veicoliDaRiconsegnareAdd});
+        res.render('addetto/VeicoliRitiratiAdd.ejs', {'veicoli' : veicoliDaRiconsegnareAdd});
     }
     catch(error){
 
@@ -85,33 +94,44 @@ controller.getVeicoliRitiratiAdd = async (req, res) =>{
     }
 };
 
+
+
 controller.getModificaLuogo = (req, res) =>{
-    var luogo_riconsegna = req.body.luogo_riconsegna; //si fa con sessionStorage??
+    var luogo_riconsegna = req.body.prenotazione.luogo_riconsegna; 
     res.render('ModificaLuogo.ejs', {'luogo_riconsegna' : luogo_riconsegna});
     
 };
 
-controller.postModificaLuogo = async (req, res) => {
-    var dbPool = req.dbPool;
-    var id_prenotazione = req.params.id_prenotazione;
-    var luogo_r = req.body.luogo_riconsegna; //luogo_riconsegna inserito dall'addetto
-    //prendere luogo_riconsegna dalla entity per verificare se sono diversi
-    var luogo_riconsegna = req.session.prenotazione.luogo_riconsegna; //non so se è giusto o dove si debba definire
-    if(luogo_r != luogo_riconsegna){
 
-        try{
-            await prenotazioneModel.modificaLuogoRiconsegna(dbPool, id_prenotazione, luogo_r);
+controller.postModificaLuogo = async(req,res) =>{
+    var dbPool = req.dbPool;
+    var nuovoluogo = req.body.luogo_riconsegna;
+    var prenotazione= req.body.prenotazione;
+
+    try{
+        if(nuovoluogo != prenotazione.luogo_riconsegna){
+
+        await prenotazioneModel.modificaLuogoRiconsegna(dbPool,prenotazione.id_prenotazione, nuovoluogo);
+        let datacorrente= new Date().getTime;
+        let oreSovrapprezzo = (datacorrente - prenotazione.data_riconsegna.getTime)/3600000;
+        var sovrapprezzo = oreSovrapprezzo*getPrezzoVeicolo(prenotazione.ref_veicolo);
+        var prezzo_totale = sovrapprezzo + prenotazione.prezzo_finale;
+
+        res.render("cliente/Sovrapprezzo.ejs",{
+            'prezzo_totale' :  prezzo_totale,
+            'prenotazione' : prenotazione,
+            'nuovo_luogo' : nuovo_luogo,
+        });
         }
-        catch(error){
-    
-            req.session.alert = {
-                
-                'style' : 'alert-warning',
-                'message' : error.message
         
-            }
+    }catch(error){
+        req.sessione.alert={
+            'style' : 'aler-warning',
+            'message' : error.message
         }
+       
     }
+
 };
 
 controller.getSovrapprezzo = async (req, res) => {  //sbagliato
@@ -154,10 +174,28 @@ controller.getSovrapprezzo = async (req, res) => {  //sbagliato
     }
 };
 
-function calcolaSovrapprezzo(tariffa, diffOre, prezzo_finale){
+controller.postRiconsegnaEffettuata = async(req,res) =>{
+    var dbPool = req.dbPool;
+    var prenotazione= req.body.prenotazione;
+    var prezzo_totale = req.body.prezzo_totale;
+    var nuovoluogo = req.body.luogo_riconsegna;
+  
 
-    return prezzo_finale + (tariffa * diffOre);
+    try{
+
+        await prenotazioneModel.riconsegnaVeicolo,(dbPool,prenotazione.id_prenotazione, "Veicolo Riconsegnato", prenotazione.ref_veicolo,nuovoluogo,prezzo_totale); //Da rivederee
+   
+    }catch(error){
+        req.sessione.alert={
+            'style' : 'aler-warning',
+            'message' : error.message
+        }
+       
+    }
+
 };
+
+
 
 /*async function aggiornaSessionePrenotazioni(dbConnection, session, utenteId, stato_prenotazione){
 

@@ -8,7 +8,7 @@ const convertitore = require('../../utilities/Convertitore');  // Per gestire le
 var controller = {}; 
 
 //funzione che controlla se ci sono le condizioni per il rimborso
-async function checkRimborso(prenotazione,datacorrente){;
+async function checkRimborso(prenotazione,datacorrente){
     
     if(getOre(prenotazione.data_ritiro,datacorrente)>2){
         return true;
@@ -18,16 +18,16 @@ async function checkRimborso(prenotazione,datacorrente){;
         return false;
     }
 
-}
+};
 
 //Funzione che calcola prezzo
-async function calcolaPrezzo(pre_prenotazione,veicolo){
+async function calcolaPrezzo(pre,veicolo){
 
-    ore= getOre((pre_prenotazione.data_ritiro,pre_prenotazione.data_riconsegna));
+    ore= getOre((pre.data_ritiro,pre.data_riconsegna));
     importo = ore * veicolo.tariffa;
 
 return importo;
-}
+};
 
 //controlla se abbiamo la giusta patente
 async function checkPatente(veicolo) {
@@ -50,12 +50,12 @@ controller.postRiepilogoPrenotazione = (req,res) => {
 
     var dbPool = req.dbPool;
     var veicolo = req.body.veicolo; 
-    var pre_prenotazione = req.body.pre_prenotazione;
+    var pre = req.body.pre;
 
     try{
 
     res.render('cliente/RiepilogoPrenot.ejs', {
-     'pre_prenotazione' : pre_prenotazione,  
+     'pre' : pre,  
      'veicolo' : veicolo,  
     });
 
@@ -83,14 +83,14 @@ controller.postPrenotaVeicolo = async (req,res) => {
 
     var dbPool = req.dbPool;
     var mancia = req.body.mancia;
-    var pre_prenotazione = req.body.pre_prenotazione;
+    var pre = req.body.pre;
     var veicolo = req.body.veicolo;
-    var prezzo_stimato= calcolaPrezzo(pre_prenotazione,veicolo);
+    var prezzo_stimato= calcolaPrezzo(pre,veicolo);
     var utente = req.session.utente;
 
     try{
        if( checkPatente(veicolo)){
-       prenotazioneId = await prenotazioneModel.aggiungiPrenotazione( dbPool, utente.id_cliente, pre_prenotazione.ref_autista, pre_prenotazione.tipo_veicolo, pre_prenotazione.ref_veicolo, mancia, pre_prenotazione.data_ritiro, pre_prenotazione.data_riconsegna, pre_prenotazione.luogo_ritiro, pre_prenotazione.luogo_riconsegna, prezzo_stimato);
+       prenotazioneId = await prenotazioneModel.aggiungiPrenotazione( dbPool, utente.id_cliente, pre.ref_autista, pre.tipo_veicolo, pre.ref_veicolo, mancia, pre.data_ritiro, pre.data_riconsegna, pre.luogo_ritiro, pre.luogo_riconsegna, prezzo_stimato);
        res.render('cliente/Pagamento.ejs',{
            'prenotazioneId' : prenotazioneId ,
            'prezzo_stimato' : prezzo_stimato,
@@ -134,7 +134,6 @@ controller.postAggiungiPatente = async (req,res) =>{
     
         }
     }   
-
 };
 
 controller.getNuovoMetodoPagamento = (req,res) => {
@@ -162,7 +161,6 @@ controller.postNuvoMetodoPagamento = async (req,res) =>{
         }
     }
        
-
 };
 
 controller.getStatoPagamento = (req,res) => {
@@ -195,12 +193,11 @@ controller.getElencoVeicoliDaRitirareC = async(req,res) =>{
     var dbPool = req.dbPool;
     var utente = req.session.utente;
     
-
     try{
 
         let veicoli= await prenotazioneModel.getVeicoliDaRitirareC(dbPool, utente.id_account);
 
-        res.render('cliente/VeicoliPrenotatiC',{
+        res.render('cliente/VeicoliPrenotatiC.ejs',{
             'veicoli' : veicoli,
         });
     }catch(error){
@@ -209,10 +206,8 @@ controller.getElencoVeicoliDaRitirareC = async(req,res) =>{
             'message' : error.message
         }
         
-
-        }    
-}
-
+    }    
+};
 
 controller.getInfoVeicoloDaRitirare= async(req,res)=>{
 
@@ -225,7 +220,6 @@ controller.getInfoVeicoloDaRitirare= async(req,res)=>{
             'veicolo': veicolo,
         });
 
-
     }catch(error){
         req.session.alert={
             'style' : 'alert-warning',
@@ -234,7 +228,6 @@ controller.getInfoVeicoloDaRitirare= async(req,res)=>{
 
     }
 }
-
 
 controller.postCodiceRitiro = async(req,res)=>{
 
@@ -329,14 +322,14 @@ controller.postFormModificaRiconsegna = async(req,res) =>{
 
         await prenotazioneModel.modificaLuogoRiconsegna(dbPool,prenotazione.id_prenotazione, nuovoluogo);
         let datacorrente= new Date();
-        let oreSovrapprezzo= convertitore.getOre(datacorrente,prenotazione.data_riconsegna);
+        let oreSovrapprezzo = convertitore.getOre(datacorrente,prenotazione.data_riconsegna);
         var sovrapprezzo = oreSovrapprezzo*getPrezzoVeicolo(prenotazione.ref_veicolo());
         var prezzo_totale = sovrapprezzo + prenotazione.prezzo_finale;
 
         res.render("cliente/Sovrapprezzo.ejs",{
             'prezzo_totale' :  prezzo_totale,
             'prenotazione' : prenotazione,
-            'nuovo_luogo' :nuovo_luogo,
+            'nuovo_luogo' : nuovo_luogo,
         });
         }
         
@@ -350,7 +343,7 @@ controller.postFormModificaRiconsegna = async(req,res) =>{
 
 };
 
-controller.riconsegnaEffettuata = async(req,res) =>{
+controller.postRiconsegnaEffettuata = async(req,res) =>{
     var dbPool = req.dbPool;
     var prenotazione= req.body.prenotazione;
     var prezzo_totale = req.body.prezzo_totale;
@@ -360,9 +353,7 @@ controller.riconsegnaEffettuata = async(req,res) =>{
     try{
 
         await prenotazioneModel.riconsegnaVeicolo,(dbPool,prenotazione.id_prenotazione, "Veicolo Riconsegnato", prenotazione.ref_veicolo,nuovoluogo,prezzo_totale); //Da rivederee
-       
-        
-        
+           
     }catch(error){
         req.sessione.alert={
             'style' : 'aler-warning',
@@ -396,7 +387,7 @@ controller.getElencoPrenotazioni= async(req,res) => {
 };
 
 controller.getModificaPrenotazione = (req,res) => {
-    res.render("cliente/DatiPrenotazione");   
+    res.render("cliente/DatiPrenotazione.ejs");   
 };
 
 controller.postModificaPrenotazione = async (req,res) => {
@@ -423,7 +414,6 @@ controller.postModificaPrenotazione = async (req,res) => {
         }    
 
 };
-
 
 
 //Calcola se il rimborso è ottenibile e mostra messaggio direttamente nella schermata dell'elenco
@@ -494,4 +484,4 @@ async function recuperoPasswordEmail(transporter,  account){
         throw error;
         
     }
-}
+};

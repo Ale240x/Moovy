@@ -8,6 +8,14 @@ controller.getAreaPersonaleCliente = (req, res) => {
     res.render('cliente/AreaPersonaleCliente.ejs');   
 };
 
+controller.getSchermataIniziale = (req, res) => {  
+    res.render('cliente/Home.ejs');   
+};
+
+controller.getLogout = (req, res) => {  
+    res.render('general/Logout.ejs');   
+};
+
 //Regione Disconnetti, serve per il logout?
 controller.getDisconnetti = (req, res) => {
     req.session.destroy();
@@ -34,7 +42,7 @@ controller.getInfoPrenotazione = async (req, res) => {
         var dbConnection = req.dbPool;
         var prenotazione = req.body;
 
-            res.render('cliente/InfoPrenotazione_B', {
+            res.render('cliente/InfoPrenotazione_B.ejs', {
                 'prenotazione' : prenotazione,
                
             });
@@ -46,7 +54,7 @@ controller.getInfoPrenotazione = async (req, res) => {
             'message' : error.message
     
         }
-        res.redirect('/utente/cliente/AreaPersonale');
+        res.redirect('/utente/cliente/AreaPersonale'); // o /AreaPersonaleCliente ?
     }
 };
 
@@ -61,7 +69,7 @@ controller.getModificaDati = (req, res) => {
 controller.postModificaDati = async (req, res) => {  
 
     // connessione + richiama autenticazione utente
-    var dbPooln = req.dbPool;
+    var dbPool = req.dbPool;
     var utente = req.session.utente;
     var modifiche = req.body.account;
 
@@ -81,7 +89,7 @@ controller.postModificaDati = async (req, res) => {
             'message' : 'Dati utente modificati con successo'
         };
 
-        res.redirect('/utente/cliente/areapersonale');
+        res.redirect('/utente/cliente/areapersonale'); //o /AreaPersonaleCliente ?
         
     } catch (error) {
 
@@ -90,7 +98,7 @@ controller.postModificaDati = async (req, res) => {
             'message' : error.message
         }
 
-        res.redirect('/utente/home');
+        res.redirect('/utente/home'); //o '' ?
 
     }
 }; 
