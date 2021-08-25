@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="icon" href="public/images/logo1.png">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <title>Moovy</title>
+    <style>
+    </style>
+</head>
+<body>
+    <img class="img-fluid" src="public/images/banner2.png" width="100%">
+    
+    <!--Navbar amministratore ?-->
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: rgba(3, 78, 13, 0.795);">
+        <a class="navbar-brand" href="#"><img class="img-fluid" src="public/images/Logo2.png" width="50px"></a>
+        <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#collapsibleNavId" aria-controls="collapsibleNavId"
+            aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="collapsibleNavId">
+            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Area Personale</a>
+                </li>  
+            </ul>
+            <ul class="navbar-nav justify-content-end">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <!--Navbar-->
+
+    <div class="container mx-auto">
+        <br>
+        <div class="container">
+            <h2>Elenco prenotazioni</h2>
+            <p>Ecco la lista di tutte le prenotazioni effettuate nell'ultimo mese</p>            
+            <table class="table table-bordered table-bordered-success table-hover">
+              <thead>
+                <tr>
+                  <th>ID prenotazione</th>
+                  <th>Nome cliente</th>
+                  <th>Data </th>
+                  <th>Stato</th>
+                  <th>Importo totale</th>
+                </tr>
+              </thead>
+              <tbody>
+                   <!--riga cliccabile ??-->
+                <tr onclick="getElementById('').click()" style="cursor: pointer"></tr>
+                  <td><a href="https://www.google.com/" id="edit-1">012</a></td> 
+                  <td>Carlo Rossi</td>
+                  <td>13/05/2021</td>
+                  <td>Veicolo riconsegnato</td>
+                  <td>112,00 €</td>
+                </tr>
+                <tr>
+                  <td>067</td>
+                  <td>Camillo Bi</td>
+                  <td>08/07/2021</td>
+                  <td>Annullata</td>
+                  <td>0,00€</td>
+                </tr>
+                
+              </tbody>
+            </table>
+          </div>
+          
+       
+    </div>
+<!--footer-->   
+<footer class="text-center text-lg-start bg-light text-muted fixed-bottom">
+    <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05);">
+        <p class="">Contattaci: Tel + 01 234 567 88</p>
+      © 2021 Copyright AMIL
+    </div>
+  </footer>
+</body>
+</html>

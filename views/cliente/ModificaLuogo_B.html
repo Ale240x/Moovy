@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="icon" href="public/images/logo1.png">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <title>Moovy</title>
+    <style>
+    </style>
+</head>
+
+<body>
+    <img class="img-fluid" src="public/images/banner2.png" width="100%">
+    
+   <!--Navbar loggato-->
+   <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: rgba(3, 78, 13, 0.795);">
+    <a class="navbar-brand" href="#"><img class="img-fluid" src="public/images/Logo2.png" width="50px"></a>
+    <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#collapsibleNavId" aria-controls="collapsibleNavId"
+        aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="collapsibleNavId">
+        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+            <li class="nav-item active">
+                <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Veicoli</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Area Personale</a>
+            </li>  
+        </ul>
+        <ul class="navbar-nav justify-content-end">
+            <li class="nav-item">
+                <a class="nav-link" href="#">Logout</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<!--Navbar-->
+
+    
+    <div class="container mx-auto">
+       <br>
+        <div class="row">
+            <div class="card card-body" style="width: 516px;">               
+                <h1>Luogo riconsegna</h1>                
+                <p>Modifica il form ste stai cambiando luogo di riconsegna</p>
+            <form>
+                <br>
+  
+                <div class="row">
+                  <div class="col">
+                    <div class="form-outline">
+                        <label class="form-label" for="Luogoriconsegna">Luogo riconsegna</label>
+                        <input type="text" id="lriconsegna" class="form-control form-control-md" placeholder="Luogo_precedente" />
+                      </div>  
+                   </div>   
+                </div> 
+                <br>
+                   <div class="row">
+                       <div class="col">
+                           <!--Google map METTERE QUELLA PRESONALIZZATA-->
+                    <div id="map-container-google" class=" map-container" >
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d100415.54609554062!2d13.287248397954299!3d38.140522805839225!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1319e8c9814ed099%3A0xa0b042c233bd880!2sPalermo%20PA%2C%20Italia!5e0!3m2!1sit!2sus!4v1625826816158!5m2!1sit!2sus" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                </div>
+  
+                  <!--Google Maps-->
+
+                       </div>
+                   </div>
+                   <br>
+               
+              </form>
+            </div>
+          </div>
+          <br>
+          <div class="d-flex justify-content-center">
+            <button class="btn btn-lg  btn-success  align-content-lg-center">Conferma</button>
+          </div>
+        <br>
+    </div>
+<!--footer-->   
+<footer class="text-center text-lg-start bg-light text-muted ">
+    <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05);">
+        <p class="">Contattaci: Tel + 01 234 567 88</p>
+      © 2021 Copyright AMIL
+    </div>
+  </footer>
+</body>
+</html>

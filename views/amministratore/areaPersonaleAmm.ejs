@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%- include('partials/head.ejs') -%>
+    <title><%= title %></title>
+  </head>
+  <body>
+    <%- include('partials/navbar.ejs') -%>
+
+    <!--Area personale-->
+
+    <div class="row">
+        <div class="container mx-auto card card-body" style="width: 516px;">             
+          <h1>Area personale</h1>
+          <br>
+
+          <div class="row d-flex justify-content-center">
+            <div class="section col-12 col-lg-8" >
+              <div class="col-12">
+                <div class="row">
+                      <div class="col-12">
+                        <div class="list-group border border-success">
+                          <a style="text-align: center;" href="#" class="list-group-item list-group-item-action" aria-current="true">
+                            Registrazione impiegati
+                          </a>
+                          <a style="text-align: center;" href="#" class="list-group-item list-group-item-action" aria-current="true">
+                           Elimina account
+                          </a>
+                          <a style="text-align: center;" href="#" class="list-group-item list-group-item-action" aria-current="true">
+                           Modifica dati impiegati
+                          </a>
+                          <a style="text-align: center;" href="#" class="list-group-item list-group-item-action" aria-current="true">
+                            Gestione account
+                          </a>
+                          <a style="text-align: center;" href="#" class="list-group-item list-group-item-action" aria-current="true">
+                            Rimborso
+                          </a>                        
+                        </div>
+                        <br>
+                      </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>           
+      </div>    
+    
+    <% include partials/footer.ejs %>
+  </body>
+</html>

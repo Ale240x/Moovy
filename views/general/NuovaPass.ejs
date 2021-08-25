@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="icon" href="../../public/images/logo1.png">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <title>Moovy</title>
+ </head>
+<body>
+    <img class="img-fluid" src="../../public/images/banner2.png" width="100%">
+    
+    <!--Navbar-->
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: rgba(3, 78, 13, 0.795);">
+        <a class="navbar-brand" href="#"><img class="img-fluid" src="../../public/images/logo1.png" width="50px"></a>
+        <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#collapsibleNavId" aria-controls="collapsibleNavId"
+            aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="collapsibleNavId">
+            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Veicoli</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Area Personale</a>
+                </li>  
+            </ul>
+            <ul class="navbar-nav justify-content-end">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="dropdownId" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Accedi</a>
+                    <div class="dropdown-menu" aria-labelledby="dropdownId">
+                        <a class="dropdown-item" href="#">Login</a>
+                        <a class="dropdown-item" href="#">Recupera Password</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Registrati</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <!--Navbar-->
+
+    <form>
+        <div class="container my-5 text-center" style="max-width: 580px;">
+
+          <legend style="text-align: center; font-size:150%">Nuova Password</legend>
+        <div class="container my-5 text-center" style="max-width: 580px;">
+            <div class="mb-3">
+                <label for="inputPassword5" class="form-label">Nuova Password</label>
+                <input type="password" id="inputPassword5" class="form-control" aria-describedby="passwordHelpBlock">
+                <div id="passwordHelpBlock" class="form-text" style="font-size:small;">
+                  La tua password deve contenere almeno 8 caratteri, di cui almeno un carattere maiuscolo e un numero.
+                </div>
+        <div class="mb-4; my-3">
+                <label for="inputPassword5" class="form-label">Conferma Password</label>
+                <input type="password" id="inputPassword5" class="form-control" aria-describedby="passwordHelpBlock">
+                <div id="passwordHelpBlock" class="form-text" style="font-size:small";>
+                  La tua password deve contenere almeno 8 caratteri, di cui almeno un carattere maiuscolo e un numero.            </div>        
+        
+        </div>
+        <button type="conferma" class="btn btn-success">Conferma</button>
+      </form>
+
+<!--footer-->   
+<footer class="text-center text-lg-start bg-light text-muted">
+    <div class="text-center my-5" style="background-color: rgba(0, 0, 0, 0.05);">
+        <p class="">Contattaci: Tel + 01 234 567 88</p>
+      © 2021 Copyright AMIL
+    </div>
+  </footer>
+</body>
+</html>

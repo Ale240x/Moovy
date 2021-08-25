@@ -9,9 +9,9 @@ const sessionStore = new MySQLStore(dbMiddleware.options);
 const smtpMiddleware = require("./middlewares/smtp");
 
 const cookieParser = require('cookie-parser');
-//const logger = require('morgan');
+const logger = require('morgan');
 
-//require('ejs');
+require('ejs');
 
 const RadiceRouter = require("./Controllers/routers/RadiceRouter");
 
@@ -20,7 +20,7 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-//app.use(logger('dev')); //?
+app.use(logger('dev')); //?
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -36,8 +36,8 @@ app.use(session({
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use("/", RadiceRouter);
-//app.use('/users', usersRouter)
+app.use('/', indexRouter);
+app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -76,19 +76,11 @@ app.use((req, res, next) => {
    } 
  });
 
-let connection = dbMiddleware.pool.getConnection(function(err) {
-  if (err) {
-    return console.error('error: ' + err.message);
-  }
-
-  console.log('Connected to the MySQL server.');
-});
-
-/*let connection = mysql.createConnection({
+ let connection = mysql.createConnection({
   host: 'localhost',
-  user: 'moovy',
-  password: 'P4ssw0rdSicura',
-  database: 'moovy'
+  user: 'root',
+  password: 'root',
+  database: 'travelfox'
 });
 
 connection.connect(function(err) {
@@ -98,6 +90,5 @@ connection.connect(function(err) {
 
   console.log('Connected to the MySQL server.');
 });
-*/
 
 module.exports = app;

@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="icon" href="public/images/logo1.png">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <title>Moovy</title>
+    <style>
+    </style>
+</head>
+<body>
+    <img class="img-fluid" src="public/images/banner2.png" width="100%">
+    
+    <!--Navbar-->
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: rgba(3, 78, 13, 0.795);">
+        <a class="navbar-brand" href="#"><img class="img-fluid" src="public\images\Logo2.png" width="50px"></a>
+        <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#collapsibleNavId" aria-controls="collapsibleNavId"
+            aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="collapsibleNavId">
+            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Veicoli</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Area Personale</a>
+                </li>  
+            </ul>
+            <ul class="navbar-nav justify-content-end">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="dropdownId" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Accedi</a>
+                    <div class="dropdown-menu" aria-labelledby="dropdownId">
+                        <a class="dropdown-item" href="#">Login</a>
+                        <a class="dropdown-item" href="#">Recupera Password</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Registrati</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <!--Navbar-->
+
+     <!--Form registrazione-->
+    <div class="container mx-auto">
+       <br>
+        <div class="row">
+            <div class="card card-body" style="width: 516px;">
+                <br>                
+                <h1>Registrazione impiegati</h1>
+                <br>
+            <form>
+                <br>
+  
+                <div class="row">
+                  <div class="col-md-6 mb-4">
+  
+                    <div class="form-outline">
+                      <label class="form-label" for="firstName">Nome</label>
+                      <input type="text" id="firstName" class="form-control form-control-md" placeholder="Nome" />                   
+                    </div>
+  
+                  </div>
+                  <div class="col-md-6 mb-4">
+  
+                    <div class="form-outline">
+                      <label class="form-label" for="lastName">Cognome</label>
+                      <input type="text" id="lastName" class="form-control form-control-md" placeholder="Cognome" />
+                    </div>
+  
+                  </div>
+                </div>
+  
+                <div class="row">
+                  <div class="col-md-6 mb-4 ">
+  
+                    <div class="form-outline">
+                      <label class="form-label" for="dataNascita">Data di nascita</label>
+                      <input type="date" id="data" class="form-control form-control-md" />
+                    </div>
+  
+                  </div>
+                  <div class="col-md-6 mb-4 ">
+  
+                    <div class="form-outline">
+                      <label class="form-label" for="emailAddress">Email</label>
+                      <input type="email" id="emailAddress" class="form-control form-control-md" placeholder="Email" />
+                    </div>
+  
+                  </div>
+                </div>             
+  
+  
+                <div class="row">                  
+                  <div class="col-md-6 mb-4 ">      
+                    <div class="form-outline">
+                      <label class="form-label" for="phoneNumber">Numero di telefono</label>
+                      <input type="tel" id="phoneNumber" class="form-control form-control-md" placeholder="Numero di telefono" />                          
+                    </div>      
+                  </div>
+
+                  <div class="col-md-6 mb-4 ">
+                    <label class="form-label" for="patente">Tipo patente</label>   
+                    <br>   
+                    <button class="btn dropdown-toggle mr-4 " type="button" data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false">Patenti</button>                       
+
+                      <div class="dropdown-menu">
+                     <a class="dropdown-item">
+ 
+                     <div class="custom-control custom-checkbox">
+                     <input type="checkbox" class="custom-control-input" id="checkbox1">
+                      <label class="custom-control-label" for="checkbox1">AM</label>
+                     </div>
+                    </a>
+                 <a class="dropdown-item" href="#">
+                 <div class="custom-control custom-checkbox">
+                  <input type="checkbox" class="custom-control-input" id="checkbox2" >
+                <label class="custom-control-label"for="checkbox2">A</label>
+                </div>
+                </a>
+                <a class="dropdown-item" href="#">
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="checkbox3">
+                    <label class="custom-control-label" for="checkbox3">A1</label>
+                 </div>
+                 </a>
+
+                 <a class="dropdown-item" href="#">
+                  <div class="custom-control custom-checkbox">
+                 <input type="checkbox" class="custom-control-input" id="checkbox4" >
+                  <label class="custom-control-label" for="checkbox4">A2</label>
+                  </div>
+                 </a>
+
+                <a class="dropdown-item" href="#">
+                 <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" id="checkbox4" >
+                 <label class="custom-control-label" for="checkbox4">B</label>
+                 </div>
+                </a>
+                  </div>
+                  </div>
+                </div>
+               
+
+                <div class="row">
+                    <div class="col-md-6 mb-4 ">      
+                        <div class="form-outline">
+                          <label class="form-label" for="dataRilascio">Data di rilascio patente</label>
+                          <input type="date" id="data" class="form-control form-control-md"  />
+                        </div>      
+                      </div>                    
+
+                  <div class="col-md-6 mb-4 pb-2">      
+                    <div class="form-outline">
+                      <label class="form-label" for="patente">Codice patente</label>
+                      <input type="text" id="patente" class="form-control form-control-md" placeholder="Codice Patente" />                          
+                    </div>              
+                </div>
+                </div>  
+  
+                <div class="row">
+                  <div class="col-md-6 mb-4 ">
+                    <div class="form-outline">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                          <label class="input-group-text" for="inputGroupSelect01">Ruolo</label>
+                        </div>
+                        <select class="custom-select" id="inputGroupSelect01">
+                          <option selected>Seleziona ruolo impiegato</option>
+                          <option value="1">Autista</option>
+                          <option value="2">Addetto</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 mb-4 ">
+  
+                    <div class="form-outline">
+                      <label for="pass">Password *</label>
+                       <input name="pass" id="pass" type="password" class="form-control" title="Almeno 8 caratteri, una lettera maiuscola e un numero" placeholder="Inserisci password" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,}$" size="32" maxlength="40" required/>
+                      <div class="invalid-feedback">
+                        Almeno 8 caratteri di cui uno maiusciolo e un numero
+                       </div>
+                    <div class="valid-feedback text-warning">
+                     Password media
+                   </div>
+                    
+                    </div>
+  
+                  </div>
+                  <div class="col-md-6 mb-4 ">
+  
+                    <div class="form-outline">
+                      <label for="repass">Reinserisci password *</label>
+                      <input name="repass" id="repass" type="password" class="form-control" placeholder="Reinserisci password" size="32" maxlength="40" onchange="checkPassword(this)" required/>
+                      <div class="invalid-feedback">
+                          Le password devono coincidere
+                      </div>
+                    </div>    
+                  </div>                 
+              </div>
+
+  
+              </form>
+            </div>           
+          </div>
+          <br>
+          <div class="d-flex justify-content-center">
+            <button class="btn btn-lg  btn-success  align-content-lg-center">Conferma</button>
+          </div>
+        <br>
+    </div>
+<!--footer-->   
+<footer class="text-center text-lg-start bg-light text-muted">
+    <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05);">
+        <p class="">Contattaci: Tel + 01 234 567 88</p>
+      © 2021 Copyright AMIL
+    </div>
+  </footer>
+</body>
+</html>
