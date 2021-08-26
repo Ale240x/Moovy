@@ -36,8 +36,8 @@ controller.postRegistrazioneCliente = async (req, res) => {
            req.body.a1,
            req.body.a2, 
            req.body.numeroCarta,
-           req.body.nomeIntestatario, //
-           req.body.cognomeIntestatario,//
+           req.body.nomeIntestatario, // Da mettere?
+           req.body.cognomeIntestatario,// Da mettere?
            req.body.scadenzaCarta,
            req.body.cvv,         
            );
@@ -54,24 +54,24 @@ controller.postRegistrazioneCliente = async (req, res) => {
           alert.message = "email già in uso";
       }
 
-      res.redirect('general/Home.ejs', { 'alert' : alert }); //mostra la home
+      res.render('general/Home.ejs', { 'alert' : alert }); //mostra la home
 
     }
 };
 
 
 controller.getAutenticazione = (req, res) => { 
-  res.render('general/Autenticazione.ejs');   
+  res.render('general/LoginForm.ejs');   
 };
 
 controller.postAutenticazione = async (req, res) => {
 
   try {
 
-      let attempt = req.bod;
+      let attempt = req.body;
               
       req.session.utente = await accountModel.login(req.dbPool, attempt.email, attempt.psw); 
-      if(req.session.utente.ruolo == "Cliente"){ //1 Cliente 
+      if(req.session.utente.ruolo == "Cliente"){ // Cliente 
                   
           req.session.alert = {
 
@@ -80,7 +80,7 @@ controller.postAutenticazione = async (req, res) => {
           
           };
   
-          res.redirect('/utente/cliente/AreaPersonaleC'); 
+          res.redirect('/AreaPersonaleCliente'); 
       }
       else if(req.session.utente.ruolo == "Amministratore"){
          
@@ -91,7 +91,7 @@ controller.postAutenticazione = async (req, res) => {
           
           };
 
-          res.redirect('/utente/amministratore/AreaPersonaleAmm'); 
+          res.redirect('/AreaPersonaleAmministratore'); 
       }
       else if(req.session.utente.ruolo == "Autista"){
      
@@ -102,7 +102,7 @@ controller.postAutenticazione = async (req, res) => {
         
         };
 
-        res.redirect('/utente/autista/AreaPersonaleAut'); 
+        res.redirect('/AreaPersonaleAutista'); 
     }
     else {
         req.session.alert = {
@@ -112,7 +112,7 @@ controller.postAutenticazione = async (req, res) => {
         
         };
 
-        res.redirect('/utente/addetto/AreaPersonaleAdd'); 
+        res.redirect('/AreaPersonaleAddetto'); 
     }
 
 
@@ -133,55 +133,42 @@ controller.getRicercaTipoVeicoli = (req, res) => {
     res.render('generale/TipiVeicoli_B.ejs');   
 };
 
-//Regione Ricerca Veicolo
-controller.postRicercaTipoVeicoli = async (req, res) => { 
-    
-    var tipo = req.body.tipo_veicolo;
 
-    try{
+controller.getFormA = async (req, res) => { 
+    
+    var tipo = req.body;
+     //prende il tipo scelto dal body e poi fa il rendering del FormRicerca, che avrà più o meno campi in base al tipo   
 
     res.render('generale/FormRicercaA.ejs', {
         'tipo' : tipo,
-        
-    });
 
-    if(tipo=="Moto"||tipo=="Auto"){
-        res.render('generale/FormRicercaB.ejs')
-    }
-
-
-    }catch(error){
-        req.session.alert = {
-            
-            'style' : 'alert-warning',
-            'message' : error.message
-
-    }
-
+});
 };
 
 
-controller.postFormA = (req,res) =>{
+controller.postFormA = async (req,res) =>{
     var dbPool = req.dbPool;
-    var pre_prenotazione = req.body;
+    var pre = req.body;
     try {
 
         let filtri = {
-            'luogoritiro' : pre_prenotazione.luogo_ritiro,
-            'luogoriconsegna' : pre_prenotazione.luogo_riconsegna,
-            'dataritiro' : pre_prenotazione.data_ritiro,
-            'datariconsegna' : pre_prenotazione.data_riconsegna,
-            'tipo_veicolo' : pre_prenotazione.tipo_veicolo
+            'luogoritiro' : pre.luogo_ritiro,
+            'luogoriconsegna' : pre.luogo_riconsegna,
+            'dataritiro' : pre.data_ritiro,
+            'datariconsegna' : pre.data_riconsegna,
+            'categoria' : pre.categoria,
+            'prezzo' : pre.prezzo,
+            'tipo_veicolo' : pre.tipo_veicolo
         };
 
         let veicoli = await prenotazioneModel.cercaVeicolo( 
-                req.dbPool, 
+                dbPool, 
                 filtri
             );
         
             res.render('generale/Risultati_ricerca.ejs', {
            'veicoli' : veicoli, 
-           'pre_prenotazione' : pre_prenotazione,
+           'pre' : pre,
                 });
 
     } catch (error) {
@@ -196,103 +183,19 @@ controller.postFormA = (req,res) =>{
     }
     };
 
-    controller.postFormB = (req,res) =>{
-        var dbPool = req.dbPool;
-        var pre_prenotazione = req.body;
-        try {
-    
-            let filtri = {
-                'luogoritiro' : pre_prenotazione.luogo_ritiro,
-                'luogoriconsegna' : pre_prenotazione.luogo_riconsegna,
-                'dataritiro' : pre_prenotazione.data_ritiro,
-                'datariconsegna' : pre_prenotazione.data_riconsegna,
-                'categoria' : pre_prenotazione.categoria,
-                'prezzo' : pre_prenotazione.prezzo,
-                'tipo_veicolo' :pre_prenotazione.tipo_veicolo
-            };
-    
-            let veicoli = await prenotazioneModel.cercaVeicolo( 
-                    req.dbPool, 
-                    filtri
-                );
-            
-                res.render('generale/Risultati_ricerca.ejs', {
-               'veicoli' : veicoli, 
-               'pre_prenotazione' : pre_prenotazione,
-                    });
-    
-        } catch (error) {
-    
-            req.session.alert = {
-                
-                'style' : 'alert-warning',
-                'message' : error.message
-        
-            }      
-        
-        }
-        };
-
 controller.getInfoVeicolo = async(req,res) =>{
     res.render('generale/InfoVeicolo.ejs', {
         'veicolo' : veicolo,
-        'pre_prenotazione' : pre_prenotazione,
     });
 };
 
-controller.getPrenotazioneTemporanea= async (req, res) => { 
-       var dbPool = req.dbPool;
-        var veicolo = req.body.veicolo;
-        var pre_prenotazione = req.body.pre_prenotazione;
-    
-    try {  
-        prenotazioneId = await prenotazioneModel.aggiungiPrenotazione( dbPool, null , null, pre_prenotazione.tipo_veicolo, pre_prenotazione.ref_veicolo, null, pre_prenotazione.data_ritiro, pre_prenotazione.data_riconsegna, pre_prenotazione.luogo_ritiro, pre_prenotazione.luogo_riconsegna, 0);
-        
-        res.render('generale/RiepilogoPrenot.ejs', {
-            'prenotazioneId': prenotazioneId,
-        });
-    
-    } catch (error) {
-        
-        req.session.alert = {
-            
-            'style' : 'alert-warning',
-            'message' : error.message
-    
-        }
-
-
-    }
+//Mostra schermata riepilogo con veicolo selezionato e i filtri 
+controller.getRiepilogo = async(req,res) =>{
+    res.render('generale/RiepilogoPrenot.ejs', {
+        'veicolo' : veicolo,
+        'pre' : pre,
+    });
 };
-
-controller.getControlloAutenticazione= async (req, res) => { 
-    var dbPool = req.dbPool;
- 
- try { 
-     if(req.sessione.utente == null) {
-        await this.getAutenticazione();
-     }
-     else{
-         res.redirect ('/cliente/prenota');
-     }
- 
- } catch (error) {
-     
-     req.session.alert = {
-         
-         'style' : 'alert-warning',
-         'message' : error.message
- 
-     }
-
-
- }
-};
-
-
-
-
-
 
 
 

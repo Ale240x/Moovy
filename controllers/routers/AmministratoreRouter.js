@@ -46,7 +46,6 @@ router.get("/prenotazioneAttive/infoPrenotazione/:id/eliminaPrenotazione",Prenot
 router.get("/prenotazioniAttive/infoPrenotazione/:id/modificaPrenotazione", PrenotazioniAmministratoreController.getDatiPrenotAmm);
 router.post("/prenotazioneAttive/infoPrenotazione/:id/modificaPrenotazione",PrenotazioniAmministratoreController.postDatiPrenotAmm);
 
-
 //rimborso
 router.get("/rimborso", PrenotazioniAmministratoreController.getElencoPrenotAmm);
 router.post("/rimborso",PrenotazioniAmministratoreController.postElencoPrenotAmm);

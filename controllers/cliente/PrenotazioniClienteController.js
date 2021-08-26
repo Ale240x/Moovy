@@ -34,7 +34,7 @@ async function checkPatente(veicolo) {
 var utente = req.session.utente;
 var veicolo = req.body;
 var tipo = veicolo.patente_richiesta
-if(utente.tipo==true){
+if(tipo=="a" && utente.a==true || tipo=="a1" && utente.a1==true ||tipo=="a2" && utente.a2==true ||tipo=="am" && utente.am==true || tipo=="b" && utente.b==true){
     return true;
     
 }
@@ -43,10 +43,6 @@ else return false;
 
 
 controller.getMancia = (req,res) => {
-    res.render("cliente/RiepilogoPrenot.ejs");   
-};
-
-controller.postRiepilogoPrenotazione = (req,res) => {
 
     var dbPool = req.dbPool;
     var veicolo = req.body.veicolo; 
@@ -54,19 +50,14 @@ controller.postRiepilogoPrenotazione = (req,res) => {
 
     try{
 
-    res.render('cliente/RiepilogoPrenot.ejs', {
-     'pre' : pre,  
-     'veicolo' : veicolo,  
-    });
-
-    if (pre_prenotazione.stato_autista != null){
+    if (pre.stato_autista != null){
         res.render('cliente/mancia.ejs',{
-            'pre_prenotazione' : pre_prenotazione,    
+            'pre' : pre,    
         });
 
     }
   
-    } catch (error) {
+} catch (error) {
         
     req.session.alert = {
         
@@ -116,6 +107,15 @@ controller.postPrenotaVeicolo = async (req,res) => {
 }
 };
 
+controller.getPatente = (req, res) => {  
+    res.redirect("/Riepilogo/FormPatente");  
+};
+
+controller.getPagamento = (req, res) => {  
+    res.redirect("/Riepilogo/Pagamento");  
+};
+
+
 controller.postAggiungiPatente = async (req,res) =>{
     var dbPool = req.dbPool;
     var utente = req.session.utente;
@@ -133,7 +133,7 @@ controller.postAggiungiPatente = async (req,res) =>{
             'message' : error.message
     
         }
-    }   
+    }
 };
 
 controller.getNuovoMetodoPagamento = (req,res) => {
@@ -142,7 +142,7 @@ controller.getNuovoMetodoPagamento = (req,res) => {
 
 
 
-controller.postNuvoMetodoPagamento = async (req,res) =>{
+controller.postNuovoMetodoPagamento = async (req,res) =>{
     var dbPool = req.dbPool;
     var utente = req.session.utente;
 
@@ -159,8 +159,8 @@ controller.postNuvoMetodoPagamento = async (req,res) =>{
             'message' : error.message
     
         }
-    }
-       
+    }    
+
 };
 
 controller.getStatoPagamento = (req,res) => {
@@ -183,16 +183,16 @@ controller.postStatoPagamento = async (req,res) => {
         'style' : 'alert-warning',
         'message' : error.message
 
-    }
-   
+    }  
+
 }
 };
 
 controller.getElencoVeicoliDaRitirareC = async(req,res) =>{
 
     var dbPool = req.dbPool;
-    var utente = req.session.utente;
-    
+    var utente = req.session.utente;   
+
     try{
 
         let veicoli= await prenotazioneModel.getVeicoliDaRitirareC(dbPool, utente.id_account);
@@ -204,57 +204,54 @@ controller.getElencoVeicoliDaRitirareC = async(req,res) =>{
         req.session.alert={
             'style' : 'alert-warning',
             'message' : error.message
-        }
-        
+        }     
+
     }    
 };
 
-controller.getInfoVeicoloDaRitirare= async(req,res)=>{
+controller.getInfoVeicoloDaRitirare = async(req,res)=>{
 
-        var dbPool = req.dbPool;
-        var veicolo = req.body;
-        var id_veicolo = veicolo.id_veicolo; // per dopo
-
-    try{       
-        res.render("cliente/InfoRitiro",{
-            'veicolo': veicolo,
+        var veicolo = req.body.veicolo;
+        
+        res.render("general/InfoRitiro.ejs",{
+            'veicolo': veicolo,           
         });
 
-    }catch(error){
-        req.session.alert={
-            'style' : 'alert-warning',
-            'message' : error.message
-        }
+};
 
-    }
-}
-
-controller.postCodiceRitiro = async(req,res)=>{
-
+controller.postRitiroVeicolo = async (req, res) => { 
     var dbPool = req.dbPool;
     var codice = req.body.codice;
-    var idPrenotazione = req.body.id_prenotazione;
+    var idPrenotazione = req.params.id_prenotazione;
+    var veicolo = req.body.veicolo;
+
+    try{
+        if (veicolo.id_veicolo == codice){
+            await prenotazioneModel.setStatoPrenotazione(dbPool,idPrenotazione, "Ritirato");
+        } 
     
-
-    if (idVeicolo == codice){
-        await prenotazioneModel.setStatoPrenotazione(dbPool,pidPrenotazione, "Ritirato");
-    } 
-
-    res.redirect("utente/cliente/AreaPersonaleC");
+       
+    }
+    catch(error){
+        req.session.alert = {
+            
+            'style' : 'alert-warning',
+            'message' : error.message
+    
+        }
+    }
+    res.redirect("cliente/AreaPersonaleC");
 };
 
 
 controller.getElencoVeicoliDaRiconsegnareC = async(req,res) =>{
 
     var dbPool = req.dbPool;
-    var utente = req.session.utente;
-    
-
     try{
 
-        let veicoli= await prenotazioneModel.getVeicoliDaRiconsegnareC(dbPool, utente.id_account);
+        let veicoli= await prenotazioneModel.getVeicoliDaRiconsegnareC(dbPool);
 
-        res.render('cliente/VeicoliRitiratiC',{
+        res.render('cliente/VeicoliRitiratiC.ejs',{
             'veicoli' : veicoli,
         });
     }catch(error){
@@ -264,66 +261,28 @@ controller.getElencoVeicoliDaRiconsegnareC = async(req,res) =>{
         }
         
 
-        }    
-}
-/*
-controller.getElencoVeicoliDaRiconsegnareC = async(req,res) =>{
+    }    
+};
 
-    var dbPool = req.dbPool;
-    var utente = req.session.utente;
+
+controller.getModificaLuogo = (req, res) =>{
+    var luogo_riconsegna = req.body.prenotazione.luogo_riconsegna; 
+    res.render('ModificaLuogo.ejs', {'luogo_riconsegna' : luogo_riconsegna});
     
+};
 
-    try{
-
-        let veicoli= await prenotazioneModel.getVeicoliDaRiconsegnareC(dbPool, utente.id_account);
-
-        res.render('cliente/VeicoliRitiratiC',{
-            'veicoli' : veicoli,
-        });
-    }catch(error){
-        req.session.alert={
-            'style' : 'alert-warning',
-            'message' : error.message
-        }
-        
-
-        }    
-}
-
-*/
-
-controller.getFormModificaRiconsegna= async(req,res)=>{
-
-    var dbPool = req.dbPool;
-    var veicolo = req.body.veicolo;
-try{       
-    res.render("cliente/ModificaLuogo.ejs",{
-        'veicolo': veicolo,
-    });
-
-
-}catch(error){
-    req.session.alert={
-        'style' : 'alert-warning',
-        'message' : error.message
-    }
-
-}
-}
-
-controller.postFormModificaRiconsegna = async(req,res) =>{
+controller.postModificaLuogo = async(req,res) =>{
     var dbPool = req.dbPool;
     var nuovoluogo = req.body.luogo_riconsegna;
     var prenotazione= req.body.prenotazione;
-    var utente = req.session.utente;
 
     try{
         if(nuovoluogo != prenotazione.luogo_riconsegna){
 
         await prenotazioneModel.modificaLuogoRiconsegna(dbPool,prenotazione.id_prenotazione, nuovoluogo);
-        let datacorrente= new Date();
-        let oreSovrapprezzo = convertitore.getOre(datacorrente,prenotazione.data_riconsegna);
-        var sovrapprezzo = oreSovrapprezzo*getPrezzoVeicolo(prenotazione.ref_veicolo());
+        let datacorrente= new Date().getTime;
+        let oreSovrapprezzo = (datacorrente - prenotazione.data_riconsegna.getTime)/3600000;
+        var sovrapprezzo = oreSovrapprezzo*getPrezzoVeicolo(prenotazione.ref_veicolo);
         var prezzo_totale = sovrapprezzo + prenotazione.prezzo_finale;
 
         res.render("cliente/Sovrapprezzo.ejs",{
@@ -353,7 +312,7 @@ controller.postRiconsegnaEffettuata = async(req,res) =>{
     try{
 
         await prenotazioneModel.riconsegnaVeicolo,(dbPool,prenotazione.id_prenotazione, "Veicolo Riconsegnato", prenotazione.ref_veicolo,nuovoluogo,prezzo_totale); //Da rivederee
-           
+   
     }catch(error){
         req.sessione.alert={
             'style' : 'aler-warning',
@@ -392,9 +351,9 @@ controller.getModificaPrenotazione = (req,res) => {
 
 controller.postModificaPrenotazione = async (req,res) => {
     var dbPool = req.dbPool;
-    var idPrenotazione = req.params.id_prenotazione;
-    var nuovadata= req.params.data_riconsegna;
-    var nuovoluogo = req.params.luogo_riconsegna;   
+    var idPrenotazione = req.body.id_prenotazione;
+    var nuovadata= req.body.data_riconsegna;
+    var nuovoluogo = req.body.luogo_riconsegna;   
 
     try{
 
@@ -429,7 +388,7 @@ controller.getEliminaPrenotazione = (req,res) => {
         if (checkRimborso(idPrenotazione,datacorrente)){
         await.prenotazioneModel.annullaPrenotazione(dbPool,prenotazione.id_prenotazione);
         res.render('clienteB/AvvisoRimborso.ejs',{});
-        }
+    }
     }catch(error){
         req.session.alert={
             'style' : 'alert-warning',
@@ -437,7 +396,7 @@ controller.getEliminaPrenotazione = (req,res) => {
         }
         
 
-    }    
+        }    
 
 };
 
@@ -485,3 +444,5 @@ async function recuperoPasswordEmail(transporter,  account){
         
     }
 };
+
+module.exports = controller;

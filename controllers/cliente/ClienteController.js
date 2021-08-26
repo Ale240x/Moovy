@@ -28,7 +28,7 @@ controller.getStoricoPrenotazioni = async (req, res) => {
     var dbPoolConnection = req.dbPool;
     var utente = req.session.utente;
 
-    let prenotazioni = await prenotazioneModel.getStoricoPrenotazioni(req.dbPoolConnection,req.session.utente.id);
+    let prenotazioni = await prenotazioneModel.getStoricoPrenotazioni(req.dbPoolConnection,utente.id);
     res.render('cliente/Storico_B.ejs', {
      'prenotazioni' : prenotazioni}
     );  
@@ -54,7 +54,7 @@ controller.getInfoPrenotazione = async (req, res) => {
             'message' : error.message
     
         }
-        res.redirect('/utente/cliente/AreaPersonale'); // o /AreaPersonaleCliente ?
+        res.redirect('/AreaPersonaleCliente');
     }
 };
 
@@ -89,7 +89,7 @@ controller.postModificaDati = async (req, res) => {
             'message' : 'Dati utente modificati con successo'
         };
 
-        res.redirect('/utente/cliente/areapersonale'); //o /AreaPersonaleCliente ?
+        res.redirect('/AreaPersonaleCliente');
         
     } catch (error) {
 
@@ -107,7 +107,7 @@ async function aggiornaSessioneUtente(dbConnection, session){
 
     try {
 
-        session.utente = await accountModel.getAccount(dbPool, session.utente.id); //controllare se c'è questa funzione
+        session.utente = await accountModel.getAccount(dbPool, session.utente.id);
         
         
     } catch(error) {
