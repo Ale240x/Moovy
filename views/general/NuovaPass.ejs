@@ -14,62 +14,33 @@
     <title>Moovy</title>
  </head>
 <body>
-    <img class="img-fluid" src="../../public/images/banner2.png" width="100%">
-    
-    <!--Navbar-->
-    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: rgba(3, 78, 13, 0.795);">
-        <a class="navbar-brand" href="#"><img class="img-fluid" src="../../public/images/logo1.png" width="50px"></a>
-        <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#collapsibleNavId" aria-controls="collapsibleNavId"
-            aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="collapsibleNavId">
-            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-                <li class="nav-item active">
-                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Veicoli</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Area Personale</a>
-                </li>  
-            </ul>
-            <ul class="navbar-nav justify-content-end">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="dropdownId" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Accedi</a>
-                    <div class="dropdown-menu" aria-labelledby="dropdownId">
-                        <a class="dropdown-item" href="#">Login</a>
-                        <a class="dropdown-item" href="#">Recupera Password</a>
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Registrati</a>
-                </li>
-            </ul>
-        </div>
-    </nav>
-    <!--Navbar-->
+   
+        <!--Navbar-->
+        <%- include('../partials/navbar.ejs') %>
+        <!--Navbar-->
 
-    <form>
+    <form action="/recuperaPass/codice/nuovaPass" method="POST">
         <div class="container my-5 text-center" style="max-width: 580px;">
 
           <legend style="text-align: center; font-size:150%">Nuova Password</legend>
         <div class="container my-5 text-center" style="max-width: 580px;">
             <div class="mb-3">
                 <label for="inputPassword5" class="form-label">Nuova Password</label>
-                <input type="password" id="inputPassword5" class="form-control" aria-describedby="passwordHelpBlock">
+                <input type="password" id="nuovaPassword name="nuovaPassword" class="form-control" aria-describedby="passwordHelpBlock" required>
                 <div id="passwordHelpBlock" class="form-text" style="font-size:small;">
                   La tua password deve contenere almeno 8 caratteri, di cui almeno un carattere maiuscolo e un numero.
                 </div>
         <div class="mb-4; my-3">
                 <label for="inputPassword5" class="form-label">Conferma Password</label>
-                <input type="password" id="inputPassword5" class="form-control" aria-describedby="passwordHelpBlock">
+                <input type="password" id="confermaPassword" name="confermaPassword" class="form-control" aria-describedby="passwordHelpBlock" required>
                 <div id="passwordHelpBlock" class="form-text" style="font-size:small";>
-                  La tua password deve contenere almeno 8 caratteri, di cui almeno un carattere maiuscolo e un numero.            </div>        
+                  La tua password deve contenere almeno 8 caratteri, di cui almeno un carattere maiuscolo e un numero.            
+                </div>       
+        
+
         
         </div>
-        <button type="conferma" class="btn btn-success">Conferma</button>
+        <button type="submit" class="btn btn-success">Conferma</button>
       </form>
 
 <!--footer-->   
@@ -79,5 +50,18 @@
       © 2021 Copyright AMIL
     </div>
   </footer>
+
+  <!--<script>
+    const nuovaPassword =  document.getElementsByName("nuovaPassword");
+    const confermaPassword =  document.getElementsByName("confermaPassword");
+    const paragrafo = document.createElement ("p");
+      if (nuovaPassword !=confermaPassword){
+          paragrafo.textContent = " Password non coincidenti!"
+          div.appendChild (paragrafo);
+      }
+  </script>-->
+
+
+
 </body>
 </html>
