@@ -17,7 +17,7 @@ var router = express.Router();
 
 router.get("", UtenteController.getSchermataIniziale);
 
-//Regione Registrazione Cliente
+//Regione Registrazione 
 router.get("/registrazione", UtenteController.getRegistrazioneCliente);
 router.post("/registrazione", UtenteController.postRegistrazioneCliente);
 
@@ -31,5 +31,12 @@ router.get("/TipoVeicoli/FormA", OspiteController.getFormA);
 router.post("/TipoVeicoli/FormA/RisultatiRicerca", OspiteController.postFormA);
 router.get("/TipoVeicoli/FormA/RisultatiRicerca/:id/InfoVeicolo", OspiteController.getInfoVeicolo);
 router.get("/TipoVeicoli/FormA/RisultatiRicerca/:id/InfoVeicolo/Riepilogo", OspiteController.getRiepilogo);
+
+//Regione recupera password? e controllo codice nuova pass
+// Da aggiungere AL CONTROLLER OSPITE/UTENTE NON SO!
+router.get("/recuperaPass", UtenteController.getRecuperaPass);
+router.post("/recuperaPass",UtenteController.postRecuperaPass);
+router.post("/recuperaPass/codice", UtenteController.postCodice);
+router.post("/recuperaPass/codice/nuovaPass", UtenteController.postNuovaPass);
 
 module.exports = router;

@@ -1,3 +1,4 @@
+const model = require('../models/accountModel');
 const accountModel = require('../models/accountModel');
 
 
@@ -11,7 +12,7 @@ controller.getSchermataIniziale = (req, res) => {
 
 controller.getRegistrazioneCliente = (req, res) => {  
 
-    res.render('cliente/RegistrazioneForm.ejs');   
+    res.render('general/RegistrazioneForm.ejs');   
     
 };
 
@@ -61,14 +62,14 @@ controller.postRegistrazioneCliente = async (req, res) => {
 
 
 controller.getAutenticazione = (req, res) => { 
-  res.render('general/Autenticazione.ejs');   
+  res.render('general/loginForm.ejs');   
 };
 
 controller.postAutenticazione = async (req, res) => {
 
   try {
 
-      let attempt = req.bod;
+      let attempt = req.body;
               
       req.session.utente = await accountModel.login(req.dbPool, attempt.email, attempt.psw); 
       if(req.session.utente.ruolo == "Cliente"){ //1 Cliente 
@@ -127,6 +128,67 @@ controller.postAutenticazione = async (req, res) => {
 
   }
 };
+
+controller.getRecuperaPass =(req,res)=>{
+
+        res.render('general/RecuperaPass.ejs')
+};
+
+controller.postRecuperaPass =(req,res)=>{
+    var dbPool = req.dbPool;
+    try{
+
+        let email= req.body;
+        console.log(email);
+        let codice = Math.floor(Math.random() * 10000);
+        //DOVE DEVO SALVARE questo codice per poi confrontare con codice immesso dall'utente?? localstorage? 
+        recuperoPasswordEmail(req.transporter,email, codice);
+        res.render('general/CodiceP.ejs',{
+            'codice':codice,
+            'email':email
+        });
+
+    }catch(error){
+
+        throw error;
+
+    }
+
+};
+
+
+controller.postCodice =(req,res)=>{
+    var dbPool = req.dbPool;
+    try{
+        let codiceInserito= req.body;
+        if (codiceInserito == codice){
+            res.render('general/NuovaPass.ejs')
+        }else{
+            
+            res.redirect('general/CodiceP.ejs');
+        }
+
+    }catch(error){
+
+    }
+    res.render('general/NuovaPass.ejs')
+   
+};
+
+
+controller.postNuovaPass = async (req,res)=>{
+    var dbPool = req.dbPool;
+    try{
+        let NuovaPassword = req.body.nuovaPass;
+        req.session.utente
+        await accountModel.recuperoPassword(dbPool, req.session.utente);
+        
+    }catch(error){
+        throw error;
+    }
+  
+    
+}
 
 
 controller.getRicercaTipoVeicoli = (req, res) => {  
@@ -234,6 +296,40 @@ controller.postInfoVeicolo= async (req, res) => {
     }
 };
 
+
+async function recuperoPasswordEmail(transporter, email, codice ){
+
+    try{
+        
+        let mailSubject = 
+
+        `
+        Recupera Password.
+        <br>
+        Gentile Utente,
+        ecco il codice ${codice} per resettare la tua password;
+        <br>
+        <br>
+        Saluti,
+        <br>
+        -Il team Moovy.
+        <hr>
+        `;
+
+        let mailOpt ={
+            'from': '',
+            'to':email,
+            'subject':'Reset Password - Moovy',
+            'html': mailSubject
+
+        };
+
+        transporter.sendmail(mailOpt);
+
+    }catch(error){
+        throw error;
+    }
+};
 
 
 module.exports = controller;  

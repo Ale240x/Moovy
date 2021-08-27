@@ -14,57 +14,25 @@
     <title>Moovy</title>
  </head>
 <body>
-    <img class="img-fluid" src="../../public/images/banner2.png" width="100%">
-    
+   
     <!--Navbar-->
-    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: rgba(3, 78, 13, 0.795);">
-        <a class="navbar-brand" href="#"><img class="img-fluid" src="../../public/images/logo1.png" width="50px"></a>
-        <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#collapsibleNavId" aria-controls="collapsibleNavId"
-            aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="collapsibleNavId">
-            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-                <li class="nav-item active">
-                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Veicoli</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Area Personale</a>
-                </li>  
-            </ul>
-            <ul class="navbar-nav justify-content-end">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="dropdownId" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Accedi</a>
-                    <div class="dropdown-menu" aria-labelledby="dropdownId">
-                        <a class="dropdown-item" href="#">Login</a>
-                        <a class="dropdown-item" href="#">Recupera Password</a>
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Registrati</a>
-                </li>
-            </ul>
-        </div>
-    </nav>
+    <%- include('../partials/navbar.ejs') %>
     <!--Navbar-->
 
-    <form>
+    <form action="/recuperaPass" method="POST">
         <div class="container my-5 text-center" style="max-width: 580px;">
 
           <legend style="text-align: center; font-size:150%">Password Dimenticata</legend>
         <div class="container my-5 text-center" style="max-width: 580px;">
         <div class="mb-3">
           <label for="exampleInputEmail1" class="form-label">Inserisci Email</label>
-          <input type="email" class="form-control form-control-md" placeholder="Email" id="exampleInputEmail1" aria-describedby="emailHelp">
+          <input type="email" name="email" class="form-control form-control-md" placeholder="Email" id="exampleInputEmail1" aria-describedby="emailHelp" required>
        </div>
         <div style="font-size: small;">
             Ti invieremo un codice, controlla la tua email.
         </div>
         </div>
-        <button type="conferma" class="btn btn-success">Conferma</button>
+        <button type="submit" class="btn btn-success">Conferma</button>
       </form>
 
 <!--footer-->   
