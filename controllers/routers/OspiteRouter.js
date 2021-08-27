@@ -25,7 +25,7 @@ router.post("/registrazione", UtenteController.postRegistrazioneCliente);
 router.get("/autenticazione", UtenteController.getAutenticazione);
 router.post("/autenticazione", UtenteController.postAutenticazione);
 
-//Regione Ricerca Veicolo //aggiunta da ClienteRouter
+//Regione Ricerca Veicolo
 router.get("/TipoVeicoli", OspiteController.getRicercaTipoVeicoli);
 router.get("/TipoVeicoli/FormA", OspiteController.getFormA);
 router.post("/TipoVeicoli/FormA/RisultatiRicerca", OspiteController.postFormA);

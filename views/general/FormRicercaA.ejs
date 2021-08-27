@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
-<head>
+<head> <!-- manca il calcolo delle distane e un controllo per l'ora di ritiro e riconsegna
+    e il sessionStorage per tipo_veicolo, luogo ritiro/riconsegna o partenza/arrivo, autista -->
     <%- include('../partials/head.ejs') %>
     <link rel="stylesheet" href="/stylesheets/RicercaVeicolo.css">
 
@@ -92,11 +93,11 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-sm-4 mx-auto">
+                        <div class="col-sm-4 mx-auto mt-2">
                             <label for="dataRiconsegna">Data di riconsegna</label>
                             <input type="date" class="form-control" id="dataRiconsegna" name="dataRiconsegna" min="<%= new Date().toISOString().slice(0, 10) %>"required>
                         </div>
-                        <div class="col-sm-4 mx-auto">
+                        <div class="col-sm-4 mx-auto mt-2">
                             <label for="oraRiconsegna">Ora di riconsegna</label>
                             <input type="time" class="form-control" id="oraRiconsegna" name="oraRiconsegna" required>
                         </div>
@@ -127,7 +128,7 @@
                     <% } %>
                     <br>
                     <div class="mx-auto px-4 text-right">   
-                        <button type="submit" class="btn btn-success mt-3">Conferma</button>    
+                        <button type="submit" class="btn btn-success mt-3" onclick="salvaDati()">Conferma</button>    
                     </div>  
                 </form>
             </div>
@@ -278,9 +279,15 @@
             var geocoder2 = new MapboxGeocoder(options); //luogo di riconsegna
         
             var luogoRitiro = document.getElementById('geocoder1').appendChild(geocoder1.onAdd(map));
-            luogoRitiro.id = "luogoRitiro";
+            luogoRitiro.id = "div1";
             var luogoRiconsegna = document.getElementById('geocoder2').appendChild(geocoder2.onAdd(map));
-            luogoRiconsegna.id = "luogoRiconsegna";
+            luogoRiconsegna.id = "div2";
+
+            $('#div1 > input').attr('id', 'luogoRitiro');
+            $('#div2 > input').attr('id', 'luogoRiconsegna');
+            $('#luogoRitiro').prop('required', true);
+            $('#luogoRiconsegna').prop('required', true);
+
 
             var opt = {
                 accessToken: mapboxgl.accessToken,
@@ -297,9 +304,12 @@
             var geocoder4 = new MapboxGeocoder(opt); //luogo di arrivo della corsa con autista
 
             var luogoPartenza = document.getElementById('geocoder3').appendChild(geocoder3.onAdd(map));
-            luogoPartenza.id = "luogoPartenza"; //inserire display none
+            luogoPartenza.id = "div3";
             var luogoArrivo = document.getElementById('geocoder4').appendChild(geocoder4.onAdd(map));
-            luogoArrivo.id = "luogoArrivo";
+            luogoArrivo.id = "div4";
+
+            $('#div3 > input').attr('id', 'luogoPartenza');
+            $('#div4 > input').attr('id', 'luogoArrivo');
         });         
 
         var marker = new mapboxgl.Marker();
@@ -329,16 +339,20 @@
             else{
                 mappa.style.display = "none";
                 button.innerHTML = "Apri la mappa";
-            }
-            
+            }  
         });
-        document
 
         document.getElementById('aut-si').addEventListener('click', function(e){
             document.getElementById('geocoder1').style.display = "none";
             document.getElementById('geocoder2').style.display = "none";
             document.getElementById('geocoder3').style.display = "block";
             document.getElementById('geocoder4').style.display = "block";
+
+            $('#luogoPartenza').prop('required', true);
+            $('#luogoArrivo').prop('required', true);
+
+            $('#luogoRitiro').prop('required', false);
+            $('#luogoRiconsegna').prop('required', false);
         });
 
         document.getElementById('aut-no').addEventListener('click', function(e){
@@ -346,7 +360,27 @@
             document.getElementById('geocoder2').style.display = "block";
             document.getElementById('geocoder3').style.display = "none";
             document.getElementById('geocoder4').style.display = "none";
+
+            $('#luogoRitiro').prop('required', true);
+            $('#luogoRiconsegna').prop('required', true);
+
+            $('#luogoPartenza').prop('required', false);
+            $('#luogoArrivo').prop('required', false);
+
         })
+    </script>
+
+    <script>
+        function salvaDati(){
+            if(tipo_veicolo == 'Automobile' && $){ //per decidere se aggiungere luogoRitiro o luogoPartenza
+
+            } //aggiungere anche modello_moto o modello_auto
+            sessionStorage.prenotazione.setItem('dataRitiro', $('#dataRitiro').value);
+            sessionStorage.prenotazione.setItem('dataRiconsegna', $('#dataRiconsegna').value);
+            sessionStorage.prenotazione.setItem('oraRitiro', $('#oraRitiro').value);
+            sessionStorage.prenotazione.setItem('oraRiconsegna', $('#oraRiconsegna').value);
+            
+        }
     </script>
 </body>
 </html>
