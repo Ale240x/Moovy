@@ -227,13 +227,6 @@ model.cercaVeicolo = async (dbPool, sel) => {
             else if(sel.modello_moto){
                 sql = sql +' AND v.modello_auto = ' + sel.modello_moto;
             }
-            if(sel.prezzo){
-                sel.prezzo.split('-');
-                sql = sql +' AND v.tariffa BETWEEN ' + sel.prezzo[0] + ' AND ' + sel.prezzo[1];
-            }
-            if(sel.ordine){
-                sql = sql +' ORDER BY v.tariffa ' + sel.ordine;
-            }
             
             veicoli = (await query( sql, 
             [sel.luogo_ritiro, sel.luogo_ritiro, sel.tipo_veicolo, sel.data_ritiro, sel.data_riconsegna]));
@@ -260,6 +253,7 @@ model.cercaVeicolo = async (dbPool, sel) => {
             }
     }
     catch(error) {
+        console.log(error);
         throw error;
     }
 };

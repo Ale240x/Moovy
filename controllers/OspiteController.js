@@ -1,4 +1,6 @@
 const accountModel = require('../models/accountModel');
+const prenotazioneModel = require('../models/prenotazioneModel');
+const app = require('../app');
 
 
 var controller = {};
@@ -130,19 +132,14 @@ controller.postAutenticazione = async (req, res) => {
 
 
 controller.getRicercaTipoVeicoli = (req, res) => {  
-    res.render('generale/TipiVeicoli_B.ejs');   
+    res.render('general/TipiVeicoli.ejs');   
 };
 
 
-controller.getFormA = async (req, res) => { 
-    
-    var tipo = req.body;
-     //prende il tipo scelto dal body e poi fa il rendering del FormRicerca, che avrà più o meno campi in base al tipo   
-
-    res.render('generale/FormRicercaA.ejs', {
-        'tipo' : tipo,
-
-});
+controller.getFormA = (req, res) => { 
+    var url = req.url.split('=');
+    var tipo_veicolo = url[1];
+    res.render('general/FormRicercaA.ejs', { 'tipo_veicolo' : tipo_veicolo });
 };
 
 
@@ -166,7 +163,7 @@ controller.postFormA = async (req,res) =>{
                 filtri
             );
         
-            res.render('generale/Risultati_ricerca.ejs', {
+            res.render('general/Risultati_ricerca.ejs', {
            'veicoli' : veicoli, 
            'pre' : pre,
                 });
@@ -184,14 +181,14 @@ controller.postFormA = async (req,res) =>{
     };
 
 controller.getInfoVeicolo = async(req,res) =>{
-    res.render('generale/InfoVeicolo.ejs', {
+    res.render('general/InfoVeicolo.ejs', {
         'veicolo' : veicolo,
     });
 };
 
 //Mostra schermata riepilogo con veicolo selezionato e i filtri 
 controller.getRiepilogo = async(req,res) =>{
-    res.render('generale/RiepilogoPrenot.ejs', {
+    res.render('general/RiepilogoPrenot.ejs', {
         'veicolo' : veicolo,
         'pre' : pre,
     });

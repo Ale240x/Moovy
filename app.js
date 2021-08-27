@@ -63,6 +63,7 @@ app.use((req, res, next) => {
      global.ROOT_DIR = __dirname;
  
      req.dbPool = dbMiddleware.pool;
+
      req.transporter = smtpMiddleware.transporter;
      
      res.locals.viewsPath = __dirname + '/Views';
@@ -72,16 +73,17 @@ app.use((req, res, next) => {
   } else {
  
        res.redirect('https://' + req.headers.host + req.url);
- 
+       req.dbPool = dbMiddleware.pool;
    } 
  });
 
-let connection = dbMiddleware.pool.getConnection(function(err) {
+let connection = dbMiddleware.pool.getConnection(function(err, connection) {
   if (err) {
     return console.error('error: ' + err.message);
   }
 
   console.log('Connected to the MySQL server.');
+  return connection;
 });
 
 /*let connection = mysql.createConnection({
