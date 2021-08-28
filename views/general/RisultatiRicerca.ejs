@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <%- include('../partials/head.ejs') %>
-    <link rel='stylesheet' type='text/css' media='screen' href='RicercaVeicolo.css'>
+    <link rel='stylesheet' type='text/css' media='screen' href='/stylesheets/RicercaVeicolo.css'>
 
     <title>Veicoli</title>
 </head>
@@ -10,38 +10,39 @@
     <%- include('../partials/navbar.ejs') %>
 
     <!--tabella veicoli-->
-    <div class="container-fluid p-3" > <!--style="background-color: rgb(125, 187, 153);"-->
-            <%
-                if(!veicoli || veicoli.length==0) {
+    <div class="container-fluid p-3" >
 
-                    __append('<div class="section col-12 text-center" >Nessun veicolo corrisponde ai filtri selezionati</div>')
-                } 
-                else{
+        <%  if(!veicoli || veicoli.length==0) { %>
 
-                    let idPrenotazione = ""; 
+                <div class="text-center" style="height: 400px;"><h2><br><br><br><br><br>Nessun veicolo corrisponde ai filtri selezionati</h1></div>
+         
+        <%  } else { %>
+
+                <% let idPrenotazione = ""; %>
+                
+                <table class="table table-hover">
+                    <tbody>
+
+                <% veicoli.forEach( (veicolo) => { %>
+                        
+                        <tr>
+                            <td><a href="#"><%= veicolo.nome_veicolo %></a></td>
+                    <% if(veicolo.tipo_veicolo == 'Automobile') { %>
+                        <td><a href="#"><%= veicolo.modello_auto %></a></td>
                     
-                    __append('<table class="table table-hover">')
-                        __append('<tbody>')
-
-                    veicoli.forEach( (veicolo) => {   
-                           
-                            __append('<tr>')
-                            __append('<td><a href="#"><%= veicolo.nome_veicolo %></a></td>')
-                        if(veicolo.tipo_veicolo == 'Automobile'){
-                            __append('<td><a href="#"><%= veicolo.modello_auto %></a></td>')
-                        }
-                        else if(veicolo.tipo_veicolo == 'Moto'){
-                            __append('<td><a href="#"><%= veicolo.modello_moto %></a></td>')
-                        }
-                            __append('<td><a href="#"><%= veicolo.tariffa %></a></td>')
-                            __append('</tr>')
-                        __append('</table>')
-                        idPrenotazione = prenotazione.prenotazioneId;                            
-                    });
-                        __append('</tbody>')
-                    __append('</table>')                                     
-                %>
-        <ul class="row" style="list-style-type: none;">
+                    <% } else if(veicolo.tipo_veicolo == 'Moto') { %>
+                        <td><a href="#"><%= veicolo.modello_moto %></a></td>
+                    <% } %>
+                        <td><a href="#"><%= veicolo.tariffa %></a></td>
+                        </tr>
+                    
+                    <% idPrenotazione = prenotazione.prenotazioneId; %>                         
+                <% }); %>
+                    </tbody>
+                </table>                                    
+        <% } %>
+        
+        <!--<ul class="row" style="list-style-type: none;">
             <li class="col-md pb-4 text-center">
                 <img src="public/images/C3.jpg" alt="c3" class="img-thumbnail border-success" height="156px">
             </li>                                               
@@ -57,9 +58,9 @@
             <li class="col-md pb-4 text-center">
                 <img src="public/images/Monopattino.jpg" class="img-thumbnail border-success" height="156px">
             </li>
-        </ul>
+        </ul>-->
     </div>
-    <br><br><br>
+    <br>
     <%- include('../partials/footer.ejs') %>
 
 </body>

@@ -128,7 +128,7 @@
                     <% } %>
                     <br>
                     <div class="mx-auto px-4 text-right">   
-                        <button type="submit" class="btn btn-success mt-3" onclick="salvaDati()">Conferma</button>    
+                        <button type="submit" id="submit" class="btn btn-success mt-3">Conferma</button>    
                     </div>  
                 </form>
             </div>
@@ -371,7 +371,7 @@
     </script>
 
     <script>
-        function salvaDati(){
+        $('#submit').addEventListener('click', function (){
             if(tipo_veicolo == 'Automobile' && $){ //per decidere se aggiungere luogoRitiro o luogoPartenza
 
             } //aggiungere anche modello_moto o modello_auto
@@ -379,8 +379,7 @@
             sessionStorage.prenotazione.setItem('dataRiconsegna', $('#dataRiconsegna').value);
             sessionStorage.prenotazione.setItem('oraRitiro', $('#oraRitiro').value);
             sessionStorage.prenotazione.setItem('oraRiconsegna', $('#oraRiconsegna').value);
-            
-        }
+        });
     </script>
 </body>
 </html>

@@ -163,9 +163,9 @@ controller.postFormA = async (req,res) =>{
                 filtri
             );
         
-            res.render('general/Risultati_ricerca.ejs', {
+            res.render('general/RisultatiRicerca.ejs', {
            'veicoli' : veicoli, 
-           'pre' : pre,
+           'pre' : pre
                 });
 
     } catch (error) {

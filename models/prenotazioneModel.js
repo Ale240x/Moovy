@@ -209,7 +209,7 @@ model.cercaVeicolo = async (dbPool, sel) => {
         let query = util.promisify(dbPool.query).bind(dbPool); 
         //AND (v.ref_parcheggio = ? OR v.posizione = ?) si riferisce al parcheggio o posizione fuori stallo in cui si trova il veicolo
         //2° SELECT prende i veicoli non prenotati nell'intervallo richiesto
-        var sql = 'SELECT v.id_veicolo, v.nome_veicolo, v.descrizione_veicolo, v.patente_richiesta, v.tariffa '+
+        var sql = 'SELECT v.id_veicolo, v.nome_veicolo, v.descrizione, v.patente_richiesta, v.tariffa '+
         'FROM parcheggi AS pa, veicoli AS v '+
         'WHERE pa.id_parcheggio = v.ref_parcheggio '+
         'AND (v.ref_parcheggio = ? OR v.posizione = ?) '+
@@ -228,14 +228,17 @@ model.cercaVeicolo = async (dbPool, sel) => {
                 sql = sql +' AND v.modello_auto = ' + sel.modello_moto;
             }
             
-            veicoli = (await query( sql, 
+            veicoli = (await query(sql, 
             [sel.luogo_ritiro, sel.luogo_ritiro, sel.tipo_veicolo, sel.data_ritiro, sel.data_riconsegna]));
 
+            console.log(veicoli.sql);
             return veicoli;
+
+            
         }
         else{ //bici e monopattini
 
-            var sql = 'SELECT v.id_veicolo, v.nome_veicolo, v.descrizione_veicolo, v.tariffa '+
+            var sql = 'SELECT v.id_veicolo, v.nome_veicolo, v.descrizione, v.tariffa '+
             'FROM parcheggi AS pa, veicoli AS v '+
             'WHERE pa.id_parcheggio = v.ref_parcheggio '+
             'AND v.ref_parcheggio = ? '+
@@ -249,8 +252,9 @@ model.cercaVeicolo = async (dbPool, sel) => {
             veicoli = (await query( sql, 
             [sel.luogo_ritiro, sel.tipo_veicolo, sel.data_ritiro, sel.data_riconsegna])
             );
+            console.log(query.sql);
             return veicoli;
-            }
+        }   
     }
     catch(error) {
         console.log(error);

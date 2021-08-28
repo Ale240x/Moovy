@@ -36,6 +36,11 @@ app.use(session({
 
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use((req, res, next) =>{
+  req.dbPool = dbMiddleware.pool;
+  next();
+});
+
 app.use("/", RadiceRouter);
 //app.use('/users', usersRouter)
 
@@ -43,6 +48,8 @@ app.use("/", RadiceRouter);
 app.use(function(req, res, next) {
   next(createError(404));
 });
+
+
 
 // error handler
 app.use(function(err, req, res, next) {
@@ -56,7 +63,7 @@ app.use(function(err, req, res, next) {
 });
 
 //connessione sicura https
-app.use((req, res, next) => {
+/*app.use((req, res, next) => {
 
   if(req.headers['x-forwarded-proto'] == 'https' || req.secure) {
  
@@ -75,7 +82,7 @@ app.use((req, res, next) => {
        res.redirect('https://' + req.headers.host + req.url);
        req.dbPool = dbMiddleware.pool;
    } 
- });
+ });*/
 
 let connection = dbMiddleware.pool.getConnection(function(err, connection) {
   if (err) {
