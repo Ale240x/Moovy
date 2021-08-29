@@ -34,6 +34,7 @@ router.post("/AreaPersonaleCliente/formModifica", ClienteController.postModifica
 router.get("/AreaPersonaleCliente/VeicoliPrenotati", PrenotazioniClienteController.getElencoVeicoliDaRiconsegnareC);
 router.get("/AreaPersonaleCliente/VeicoliPrenotati/:id/InfoRitiro", PrenotazioniClienteController.getInfoVeicoloDaRitirare);
 router.post("/AreaPersonaleCliente/VeicoliPrenotati/:id/InfoRitiro", PrenotazioniClienteController.postRitiroVeicolo);
+
 //Regione riconsegna
 router.get("/AreaPersonaleCliente/VeicoliRitirati", PrenotazioniClienteController.getInfoVeicoloDaRitirare);
 //router.post("/AreaPersonaleCliente/VeicoliRitirati", PrenotazioniClienteController.postInfoVeicoloDaRitirare); //non esiste
@@ -46,13 +47,6 @@ router.get("/AreaPersonaleCliente/ElencoPrenotazioni", PrenotazioniClienteContro
 router.get("/AreaPersonaleCliente/ElencoPrenotazioni/:id/modificaPrenotazione", PrenotazioniClienteController.getModificaPrenotazione);
 router.post("/AreaPersonaleCliente/ElencoPrenotazioni/:id/modificaPrenotazione", PrenotazioniClienteController.postModificaPrenotazione);
 router.get("/AreaPersonaleCliente/ElencoPrenotazioni/:id/eliminaPrenotazione", PrenotazioniClienteController.getEliminaPrenotazione);
-
-//Regione ricerca 
-router.get("/TipoVeicoli", OspiteController.getRicercaTipoVeicoli);
-//router.get("/TipoVeicoli/FormA", OspiteController.getFormA); //non esiste
-router.post("/TipoVeicoli/FormA/RisultatiRicerca", OspiteController.postFormA);
-router.get("/TipoVeicoli/FormA/RisultatiRicerca/:id/InfoVeicolo", OspiteController.getInfoVeicolo);
-router.get("/TipoVeicoli/FormA/RisultatiRicerca/:id/InfoVeicolo/Riepilogo", OspiteController.getRiepilogo);
 
 //Regione prenotazione
 router.get("/Riepilogo", OspiteController.getRiepilogo);

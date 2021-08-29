@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="public/stylesheets/RicercaVeicolo.css">
-    <!--script per la mappa mapbox-->
+<html>
+<head> <!-- manca il calcolo delle distane e un controllo per l'ora di ritiro e riconsegna
+    e il sessionStorage per tipo_veicolo, luogo ritiro/riconsegna o partenza/arrivo, autista -->
+    <%- include('../partials/head.ejs') %>
+    <link rel="stylesheet" href="/stylesheets/RicercaVeicolo.css">
+
+    <!-- link e script per la mappa mapbox-->
     <link href="https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.css" rel="stylesheet">
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.js"></script>
     <!-- Geocoder -->
@@ -22,79 +22,48 @@
     <style>
         #mappa { height: 500px; width: 80%; }
     </style>
+    
 
-    <link rel="icon" href="../../public/images/logo1.png">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link rel="icon" href="/images/logo1.png">
 
-    <title>Moovy</title>
+    <title>Veicoli</title>
 </head>
 <body>
-    <img class="img-fluid" src="../../public/images/banner2.png" width="100%">
-    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: rgba(3, 78, 13, 0.795);">
-        <a class="navbar-brand" href="#"><img class="img-fluid" src="../../public/images/logo_navbar.png" width="50px"></a>
-        <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#collapsibleNavId" aria-controls="collapsibleNavId"
-            aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="collapsibleNavId">
-            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-                <li class="nav-item active">
-                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Veicoli</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Area Personale</a>
-                </li>  
-            </ul>
-            <ul class="navbar-nav justify-content-end">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="dropdownId" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Accedi</a>
-                    <div class="dropdown-menu" aria-labelledby="dropdownId">
-                        <a class="dropdown-item" href="#">Login</a>
-                        <a class="dropdown-item" href="#">Recupera Password</a>
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Registrati</a>
-                </li>
-            </ul>
-        </div>
-    </nav>
+
+    <%- include('../partials/navbar.ejs') %>
 
     <div class="container mx-auto p-3">
         <div class="row">
             <div class="card card-body border-success">
-                <form action="#" method="POST">
-                    <% if (tipo_veicolo == 'Automobile'){ %>
+                <form action="/TipoVeicoli/FormA/RisultatiRicerca" method="POST">
+                    <% if (tipo_veicolo  == 'Automobile'){ %>
                         <div class="row">
                             <div class="col-md-4 col-form-label text-right">
-                                <h6>Autista:</h6>
+                                <!--<p>Autista:</p>-->
                             </div>
-                            <div class="col-md-4 col-form-label ">
-                                <input type="radio" id="aut-si" name="autista" value="1" required>
-                                <label for="aut-si">Sì</label>
-
-                                <input type="radio" id="aut-no" name="autista" value="null" required>
-                                <label for="aut-no">No</label>
-                            </div>
+                            <div class="custom-control custom-radio custom-control-inline">
+                                <p>Autista:</p> &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                                <input type="radio" class="custom-control-input" id="aut-si" name="autista" value="1">
+                                <label class="custom-control-label" for="aut-si">Sì</label>
+                              </div>
+                              <div class="custom-control custom-radio custom-control-inline">
+                                <input type="radio" class="custom-control-input" id="aut-no" name="autista" value="null">
+                                <label class="custom-control-label" for="aut-no">No</label>
+                              </div>
                         </div>
                     <% } %>
-                    
+                    <!--se autista è si-->
                     <div class="row">
-                        <div id="geocoder3" class="col-sm-4 mx-auto">
+                        <div style="display: none;" id="geocoder3" class="col-sm-4 mx-auto">
                             <label for="luogoPartenza">Luogo di partenza</label>
                             <!--<input type="text" class="form-control" id="luogoRitiro" name="luogoRitiro">-->
                         </div>
-                        <div id="geocoder4" class="col-sm-4 mx-auto">
+                        <div style="display: none;" id="geocoder4" class="col-sm-4 mx-auto">
                             <label for="luogoArrivo">Luogo di arrivo</label>
                             <!--<input type="text" class="form-control" id="luogoRiconsegna" name="luogoRiconsegna">-->
                         </div>                        
                     </div>
+                    <!--fine autista si-->
 
                     <div class="row">
                         <div id="geocoder1" class="col-sm-4 mx-auto">
@@ -116,7 +85,7 @@
                     <div class="row">
                         <div class="col-sm-4 mx-auto">
                             <label for="dataRitiro">Data di ritiro</label>
-                            <input type="date" class="form-control" id="dataRitiro" name="dataRitiro" min="<%= new Date() %>" required>
+                            <input type="date" class="form-control" id="dataRitiro" name="dataRitiro" min="<%= new Date().toISOString().slice(0, 10) %>" required>
                         </div>
                         <div class="col-sm-4 mx-auto">
                             <label for="oraRitiro">Ora di ritiro</label>
@@ -124,11 +93,11 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-sm-4 mx-auto">
+                        <div class="col-sm-4 mx-auto mt-2">
                             <label for="dataRiconsegna">Data di riconsegna</label>
-                            <input type="date" class="form-control" id="dataRiconsegna" name="dataRiconsegna" required>
+                            <input type="date" class="form-control" id="dataRiconsegna" name="dataRiconsegna" min="<%= new Date().toISOString().slice(0, 10) %>"required>
                         </div>
-                        <div class="col-sm-4 mx-auto">
+                        <div class="col-sm-4 mx-auto mt-2">
                             <label for="oraRiconsegna">Ora di riconsegna</label>
                             <input type="time" class="form-control" id="oraRiconsegna" name="oraRiconsegna" required>
                         </div>
@@ -159,21 +128,15 @@
                     <% } %>
                     <br>
                     <div class="mx-auto px-4 text-right">   
-                        <button type="submit" class="btn btn-success mt-3">Conferma</button>    
+                        <button type="submit" id="submit" class="btn btn-success mt-3">Conferma</button>    
                     </div>  
                 </form>
             </div>
         </div>
            
     </div>
-    <!--<div id="mappa" class="mx-auto"></div>-->
 
-    <footer class="text-center text-lg-start bg-light text-muted">
-        <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05);">
-            <p class="">Contattaci: Tel + 01 234 567 88</p>
-          © 2021 Copyright AMIL
-        </div>
-    </footer>
+    <%- include('../partials/footer.ejs') %>
 
     <script> //mappa
         
@@ -316,9 +279,15 @@
             var geocoder2 = new MapboxGeocoder(options); //luogo di riconsegna
         
             var luogoRitiro = document.getElementById('geocoder1').appendChild(geocoder1.onAdd(map));
-            luogoRitiro.id = "luogoRitiro";
+            luogoRitiro.id = "div1";
             var luogoRiconsegna = document.getElementById('geocoder2').appendChild(geocoder2.onAdd(map));
-            luogoRiconsegna.id = "luogoRiconsegna";
+            luogoRiconsegna.id = "div2";
+
+            $('#div1 > input').attr('id', 'luogoRitiro');
+            $('#div2 > input').attr('id', 'luogoRiconsegna');
+            $('#luogoRitiro').prop('required', true);
+            $('#luogoRiconsegna').prop('required', true);
+
 
             var opt = {
                 accessToken: mapboxgl.accessToken,
@@ -335,14 +304,17 @@
             var geocoder4 = new MapboxGeocoder(opt); //luogo di arrivo della corsa con autista
 
             var luogoPartenza = document.getElementById('geocoder3').appendChild(geocoder3.onAdd(map));
-            luogoPartenza.id = "luogoPartenza"; //inserire display none
+            luogoPartenza.id = "div3";
             var luogoArrivo = document.getElementById('geocoder4').appendChild(geocoder4.onAdd(map));
-            luogoArrivo.id = "luogoArrivo";
+            luogoArrivo.id = "div4";
+
+            $('#div3 > input').attr('id', 'luogoPartenza');
+            $('#div4 > input').attr('id', 'luogoArrivo');
         });         
 
         var marker = new mapboxgl.Marker();
 
-        geocoder.on('result', function(data) {
+        /*geocoder1.on('result', function(data) {
             var point = data.result.center;
 
             marker.setLngLat(point).addTo(map);
@@ -350,7 +322,7 @@
             .setHTML('<h5>' + 'prova' + '</h5>' +
                      '<p>' + 'pp' + '</p>')).addTo(map);
 
-        });
+        });*/ //non funziona
 
         
 
@@ -367,9 +339,47 @@
             else{
                 mappa.style.display = "none";
                 button.innerHTML = "Apri la mappa";
-            }
-            
+            }  
+        });
+
+        document.getElementById('aut-si').addEventListener('click', function(e){
+            document.getElementById('geocoder1').style.display = "none";
+            document.getElementById('geocoder2').style.display = "none";
+            document.getElementById('geocoder3').style.display = "block";
+            document.getElementById('geocoder4').style.display = "block";
+
+            $('#luogoPartenza').prop('required', true);
+            $('#luogoArrivo').prop('required', true);
+
+            $('#luogoRitiro').prop('required', false);
+            $('#luogoRiconsegna').prop('required', false);
+        });
+
+        document.getElementById('aut-no').addEventListener('click', function(e){
+            document.getElementById('geocoder1').style.display = "block";
+            document.getElementById('geocoder2').style.display = "block";
+            document.getElementById('geocoder3').style.display = "none";
+            document.getElementById('geocoder4').style.display = "none";
+
+            $('#luogoRitiro').prop('required', true);
+            $('#luogoRiconsegna').prop('required', true);
+
+            $('#luogoPartenza').prop('required', false);
+            $('#luogoArrivo').prop('required', false);
+
         })
+    </script>
+
+    <script>
+        $('#submit').addEventListener('click', function (){
+            if(tipo_veicolo == 'Automobile' && $){ //per decidere se aggiungere luogoRitiro o luogoPartenza
+
+            } //aggiungere anche modello_moto o modello_auto
+            sessionStorage.prenotazione.setItem('dataRitiro', $('#dataRitiro').value);
+            sessionStorage.prenotazione.setItem('dataRiconsegna', $('#dataRiconsegna').value);
+            sessionStorage.prenotazione.setItem('oraRitiro', $('#oraRitiro').value);
+            sessionStorage.prenotazione.setItem('oraRiconsegna', $('#oraRiconsegna').value);
+        });
     </script>
 </body>
 </html>

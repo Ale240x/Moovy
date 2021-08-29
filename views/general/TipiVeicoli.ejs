@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <%- include('../partials/head.ejs') %>
+
+    <title>Veicoli</title>
+    
+</head>
+<body>
+    
+    <%- include('../partials/navbar.ejs') %>
+
+    <div class="container mx-auto">
+        <br>
+        <h3>Scegli il tipo di veicolo</h3>
+        <div class="row">
+            <div class="col-md-6 text-center">
+                <a name="Auto" id="Auto" class="btn" href="/TipoVeicoli/FormA?tipo_veicolo=Automobile" role="button">
+                    <img class="img-fluid" src="/images/C3.jpg" alt="Auto" width="340" height="180">
+                    <br>Auto
+                </a>
+            </div>
+            <div class="col-md-6 text-center">
+                <a name="Moto" id="Moto" class="btn" href="/TipoVeicoli/FormA?tipo_veicolo=Moto" role="button">
+                    <img class="img-fluid" src="/images/Moto.jpg" alt="Moto" width="270" height="170">
+                    <br>Moto
+                </a> 
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 text-center">
+                <a name="Bici" id="Bici" class="btn" href="/TipoVeicoli/FormA?tipo_veicolo=Bici" role="button">
+                    <img class="img-fluid" src="/images/Bici.jpg" alt="Bici" width="270" height="170">
+                    <br>Bici
+                </a>
+            </div>
+            <div class="col-md-6 text-center">
+                <a name="Monopattino" id="Monopattino" class="btn" href="/TipoVeicoli/FormA?tipo_veicolo=Monopattino" role="button">
+                    <img class="img-fluid" src="/images/Monopattino.jpg" alt="Monopattino" width="225" height="150">
+                    <br>Monopattino
+                </a>
+            </div>
+        </div>  
+    </div>
+
+    <%- include('../partials/footer.ejs') %>
+
+    <script>
+        document.getElementById('Auto').addEventListener('click', function (e){
+            sessionStorage.prenotazione.setItem('tipo_veicolo', 'Automobile');
+        });
+        document.getElementById('Moto').addEventListener('click', function (e){
+            sessionStorage.prenotazione.setItem('tipo_veicolo', 'Moto');
+        });document.getElementById('Bici').addEventListener('click', function (e){
+            sessionStorage.prenotazione.setItem('tipo_veicolo', 'Bici');
+        });document.getElementById('Monopattino').addEventListener('click', function (e){
+            sessionStorage.prenotazione.setItem('tipo_veicolo', 'Monopattino');
+        });
+    </script>
+</body>
+</html>

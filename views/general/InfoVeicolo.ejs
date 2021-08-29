@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <%- include('../partials/head.ejs') %>
+  
+    <title>Info Veicolo</title>
+    
+</head>
+<body>
+    <%- include('../partials/navbar.ejs') %>
+
+    <div class="container" style="min-height: 450px;">
+        <div class="row pt-5">
+            <div class="col-md">
+                <img src="/images/C3.jpg" class="img-fluid float-left" width="500px"> 
+            </div>
+            <div class="col-md p-3">
+                <h4><%= veicolo.nome_veicolo %></h4>
+            <p><%= veicolo.descrizione %></p>
+            <h4 align="right"><%= veicolo.tariffa %></h4>
+            <br>
+            <p align="right">
+                <button type="button" class="btn btn-outline-success" onclick="salvaIdVeicolo()">Prenota ></button>
+            </p>
+            
+            </div>
+        </div> 
+    </div>
+    
+    <%- include('../partials/footer.ejs') %>
+    
+    <script> //non serve perchè si deve aggiungere solo il ref_veicolo
+        function salvaIdVeicolo(){
+            sessionStorage.prenotazione.setItem('ref_veicolo', veicolo.id_veicolo); //o senza prenotazione?
+            /*for(prop in veicolo){
+                sessionStorage.setItem(prop, veicolo[prop]);
+            };*/
+            
+        }
+    </script>
+</body>
+</html>

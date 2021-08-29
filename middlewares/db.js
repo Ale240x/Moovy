@@ -23,8 +23,8 @@ var middleware = {};
         user: 'moovy',
         password: 'P4ssw0rdSicura',
         database: 'moovy',
-        insecureAuth: true
-    
+        insecureAuth: true,
+        debug: true
     };
 
 
