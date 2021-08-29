@@ -15,9 +15,9 @@ var router = express.Router();
 router.use("/", OspiteRouter);
 router.use ("/utente", UtenteRouter);
 
-/*router.get("", (req,res) => {
+router.get("", (req,res) => {
 
     res.redirect("/");
-});*/
+});
 
 module.exports = router;

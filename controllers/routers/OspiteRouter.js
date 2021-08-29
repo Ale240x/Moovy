@@ -3,7 +3,7 @@ const UtenteController = require("../UtenteController");
 
 var router = express.Router();
 
-/*router.use("", (req,res,next) =>{
+router.use("", (req,res,next) =>{
     var user = req.session.utente; //utente non definito
 
     if(!user){
@@ -12,7 +12,7 @@ var router = express.Router();
     else{
         res.redirect("/utente");
     }
-});*/
+});
 
 router.get("", UtenteController.getSchermataIniziale);
 

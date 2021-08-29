@@ -13,8 +13,6 @@ router.use("", (req, res, next) =>{
 
     if(utente){
         locals.utente = utente;
-       
-
         next();  
     }
     else{

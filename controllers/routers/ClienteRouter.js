@@ -3,6 +3,7 @@ const express = require('express');
 const ClienteController = require("../cliente/ClienteController");
 const PrenotazioniClienteController = require("../cliente/PrenotazioniClienteController");
 const OspiteController = require("../OspiteController");
+const UtenteController = require("../UtenteController");
 
 var router = express.Router();
 
@@ -18,15 +19,15 @@ router.use("", (req,res,next) =>{
 });
 
 //Regione SchermataInizialeCliente
-router.get("/", ClienteController.getSchermataIniziale);
+router.get("/", UtenteController.getSchermataIniziale);
 router.get("/disconnetti", ClienteController.getDisconnetti);
 
 //Regione AreaPersonale
 router.get("/AreaPersonaleCliente", ClienteController.getAreaPersonaleCliente);
 router.get("/AreaPersonaleCliente/mostrastorico", ClienteController.getStoricoPrenotazioni);
 router.get("/AreaPersonaleCliente/mostrastorico/:id/InfoPrenotazione", ClienteController.getInfoPrenotazione);
-router.get("/AreaPersonaleCliente/formmodifica", ClienteController.getModificaDati);
-router.post("/AreaPersonaleCliente/formmodifica", ClienteController.postModificaDati);
+router.get("/AreaPersonaleCliente/formModifica", ClienteController.getModificaDati);
+router.post("/AreaPersonaleCliente/formModifica", ClienteController.postModificaDati);
 
 
 //Regione Ritiro

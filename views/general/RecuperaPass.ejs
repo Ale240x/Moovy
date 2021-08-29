@@ -17,7 +17,7 @@
    
     <!--Navbar-->
     <%- include('../partials/navbar.ejs') %>
-    <!--Navbar-->
+  
 
     <form action="/recuperaPass" method="POST">
         <div class="container my-5 text-center" style="max-width: 580px;">
@@ -25,8 +25,8 @@
           <legend style="text-align: center; font-size:150%">Password Dimenticata</legend>
         <div class="container my-5 text-center" style="max-width: 580px;">
         <div class="mb-3">
-          <label for="exampleInputEmail1" class="form-label">Inserisci Email</label>
-          <input type="email" name="email" class="form-control form-control-md" placeholder="Email" id="exampleInputEmail1" aria-describedby="emailHelp" required>
+          <label for="email" class="form-label">Inserisci Email</label>
+          <input type="email" name="email" class="form-control form-control-md" placeholder="Email" id="email" aria-describedby="emailHelp" required>
        </div>
         <div style="font-size: small;">
             Ti invieremo un codice, controlla la tua email.
@@ -35,7 +35,8 @@
         <button type="submit" class="btn btn-success">Conferma</button>
       </form>
 
-<!--footer-->   
+<!--footer-->  
+
 <footer class="text-center text-lg-start bg-light text-muted fixed-bottom">
     <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05);">
         <p >Contattaci: Tel + 01 234 567 88</p>

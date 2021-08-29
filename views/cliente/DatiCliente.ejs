@@ -17,92 +17,67 @@
     <img class="img-fluid" src="../../public/images/banner2.png" width="100%">
     
     <!--Navbar-->
-    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: rgba(3, 78, 13, 0.795);">
-        <a class="navbar-brand" href="#"><img class="img-fluid" src="../../public/images/logo1.png" width="50px"></a>
-        <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#collapsibleNavId" aria-controls="collapsibleNavId"
-            aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="collapsibleNavId">
-            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-                <li class="nav-item active">
-                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Veicoli</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Area Personale</a>
-                </li>  
-            </ul>
-            <ul class="navbar-nav justify-content-end">
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Logout</a>
-                </li>
-            </ul>
-        </div>
-    </nav>
-    <!--Navbar-->
+    <%- include('../partials/navbar.ejs') %>
 
-    <form>
+    <form action="/formModifica" method="POST">
         <div class="container my-5 text-center" style="max-width: 580px;">
 
         <legend style="text-align: center; font-size:150%">Modifica Dati</legend>
         <div class="container my-5 text-left" style="max-width: 580px;">
         <div class="mb-3">
-            <label for="firstname" class="form-label">Nome</label>
-            <input type="text" class="form-control form-control-md" placeholder="Nome">
+            <label for="nome" class="form-label">Nome</label>
+            <input type="text" class="form-control form-control-md" value="" placeholder="Nome" id="nome" name="nome">
         </div>
         <div class="mb-3">
-            <label for="lastname" class="form-label">Cognome</label>
-            <input type="text" class="form-control form-control-md" placeholder="Cognome">
+            <label for="cognome" class="form-label">Cognome</label>
+            <input type="text" class="form-control form-control-md" value="" placeholder="Cognome" id="cognome" name="cognome">
         </div>
         <div class="mb-3">
-            <label for="date" class="form-label">Data di nascita</label>
-           <input class="form-control" type="text" value="Disabled readonly input" aria-label="Disabled input example" disabled readonly>
+            <label for="dataNascita" class="form-label">Data di nascita</label>
+           <input class="form-control" type="text" name="dataNascita" id="dataNascita" value="Disabled readonly input" aria-label="Disabled input example" disabled readonly>
         </div>
         <div class="mb-3">
             <label for="phoneNumber" class="form-label">Numero di cellulare</label>
-            <input type="tel" id="phoneNumber" class="form-control form-control-md" placeholder="Numero di telefono">
+            <input type="tel" id="phoneNumber" name="phoneNumber" value="" class="form-control form-control-md" placeholder="Numero di telefono">
         </div>
         <div class="mb-3 my-4">
             <legend style="text-align:center; font-size:medium;">Metodo di pagamento</legend>
-            <label for="CardNumber" class="form-label">Numero della carta</label>
-            <input type="text" id="CardNumber" class="form-control form-control-md" placeholder="Numero della carta">
+            <label for="cardNumber" class="form-label">Numero della carta</label>
+            <input type="text" id="cardNumber" name="cardNumber" value="" class="form-control form-control-md" placeholder="Numero della carta">
         </div>
         <div class="mb-3">
-            <label for="firstname" class="form-label">Nome dell'intestatario</label>
-            <input type="text" class="form-control form-control-md" placeholder="Nome dell'intestatario">
+            <label for="nomeIntes" class="form-label">Nome dell'intestatario</label>
+            <input type="text" id="nomeIntes" name="nomeIntes" value="" class="form-control form-control-md" placeholder="Nome dell'intestatario">
         </div>
         <div class="mb-3">
-            <label for="lastname" class="form-label">Cognome dell'intestatario</label>
-            <input type="text" class="form-control form-control-md" placeholder="Cognome dell'instestatario">
+            <label for="cognomeIntes" class="form-label">Cognome dell'intestatario</label>
+            <input type="text" id="cognomeIntes" name="cognomeIntes" value="" class="form-control form-control-md" placeholder="Cognome dell'instestatario">
         </div>
         <div class="mb-3">
             <label for="cvv" class="form-label">cvv</label>
-            <input type="number" id="cvv" class="form-control form-control-md" placeholder="cvv">
+            <input type="number" id="cvv" name="cvv" value="" class="form-control form-control-md" placeholder="cvv">
         </div>
         <div class="mb-3">
             <div class="form-outline">
                 <label class="form-label" for="scadenzaCarta">Scadenza della carta</label>
-                <input type="date" id="scadenzaCarta" class="form-control form-control-md">
+                <input type="date" id="scadenzaCarta" name="scadenzaCarta" value="" class="form-control form-control-md">
             </div>     
         </div>    
         <div class="mb-3 my-3">
             <legend style="text-align:center; font-size:medium;">Patente</legend>
-            <label for="name" class="form-label">Codice patente</label>
-            <input type="name" class="form-control form-control-md" placeholder="Codice patente">
+            <label for="codicePatente" class="form-label">Codice patente</label>
+            <input type="name" id="codicePatente" name="codicePatente" value="" class="form-control form-control-md" placeholder="Codice patente">
         </div>
         <div class="mb-3">
             <div class="form-outline">
                 <label class="form-label" for="dataRilascio">Data di rilascio patente</label>
-                <input type="date" id="data" class="form-control form-control-md"  />
+                <input type="date" id="dataRilascio" name="dataRilascio" value="" class="form-control form-control-md"  />
             </div> 
         </div>  
         <div class="mb-3">
             <div class="form-outline">
-                <label class="form-label" for="dataRilascio">Scadenza patente</label>
-                <input type="date" id="data" class="form-control form-control-md"  />
+                <label class="form-label" for="dataScadenza">Scadenza patente</label>
+                <input type="date" id="dataScadenza" name="dataScadenza" value="" class="form-control form-control-md"  />
               </div> 
         </div>
         <div class="mb-3;  btn-group text-center" style="width:100%">
@@ -111,47 +86,42 @@
             <div class="dropdown-menu " >
             <a class="dropdown-item ">
             <div class="custom-control custom-checkbox ">
-            <input type="checkbox" class="custom-control-input" id="checkbox1">
-            <label class="custom-control-label" for="checkbox1">AM</label>
+            <input type="checkbox" class="custom-control-input" id="AM">
+            <label class="custom-control-label" for="AM">AM</label>
             </div>
             </a>
             <a class="dropdown-item" href="#">
             <div class="custom-control custom-checkbox">
-            <input type="checkbox" class="custom-control-input" id="checkbox2" >
-            <label class="custom-control-label"for="checkbox2">A</label>
+            <input type="checkbox" class="custom-control-input" id="A" >
+            <label class="custom-control-label"for="A">A</label>
             </div>
             </a>
             <a class="dropdown-item" href="#">
             <div class="custom-control custom-checkbox">
-            <input type="checkbox" class="custom-control-input" id="checkbox3">
-            <label class="custom-control-label" for="checkbox3">A1</label>
+            <input type="checkbox" class="custom-control-input" id="A1">
+            <label class="custom-control-label" for="A1">A1</label>
             </div>
             </a>
             <a class="dropdown-item" href="#">
             <div class="custom-control custom-checkbox">
-            <input type="checkbox" class="custom-control-input" id="checkbox3">                
-            <label class="custom-control-label" for="checkbox3">A2</label>
+            <input type="checkbox" class="custom-control-input" id="A2">                
+            <label class="custom-control-label" for="A2">A2</label>
             </div>
             </a>
             <a class="dropdown-item" href="#">
             <div class="custom-control custom-checkbox">
-            <input type="checkbox" class="custom-control-input" id="checkbox4" >
-            <label class="custom-control-label" for="checkbox4">B</label>
+            <input type="checkbox" class="custom-control-input" id="B" >
+            <label class="custom-control-label" for="B">B</label>
             </div>
             </a>
             </div>
         </div>
         <div class="container my-5 text-center">
             <button type="Torna in dietro" class="btn btn-success"style="">Indietro</button>
-            <button type="conferma" class="btn btn-success"style="">Conferma</button>
+            <button type="submit" class="btn btn-success"style="">Conferma</button>
         </div>
       </form>
-<!--footer-->   
-<footer class="text-center text-lg-start bg-light text-muted">
-    <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05);">
-        <p class="">Contattaci: Tel + 01 234 567 88</p>
-      © 2021 Copyright AMIL
-    </div>
-  </footer>
+<!--footer--> 
+<%- include('../partials/footer.ejs') %>
 </body>
 </html>
