@@ -146,13 +146,14 @@ controller.getFormA = (req, res) => {
 controller.postFormA = async (req,res) =>{
     var dbPool = req.dbPool;
     var pre = req.body;
+    console.log(req.body.autista);
     try {
 
         let filtri = {
-            'luogoritiro' : pre.luogo_ritiro,
-            'luogoriconsegna' : pre.luogo_riconsegna,
-            'dataritiro' : pre.data_ritiro,
-            'datariconsegna' : pre.data_riconsegna,
+            'luogo_ritiro' : pre.luogo_ritiro,
+            'luogo_riconsegna' : pre.luogo_riconsegna,
+            'data_ritiro' : pre.data_ritiro,
+            'data_riconsegna' : pre.data_riconsegna,
             'categoria' : pre.categoria,
             'prezzo' : pre.prezzo,
             'tipo_veicolo' : pre.tipo_veicolo

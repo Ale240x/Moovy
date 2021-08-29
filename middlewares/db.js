@@ -24,7 +24,7 @@ var middleware = {};
         password: 'P4ssw0rdSicura',
         database: 'moovy',
         insecureAuth: true,
-        debug: true
+        //debug: true
     };
 
 
