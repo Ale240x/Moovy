@@ -170,7 +170,7 @@ controller.postFormA = async (req,res) =>{
         }      
     
     }
-    };
+};
 
 controller.getInfoVeicolo = async(req,res) =>{
     res.render('general/InfoVeicolo.ejs', {
