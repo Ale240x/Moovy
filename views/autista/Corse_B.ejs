@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <%- include('../partials/head.ejs') %>
+  <style>
+    body{
+      padding: 0px;
+    }
+  </style>
+  <title>Moovy</title>
+</head>
+<body>
+  <%- include('../partials/navbar.ejs') %>
+    <div class="container mx-auto">
+        <br>
+        <div class="container">
+            <h2>Gestisci corse</h2>
+            <p>Elenco di tutte le corse accettate, ma non ancora effetuate, e di quelle da accettare o rifiutare</p>            
+            <%
+
+              if((!prenotazioni) || (prenotazioni.length==0)) { 
+                
+                  __append('<div class="section col-12 text-center">Non sono state trovate corse!</div>');
+                 
+              } 
+              
+  
+              else{
+         
+                  prenotazioni.forEach( (prenotazione) => {  
+                     
+                          __append('<div class="section">')
+                          __append(include("../_partials/elencoprenot", veicolo));
+                          __append('</div>')
+                     
+                  });
+  
+              } 
+                              
+          %> 
+          </div>
+          
+       
+    </div>
+    <%- include('../partials/footer.ejs') %>
+</body>
+</html>

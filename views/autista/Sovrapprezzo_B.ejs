@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <%- include('../partials/head.ejs') %>
+    <style>
+      body{
+        padding: 0px;
+      }
+    </style>
+    <title>Moovy</title>
+</head>
+<body>
+    
+    <%- include('../partials/navbar.ejs') %>
+
+
+    <div class="container"  style="padding: 5%;">
+        <div class="card border-success  card-body text-lg-center" style="padding: 3%;" >
+            <form class="row" action="/AreaPersonaleCliente/VeicoliRitirati/:id/luogoriconsegna" method="GET">
+                <div class="row">
+                    <div class="col">
+                    <h3>Sovrapprezzi da pagare:</h3>  
+                    <p>Verrano applicati sul metodo di pagamento scelto dal cliente</p>
+                </div>
+                    <div  class="col">                
+                            <h3  id="importo" value=" <%= dati.sovrapprezzo %>"></h3>   
+                    </div>
+                
+                </div>
+              </form>      
+           
+        </div>
+        <br>
+        <div class="d-flex justify-content-center">
+            <button class="btn btn-lg  btn-success  align-content-lg-center">Prosegui</button>
+        </div>
+        
+    </div>
+    <%- include('../partials/footer.ejs') %>
+   
+</body>
+</html>

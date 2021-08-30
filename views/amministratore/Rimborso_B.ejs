@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <%- include('../partials/head.ejs') %>
+  <style>
+    body{
+      padding: 0px;
+    }
+  </style>
+  <title>Moovy</title>
+</head>
+<body>
+  <%- include('../partials/navbar.ejs') %>
+    <div class="container"  style="padding: 5%;">
+       <br>      
+       <h2>Rimborso cliente</h2>  
+       <br>
+        <div class="card border-success  card-body text-lg-center" >
+            <form>
+                <div class="row">
+                  <div class="col-6">
+                    <div class="form-outline">
+                        <label class="form-label ">Inserisci importo rimborso</label>
+                        <div class="form-group">
+                          <div class="input-group mb-3">
+                            <span class="input-group-text">€</span>
+                            <input type="number" class="form-control text-md-right" id="rimborso" >
+                            <span class="input-group-text">.00</span>
+                          </div>
+                        </div>
+                      </div>                    
+  
+                  </div>
+                  <%
+
+              if((!carte) || (carte.length==0)) { 
+                
+                  __append('<div class="section col-12 text-center">Non sono state trovati metodi di pagamento</div>');
+                 
+              } 
+              
+  
+              else{
+         
+                  carte.forEach( (carta) => {  
+                     
+                          __append('<div class="section">')
+                          __append(include("../_partials/elencarte", carte));
+                          __append('</div>')
+                     
+                  });
+  
+              } 
+                              
+          %> 
+                <br>                        
+                
+  
+              </form>   
+              <div class="d-grid gap-2">
+                <button class="btn btn-lg btn-success" type="button">Effettua Rimborso!</button>
+              </div>          
+           
+        </div>
+        
+    </div>
+     
+
+    <%- include('../partials/footer.ejs') %>
+</body>
+</html>

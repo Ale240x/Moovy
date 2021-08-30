@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <%- include('../partials/head.ejs') %>
+    <style>
+      body{
+        padding: 0px;
+      }
+    </style>
+    <title>Moovy</title>
+</head>
+<body>
+    <%- include('../partials/navbarClie.ejs') %>
+    <div class="container-sm "  style="padding: 5%;">
+       <br>      
+       <h2>Stato pagamento</h2>  
+       <br>
+        <div class="card border-success  card-body text-lg-center" >
+            <div class="row">
+                <div class="col-6">
+                   <h4><%= prenotazione.stato_prenotazione %></h4>               
+                </div>
+                <%if(prenotazione.stato_autista == "Da confermare"){%>
+                <div class="col-6">
+                        <h4>In attesa di autista...</h4>                                                   
+                </div>
+                <%});%>
+               
+                
+            </div>
+        </div>
+        <br>
+         </div>
+        </div>
+     <br>
+<!--footer-->   
+<%- include('../partials/footer.ejs') %>
+</body>
+</html>
