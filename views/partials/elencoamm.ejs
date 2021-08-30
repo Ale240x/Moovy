@@ -1,0 +1,26 @@
+<a href="/prenotazioniAttive" >
+    <table class="table table-bordered table-bordered-success table-hover">
+        <thead>
+          <tr>
+            <th>ID prenotazione</th>
+            <th>Riferimento cliente</th>
+            <th>Data </th>
+            <th>Stato</th>
+            <th>Importo totale</th>
+          </tr>
+        </thead>
+        <tbody>
+           
+          <tr >
+            <td><%= prenotazione.id_prenotazione%></td> 
+            <td><%= prenotazione.ref_cliente%></td>
+            <td><%= prenotazione.data_ritiro%></td>
+            <td><%= prenotazione.stato_prenotazione%></td>
+            <td><%= prenotazione.prezzo_finale%></td>
+          </tr>
+    
+          
+        </tbody>
+      </table>
+
+</a>

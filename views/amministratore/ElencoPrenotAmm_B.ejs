@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <%- include('../partials/head.ejs') %>
+  <style>
+    body{
+      padding: 0px;
+    }
+  </style>
+  <title>Moovy</title>  
+</head>
+<body>
+  <%- include('../partials/navbar.ejs') %>
+    <div class="container mx-auto">
+        <br>
+        <div class="container">
+            <h2>Elenco prenotazioni</h2>
+            <p>Ecco la lista di tutte le prenotazioni </p>            
+            <div>
+              <%
+
+              if((!prenotazioni) || (prenotazioni.length==0)) { 
+                
+                  __append('<div class="section col-12 text-center">Non sono state trovate prenotazioni!</div>');
+                 
+              } 
+              
+  
+              else{
+         
+                  prenotazioni.forEach( (prenotazione) => {  
+                     
+                          __append('<div class="section">')
+                          __append(include("../_partials/elencoamm", prenotazione));
+                          __append('</div>')
+                     
+                  });
+  
+              } 
+                              
+          %> 
+                  
+       
+    </div>
+          </div>
+          
+       
+    </div>
+    <%- include('../partials/footer.ejs') %>
+</body>
+</html>

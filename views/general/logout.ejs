@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <%- include('../partials/head.ejs') %>
+    <style>
+      body{
+        padding: 0px;
+      }
+    </style>
+    <title>Moovy</title>
+</head>
+<body>
+    <%- include('../partials/navbar.ejs') %>
+
+
+    <div class="container-sm"  style="padding: 5%;">
+       <br>
+        <div class="row">
+            <div class="col-auto"></div>
+            <div class="card border-success  card-body text-lg-center" >
+            <h3>Vuoi davvero fare il logout?</h3>
+            <br>
+            <div class="d-grid gap-2">
+                <button class="btn btn-lg btn-success align-content-lg-center" type="button">Indietro</button>
+                <button class="btn btn-lg btn-success align-content-lg-center" type="button" id="submit">Conferma</button>
+              </div>
+            </div>           
+          </div>
+    </div>
+    <%- include('../partials/footer.ejs') %>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <%- include('../partials/head.ejs') %>
+    <style>
+      body{
+        padding: 0px;
+      }
+    </style>
+     <title>Moovy</title>
+</head>
+<body>
+    <%- include('../partials/navbarClie.ejs') %>
+    <div class="container"  style="padding: 5%;">
+        <div class="row">
+            <div class="col">
+            <h3>Importo totale da pagare:</h3>  
+        </div>
+            <div  class="col">                
+                    <h3  id="importo" value="<%= prenotazione.prezzo_stimato %>"></h3>   
+            </div>
+        
+        </div>
+        <br>
+
+        <div class="card border-success  card-body text-lg-center" style="padding: 3%;" >
+            <form>
+                <div class="row">                
+                  <div class="col-6 ">
+                    <div class="form-outline">
+                        <label class="form-label ">Seleziona metodo pagamento</label>
+                        <%
+
+                        if((!carte) || (carte.length==0)) { 
+                          
+                            __append('<div class="section col-12 text-center">Non sono state trovati metodi di pagamento</div>');
+                           
+                        } 
+                        
+            
+                        else{
+                   
+                            carte.forEach( (carta) => {  
+                               
+                                    __append('<div class="section">')
+                                    __append(include("../_partials/elencarte", carte));
+                                    __append('</div>')
+                               
+                            });
+            
+                        } 
+                                        
+                    %> 
+                        </div>                  
+                  </div>  
+                  <div class="col-6 ">
+                    <label class="form-label ">Aggiungi metodo pagamento</label>
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-block btn-success " type="button">Nuovo metodo di pagamento</button>
+                      </div>
+                                 
+                  </div>            
+                </div>
+              </form>             
+           
+        </div>
+        
+    </div>
+     
+<%- include('../partials/footer.ejs') %>
+ 
+
+</body>
+</html>
