@@ -71,7 +71,7 @@ controller.postAutenticazione = async (req, res) => {
       let attempt = req.body;
               
       req.session.utente = await accountModel.login(req.dbPool, attempt.email, attempt.psw); 
-      if(req.session.utente.ruolo == "Cliente"){ //1 Cliente 
+      if(req.session.utente.ruolo == "Cliente"){ // Cliente 
                   
           req.session.alert = {
 
@@ -80,7 +80,7 @@ controller.postAutenticazione = async (req, res) => {
           
           };
   
-          res.redirect('/utente/cliente/AreaPersonaleC'); 
+          res.redirect('/utente/cliente/AreaPersonaleCliente'); 
       }
       else if(req.session.utente.ruolo == "Amministratore"){
          

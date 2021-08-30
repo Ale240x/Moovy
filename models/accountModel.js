@@ -73,7 +73,7 @@ model.login = async (dbPool, email, clearPassword) => {
             throw {message : `Autenticazione fallita`};
         }
         else{
-            return (await model.getUtente(dbPool, utenteId)); 
+            return (await model.getAccount(dbPool, utenteId)); 
         }
         
     } catch (error) {
