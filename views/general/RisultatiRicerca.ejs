@@ -63,5 +63,34 @@
     <br>
     <%- include('../partials/footer.ejs') %>
 
+    <script>
+        /*if(sel.tipo_veicolo == 'Automobile'){  //non mi serve memorizzare modello auto e moto in sessionStorage
+            sessionStorage.setItem('modello_auto', sel.modello_auto);
+            if(sel.autista == 1){   //per decidere se aggiungere luogoRitiro o luogoPartenza, non so se è giusto
+                sessionStorage.setItem('luogo_partenza', sel.luogo_partenza);
+                sessionStorage.setItem('luogo_arrivo', sel.luogo_arrivo);
+            }
+            else{
+                sessionStorage.setItem('luogo_ritiro', sel.luogo_ritiro);
+                sessionStorage.setItem('luogo_riconsegna', sel.luogo_riconsegna);
+            }
+        }
+        else if(tipo_veicolo == 'Moto'){
+            sessionStorage.setItem('modello_moto', sel.modello_moto);
+        }*/
+        if(sel.autista == 1){
+            sessionStorage.setItem('luogo_partenza', sel.luogo_partenza);
+            sessionStorage.setItem('luogo_arrivo', sel.luogo_arrivo);
+        }
+        else if(sel.autista == null || sel.autista == undefined){ //per tutti i veicoli tranne le auto
+            sessionStorage.setItem('luogo_ritiro', sel.luogo_ritiro);
+            sessionStorage.setItem('luogo_riconsegna', sel.luogo_riconsegna);
+        }
+        sessionStorage.setItem('data_ritiro', sel.data_ritiro);
+        sessionStorage.setItem('data_riconsegna', sel.data_riconsegna);
+        //sessionStorage.setItem('oraRitiro', $('#oraRitiro').value);   //si devono unire a data
+        //sessionStorage.setItem('oraRiconsegna', $('#oraRiconsegna').value);
+    </script>
+
 </body>
 </html>
