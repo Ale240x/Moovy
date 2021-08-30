@@ -1,6 +1,5 @@
 const accountModel = require('../models/accountModel');
 const prenotazioneModel = require('../models/prenotazioneModel');
-const app = require('../app');
 
 
 var controller = {};
@@ -145,28 +144,20 @@ controller.getFormA = (req, res) => {
 
 controller.postFormA = async (req,res) =>{
     var dbPool = req.dbPool;
-    var pre = req.body;
-    console.log(req.body.autista);
+    var sel = req.body;
+    console.log('Autista: '+ req.body.autista); //test
+    console.log('Categoria: '+ req.modello_auto); //test
+    console.log('Luogo partenza: ' + req.luogo_partenza)
     try {
-
-        let filtri = {
-            'luogo_ritiro' : pre.luogo_ritiro,
-            'luogo_riconsegna' : pre.luogo_riconsegna,
-            'data_ritiro' : pre.data_ritiro,
-            'data_riconsegna' : pre.data_riconsegna,
-            'categoria' : pre.categoria,
-            'prezzo' : pre.prezzo,
-            'tipo_veicolo' : pre.tipo_veicolo
-        };
 
         let veicoli = await prenotazioneModel.cercaVeicolo( 
                 dbPool, 
-                filtri
+                sel
             );
         
             res.render('general/RisultatiRicerca.ejs', {
-           'veicoli' : veicoli, 
-           'pre' : pre
+           'veicoli' : veicoli , 
+           'sel' : sel //undefined
                 });
 
     } catch (error) {
@@ -179,7 +170,7 @@ controller.postFormA = async (req,res) =>{
         }      
     
     }
-    };
+};
 
 controller.getInfoVeicolo = async(req,res) =>{
     res.render('general/InfoVeicolo.ejs', {

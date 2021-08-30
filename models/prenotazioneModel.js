@@ -203,7 +203,7 @@ model.getPrenotazioniAttiveA = async (dbPool) => { //prenotazioni attive amminis
     }
 };
 
-model.cercaVeicolo = async (dbPool, sel) => { //creare una query diversa per prenotazione con autista, in modo da non considerare il luogo di partenza e di arrivo
+model.cercaVeicolo = async (dbPool, sel) => {
 
     try{
         let query = util.promisify(dbPool.query).bind(dbPool); 
@@ -212,7 +212,6 @@ model.cercaVeicolo = async (dbPool, sel) => { //creare una query diversa per pre
         var sql = 'SELECT v.id_veicolo, v.nome_veicolo, v.descrizione, v.patente_richiesta, v.tariffa '+
         'FROM parcheggi AS pa, veicoli AS v '+
         'WHERE pa.id_parcheggio = v.ref_parcheggio '+
-        'AND (v.ref_parcheggio = ? OR v.posizione = ?) '+
         'AND v.tipo_veicolo = ? '+
         'AND v.id_veicolo NOT IN (SELECT pr.ref_veicolo '+
                                 'FROM veicoli AS v, prenotazioni AS pr '+
@@ -227,11 +226,14 @@ model.cercaVeicolo = async (dbPool, sel) => { //creare una query diversa per pre
             else if(sel.modello_moto){
                 sql = sql +' AND v.modello_auto = ' + sel.modello_moto;
             }
+                
+            if(sel.luogo_ritiro){ //se non c'è l'autista, in caso di moto luogo_ritirò esisterà sempre
+                sql = sql +' AND (v.ref_parcheggio = ' + sel.luogo_ritiro + ' OR v.posizione = ' + sel.luogo_ritiro +')';
+            }
             
             veicoli = (await query(sql, 
-            [sel.luogo_ritiro, sel.luogo_ritiro, sel.tipo_veicolo, sel.data_ritiro, sel.data_riconsegna]));
+            [sel.tipo_veicolo, sel.data_ritiro, sel.data_riconsegna]));
 
-            console.log(veicoli.sql);
             return veicoli;
 
             
@@ -252,7 +254,8 @@ model.cercaVeicolo = async (dbPool, sel) => { //creare una query diversa per pre
             veicoli = (await query( sql, 
             [sel.luogo_ritiro, sel.tipo_veicolo, sel.data_ritiro, sel.data_riconsegna])
             );
-            console.log(query.sql);
+
+            console.log(query.sql); //test
             return veicoli;
         }   
     }

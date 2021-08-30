@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
-<head> <!-- manca il calcolo delle distanze e un controllo per l'ora di ritiro e riconsegna
-    e il sessionStorage per tipo_veicolo, luogo ritiro/riconsegna o partenza/arrivo, autista -->
+<head> <!-- manca il calcolo delle distanze e un controllo per l'ora di ritiro e riconsegna -->
     <%- include('../partials/head.ejs') %>
     <link rel="stylesheet" href="/stylesheets/RicercaVeicolo.css">
 
@@ -85,7 +84,7 @@
                     <div class="row">
                         <div class="col-sm-4 mx-auto">
                             <label for="dataRitiro">Data di ritiro</label>
-                            <input type="date" class="form-control" id="dataRitiro" name="dataRitiro" min="<%= new Date().toISOString().slice(0, 10) %>" required>
+                            <input type="date" class="form-control" id="dataRitiro" name="data_ritiro" min="<%= new Date().toISOString().slice(0, 10) %>" required>
                         </div>
                         <div class="col-sm-4 mx-auto">
                             <label for="oraRitiro">Ora di ritiro</label>
@@ -95,7 +94,7 @@
                     <div class="row">
                         <div class="col-sm-4 mx-auto mt-2">
                             <label for="dataRiconsegna">Data di riconsegna</label>
-                            <input type="date" class="form-control" id="dataRiconsegna" name="dataRiconsegna" min="<%= new Date().toISOString().slice(0, 10) %>"required>
+                            <input type="date" class="form-control" id="dataRiconsegna" name="data_riconsegna" min="<%= new Date().toISOString().slice(0, 10) %>"required>
                         </div>
                         <div class="col-sm-4 mx-auto mt-2">
                             <label for="oraRiconsegna">Ora di riconsegna</label>
@@ -308,8 +307,9 @@
             var luogoArrivo = document.getElementById('geocoder4').appendChild(geocoder4.onAdd(map));
             luogoArrivo.id = "div4";
 
-            $('#div3 > input').attr('id', 'luogoPartenza').attr('name', 'luogoPartenza');
-            $('#div4 > input').attr('id', 'luogoArrivo').attr('name', 'luogoArrivo');
+            $('#div3 > input').attr('id', 'luogoPartenza').attr('name', 'luogo_partenza');
+            //$('#div3 > input').attr('onchange', 'console.log(\'luogo_ritiro :\' + $(\'#luogoRitiro\').value)');
+            $('#div4 > input').attr('id', 'luogoArrivo').attr('name', 'luogo_arrivo');
         });         
 
         var marker = new mapboxgl.Marker();
@@ -371,9 +371,10 @@
     </script>
 
     <script>
-        function salvaDati(){ //non funziona, forse si devono memorizzare nella prox pagina
+        
+        /*function salvaDati(){ //non funziona, forse si devono memorizzare nella prox pagina
             if(tipo_veicolo == 'Automobile'){ 
-                sessionStorage.setItem('categoria', $('#modello_auto').value);
+                sessionStorage.setItem('modello_auto', $('#modello_auto').value);
                 if($('#autista').value == 1){   //per decidere se aggiungere luogoRitiro o luogoPartenza, non so se è giusto
                     sessionStorage.setItem('luogoPartenza', $('#luogoPartenza').value);
                     sessionStorage.setItem('luogoArrivo', $('#luogoArrivo').value);
@@ -384,7 +385,7 @@
                 }
             }
             else if(tipo_veicolo == 'Moto'){
-                sessionStorage.setItem('categoria', $('#modello_moto').value);
+                sessionStorage.setItem('modello_moto', $('#modello_moto').value);
             }
             if($('#autista').value == undefined){ //per tutti i veicoli tranne le auto
                 sessionStorage.setItem('luogoRitiro', $('#luogoRitiro').value);
@@ -394,7 +395,7 @@
             sessionStorage.setItem('dataRiconsegna', $('#dataRiconsegna').value);
             sessionStorage.setItem('oraRitiro', $('#oraRitiro').value);
             sessionStorage.setItem('oraRiconsegna', $('#oraRiconsegna').value);
-        };
+        };*/
     </script>
 </body>
 </html>

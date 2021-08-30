@@ -35,8 +35,9 @@ model.getAccount = async (dbPool, utenteId) => {
                                 account AS a,
                                 patente AS p,
                                 carte_di_credito AS c
-                            WHERE a.id_account = ? AND p.ref_account = ? AND c.ref_account= ?`
-                            [utenteId]))[0];
+                            WHERE a.id_account = p.ref_account AND c.ref_account= a.id_account
+                            AND a.id_account = ?`
+                            [utenteId]));
 
     } catch(error) {
 
