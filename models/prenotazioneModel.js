@@ -203,9 +203,9 @@ model.getPrenotazioniAttiveA = async (dbPool) => { //prenotazioni attive amminis
     }
 };
 
-model.cercaVeicolo = async (dbPool, sel) => {
+model.cercaVeicolo = async (dbPool, sel) => { //creare una query diversa per prenotazione con autista, in modo da non considerare il luogo di partenza e di arrivo
 
-    try{ 
+    try{
         let query = util.promisify(dbPool.query).bind(dbPool); 
         //AND (v.ref_parcheggio = ? OR v.posizione = ?) si riferisce al parcheggio o posizione fuori stallo in cui si trova il veicolo
         //2° SELECT prende i veicoli non prenotati nell'intervallo richiesto

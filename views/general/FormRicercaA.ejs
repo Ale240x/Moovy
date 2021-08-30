@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<head> <!-- manca il calcolo delle distane e un controllo per l'ora di ritiro e riconsegna
+<head> <!-- manca il calcolo delle distanze e un controllo per l'ora di ritiro e riconsegna
     e il sessionStorage per tipo_veicolo, luogo ritiro/riconsegna o partenza/arrivo, autista -->
     <%- include('../partials/head.ejs') %>
     <link rel="stylesheet" href="/stylesheets/RicercaVeicolo.css">
@@ -117,7 +117,7 @@
                         <div class="col-md-4 mb-4 col-form-label mx-auto">
                             <div class="form-outline">
                                 <label for="modello_auto">Categoria</label>
-                                <select id="modello_auto" name="modello_moto" class="form-control">
+                                <select id="modello_moto" name="modello_moto" class="form-control">
                                   <option value="Ciclomotore - 50cc">Ciclomotore - 50cc</option>
                                   <option value="‘Scooter - 125cc">Scooter - 125cc</option>
                                   <option value="Turistica - 600cc">Turistica - 600cc</option>
@@ -128,7 +128,7 @@
                     <% } %>
                     <br>
                     <div class="mx-auto px-4 text-right">   
-                        <button type="submit" id="submit" class="btn btn-success mt-3">Conferma</button>    
+                        <button type="submit" id="submit" class="btn btn-success mt-3" >Conferma</button>    
                     </div>  
                 </form>
             </div>
@@ -283,8 +283,8 @@
             var luogoRiconsegna = document.getElementById('geocoder2').appendChild(geocoder2.onAdd(map));
             luogoRiconsegna.id = "div2";
 
-            $('#div1 > input').attr('id', 'luogoRitiro');
-            $('#div2 > input').attr('id', 'luogoRiconsegna');
+            $('#div1 > input').attr('id', 'luogoRitiro').attr('name', 'luogo_ritiro');
+            $('#div2 > input').attr('id', 'luogoRiconsegna').attr('name', 'luogo_riconsegna');
             $('#luogoRitiro').prop('required', true);
             $('#luogoRiconsegna').prop('required', true);
 
@@ -308,8 +308,8 @@
             var luogoArrivo = document.getElementById('geocoder4').appendChild(geocoder4.onAdd(map));
             luogoArrivo.id = "div4";
 
-            $('#div3 > input').attr('id', 'luogoPartenza');
-            $('#div4 > input').attr('id', 'luogoArrivo');
+            $('#div3 > input').attr('id', 'luogoPartenza').attr('name', 'luogoPartenza');
+            $('#div4 > input').attr('id', 'luogoArrivo').attr('name', 'luogoArrivo');
         });         
 
         var marker = new mapboxgl.Marker();
@@ -371,15 +371,30 @@
     </script>
 
     <script>
-        $('#submit').addEventListener('click', function (){
-            if(tipo_veicolo == 'Automobile' && $){ //per decidere se aggiungere luogoRitiro o luogoPartenza
-
-            } //aggiungere anche modello_moto o modello_auto
-            sessionStorage.prenotazione.setItem('dataRitiro', $('#dataRitiro').value);
-            sessionStorage.prenotazione.setItem('dataRiconsegna', $('#dataRiconsegna').value);
-            sessionStorage.prenotazione.setItem('oraRitiro', $('#oraRitiro').value);
-            sessionStorage.prenotazione.setItem('oraRiconsegna', $('#oraRiconsegna').value);
-        });
+        function salvaDati(){ //non funziona, forse si devono memorizzare nella prox pagina
+            if(tipo_veicolo == 'Automobile'){ 
+                sessionStorage.setItem('categoria', $('#modello_auto').value);
+                if($('#autista').value == 1){   //per decidere se aggiungere luogoRitiro o luogoPartenza, non so se è giusto
+                    sessionStorage.setItem('luogoPartenza', $('#luogoPartenza').value);
+                    sessionStorage.setItem('luogoArrivo', $('#luogoArrivo').value);
+                }
+                else{
+                    sessionStorage.setItem('luogoRitiro', $('#luogoRitiro').value);
+                    sessionStorage.setItem('luogoRiconsegna', $('#luogoRiconsegna').value);
+                }
+            }
+            else if(tipo_veicolo == 'Moto'){
+                sessionStorage.setItem('categoria', $('#modello_moto').value);
+            }
+            if($('#autista').value == undefined){ //per tutti i veicoli tranne le auto
+                sessionStorage.setItem('luogoRitiro', $('#luogoRitiro').value);
+                sessionStorage.setItem('luogoRiconsegna', $('#luogoRiconsegna').value);
+            }
+            sessionStorage.setItem('dataRitiro', $('#dataRitiro').value);
+            sessionStorage.setItem('dataRiconsegna', $('#dataRiconsegna').value);
+            sessionStorage.setItem('oraRitiro', $('#oraRitiro').value);
+            sessionStorage.setItem('oraRiconsegna', $('#oraRiconsegna').value);
+        };
     </script>
 </body>
 </html>
