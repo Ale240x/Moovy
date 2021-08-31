@@ -1,3 +1,4 @@
+const { render } = require('ejs');
 const accountModel = require('../models/accountModel');
 const prenotazioneModel = require('../models/prenotazioneModel');
 
@@ -6,13 +7,13 @@ var controller = {};
 
 controller.getSchermataIniziale = (req, res) => {  
     
-    res.render('/Home.ejs');   //renderizza Home.ejs   
+    res.render('general/Home.ejs');   //renderizza Home.ejs   
 
 };
 
 controller.getRegistrazioneCliente = (req, res) => {  
 
-    res.render('cliente/RegistrazioneForm.ejs');   
+    res.render('general/RegistrazioneForm.ejs');   
     
 };
 
@@ -62,73 +63,137 @@ controller.postRegistrazioneCliente = async (req, res) => {
 
 
 controller.getAutenticazione = (req, res) => { 
-  res.render('general/LoginForm.ejs');   
+  res.render('general/loginForm.ejs');   
 };
 
 controller.postAutenticazione = async (req, res) => {
 
-  try {
-
-      let attempt = req.body;
-              
-      req.session.utente = await accountModel.login(req.dbPool, attempt.email, attempt.psw); 
-      if(req.session.utente.ruolo == "Cliente"){ // Cliente 
-                  
-          req.session.alert = {
-
-              'style' : 'alert-info',
-              'message' : 'Benvenuto su Moovy! ' + req.session.utente.nome,
-          
-          };
+    try {
   
-          res.redirect('/AreaPersonaleCliente'); 
-      }
-      else if(req.session.utente.ruolo == "Amministratore"){
-         
+        let attempt = req.body;
+        console.log("sono sul controller")
+        console.log(attempt);
+        req.session.utente = await accountModel.login(req.dbPool, attempt.email, attempt.password); 
+        console.log(req.session.utente[0].ruolo);
+        
+        if(req.session.utente[0].ruolo == "Cliente"){ // Cliente 
+                    
+            req.session.alert = {
+  
+                'style' : 'alert-info',
+                'message' : 'Benvenuto su Moovy! ' + req.session.utente[0].nome,
+            
+            };
+            res.render('cliente/areaPersonaleC.ejs');
+            //res.redirect('/utente/cliente/AreaPersonaleCliente'); 
+        }
+        else if(req.session.utente[0].ruolo == "Amministratore"){
+           
+            req.session.alert = {
+  
+                'style' : 'alert-success',
+                'message' : 'Benvenuto su Moovy! ' + req.session.utente.nome,
+            
+            };
+            res.render('amministratore/areaPersonaleAmm.ejs');
+            //res.redirect('/utente/amministratore/AreaPersonaleAmm'); 
+        }
+        else if(req.session.utente[0].ruolo == "Autista"){
+       
           req.session.alert = {
-
+  
               'style' : 'alert-success',
-              'message' : 'Benvenuto su Moovy! ' + req.session.utente.nome,
+              'message' : 'Benvenuto su Moovy!' + req.session.utente.nome,
           
           };
-
-          res.redirect('/AreaPersonaleAmministratore'); 
+          res.render('autista/areaPersonaleAut.ejs');
+         // res.redirect('/utente/autista/AreaPersonaleAut'); 
       }
-      else if(req.session.utente.ruolo == "Autista"){
-     
-        req.session.alert = {
-
-            'style' : 'alert-success',
-            'message' : 'Benvenuto su Moovy!' + req.session.utente.nome,
-        
-        };
-
-        res.redirect('/AreaPersonaleAutista'); 
-    }
-    else {
-        req.session.alert = {
-
-            'style' : 'alert-success',
-            'message' : 'Benvenuto su Moovy!' + req.session.utente.nome,
-        
-        };
-
-        res.redirect('/AreaPersonaleAddetto'); 
-    }
-
-
-  } catch(error) { 
+      else {
+          req.session.alert = {
   
-      let alert = {
-          'style' : 'alert-danger',
-          'message' : error.message
+              'style' : 'alert-success',
+              'message' : 'Benvenuto su Moovy!' + req.session.utente.nome,
+          
+          };
+          res.render('addetto/areaPersonaleAdd.ejs');
+         // res.redirect('/utente/addetto/AreaPersonaleAdd'); 
       }
       
-     
+  
+    } catch(error) { 
+    
+        let alert = {
+            'style' : 'alert-danger',
+            'message' : error.message
+        }
+        
+       
+  
+    }
+  };
 
-  }
+  controller.getRecuperaPass =(req,res)=>{
+
+    res.render('general/RecuperaPass.ejs')
 };
 
+controller.postRecuperaPass =(req,res)=>{
+var dbPool = req.dbPool;
+try{
+
+    let email= req.body;
+    console.log(email);
+    let codice = Math.floor(Math.random() * 10000);
+    //DOVE DEVO SALVARE questo codice per poi confrontare con codice immesso dall'utente?? localstorage? 
+    recuperoPasswordEmail(req.transporter,email, codice);
+    
+    res.render('general/CodiceP.ejs',{
+        'codice':codice,
+        'email':email
+    });
+
+}catch(error){
+
+    throw error;
+
+}
+
+};
+
+
+controller.postCodice =(req,res)=>{
+var dbPool = req.dbPool;
+try{
+    let codiceInserito= req.body;
+    if (codiceInserito == codice){
+        res.render('general/NuovaPass.ejs')
+    }else{
+        
+        res.redirect('general/CodiceP.ejs');
+    }
+
+}catch(error){
+
+}
+res.render('general/NuovaPass.ejs')
+
+};
+
+
+controller.postNuovaPass = async (req,res)=>{
+var dbPool = req.dbPool;
+try{
+    let NuovaPassword = req.body.nuovaPass;
+    req.session.utente
+    await accountModel.recuperoPassword(dbPool, req.session.utente);
+    
+}catch(error){
+    throw error;
+}
+
+
+}  
 
 controller.getRicercaTipoVeicoli = (req, res) => {  
     res.render('general/TipiVeicoli.ejs');   
@@ -186,6 +251,38 @@ controller.getRiepilogo = async(req,res) =>{
     });
 };
 
+async function recuperoPasswordEmail(transporter, email, codice ){
 
+    try{
+        
+        let mailSubject = 
+
+        `
+        Recupera Password.
+        <br>
+        Gentile Utente,
+        ecco il codice ${codice} per resettare la tua password;
+        <br>
+        <br>
+        Saluti,
+        <br>
+        -Il team Moovy.
+        <hr>
+        `;
+
+        let mailOpt ={
+            'from': '',
+            'to':email,
+            'subject':'Reset Password - Moovy',
+            'html': mailSubject
+
+        };
+
+        transporter.sendmail(mailOpt);
+
+    }catch(error){
+        throw error;
+    }
+};
 
 module.exports = controller;  

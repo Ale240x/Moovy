@@ -10,7 +10,7 @@ var router = express.Router();
 router.use("", (req,res,next) =>{
     var utente = req.session.utente;
 
-    if(utente.ruolo == 'Cliente'){
+    if(utente.ruolo == 'cliente'){
         next();  
     }
     else{
@@ -19,7 +19,7 @@ router.use("", (req,res,next) =>{
 });
 
 //Regione SchermataInizialeCliente
-router.get("/", UtenteController.getSchermataIniziale);
+router.get("/", OspiteController.getSchermataIniziale);
 router.get("/disconnetti", ClienteController.getDisconnetti);
 
 //Regione AreaPersonale

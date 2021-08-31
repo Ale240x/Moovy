@@ -1,3 +1,8 @@
+
+///è da eliminare 
+/*
+
+
 const accountModel = require('../models/accountModel');
 
 
@@ -70,7 +75,7 @@ controller.postAutenticazione = async (req, res) => {
 
       let attempt = req.body;
               
-      req.session.utente = await accountModel.login(req.dbPool, attempt.email, attempt.psw); 
+      req.session.utente = await accountModel.login(req.dbPool, attempt.email, attempt.password); 
       if(req.session.utente.ruolo == "Cliente"){ // Cliente 
                   
           req.session.alert = {
@@ -332,3 +337,6 @@ async function recuperoPasswordEmail(transporter, email, codice ){
 
 
 module.exports = controller;  
+
+
+*/

@@ -5,7 +5,7 @@ var controller = {}; //assegna al controller un valore nullo
 
 //Regione Area Personale Cliente
 controller.getAreaPersonaleCliente = (req, res) => {  
-    res.render('cliente/AreaPersonaleCliente.ejs');   
+    res.render('cliente/areaPersonaleC.ejs');   
 };
 
 controller.getSchermataIniziale = (req, res) => {  
@@ -13,7 +13,7 @@ controller.getSchermataIniziale = (req, res) => {
 };
 
 controller.getLogout = (req, res) => {  
-    res.render('general/Logout.ejs');   
+    res.render('general/logout.ejs');   
 };
 
 //Regione Disconnetti, serve per il logout?
