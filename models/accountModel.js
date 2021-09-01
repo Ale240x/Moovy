@@ -35,8 +35,8 @@ model.getAccount = async (dbPool, utenteId) => {
                                 account AS a,
                                 patente AS p,
                                 carte_di_credito AS c
-                            WHERE a.id_account = p.ref_account AND c.ref_account= a.id_account
-                            AND a.id_account = ?`
+                            WHERE a.id_account = p.ref_account AND c.ref_account = a.id_account
+                            AND a.id_account = ?`,
                             [utenteId]));
 
     } catch(error) {
@@ -65,7 +65,7 @@ model.login = async (dbPool, email, clearPassword) => {
 
         let realPassword = (await query(
             'SELECT password FROM account WHERE id_account = ?', 
-            [utenteId]))[0];
+            [utenteId]));
         
         let cryptPass = crittografo.cryptPass(clearPassword);
         let autenticated = (realPassword == cryptPass);

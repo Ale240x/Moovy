@@ -547,4 +547,3 @@ model.getAutistiLiberi = async (dbPool, data_ritiro, data_riconsegna) =>{
 };
 
 module.exports = model;
-
