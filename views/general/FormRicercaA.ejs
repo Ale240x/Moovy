@@ -1,19 +1,21 @@
 <!DOCTYPE html>
 <html>
-<head> <!-- manca il calcolo delle distanze e un controllo per l'ora di ritiro e riconsegna -->
+<head>
     <%- include('../partials/head.ejs') %>
     <link rel="stylesheet" href="/stylesheets/RicercaVeicolo.css">
 
     <!-- link e script per la mappa mapbox-->
-    <link href="https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.css" rel="stylesheet">
-    <script src="https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.4.1/mapbox-gl.css" rel="stylesheet">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.4.1/mapbox-gl.js"></script>
     <!-- Geocoder -->
-    <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.0/mapbox-gl-geocoder.min.js"></script>
-    <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.0/mapbox-gl-geocoder.css" type="text/css">
+    <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.2/mapbox-gl-geocoder.min.js"></script>
+    <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.2/mapbox-gl-geocoder.css" type="text/css">
     <!-- Promise polyfill script is required -->
     <!-- to use Mapbox GL Geocoder in IE 11. -->
     <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.min.js"></script>
+    <!--script turf for distances-->
+    <script src="https://unpkg.com/@turf/turf"></script>
 
     <!-- Import jQuery -->
     <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
@@ -84,22 +86,23 @@
                     <div class="row">
                         <div class="col-sm-4 mx-auto">
                             <label for="dataRitiro">Data di ritiro</label>
-                            <input type="date" class="form-control" id="dataRitiro" name="data_ritiro" min="<%= new Date().toISOString().slice(0, 10) %>" required>
+                            <input type="datetime-local" class="form-control" id="dataRitiro" name="data_ritiro" min="<%= new Date().toISOString().slice(0, 16) %>" required> 
                         </div>
-                        <div class="col-sm-4 mx-auto">
-                            <label for="oraRitiro">Ora di ritiro</label>
-                            <input type="time" class="form-control" id="oraRitiro" name="oraRitiro" required>
-                        </div>
-                    </div>
-                    <div class="row">
                         <div class="col-sm-4 mx-auto mt-2">
                             <label for="dataRiconsegna">Data di riconsegna</label>
-                            <input type="date" class="form-control" id="dataRiconsegna" name="data_riconsegna" min="<%= new Date().toISOString().slice(0, 10) %>"required>
+                            <input type="datetime-local" class="form-control" id="dataRiconsegna" name="data_riconsegna" min="<%= new Date().toISOString().slice(0, 16) %>"required>
                         </div>
-                        <div class="col-sm-4 mx-auto mt-2">
+                        <!--<div class="col-sm-4 mx-auto">
+                            <label for="oraRitiro">Ora di ritiro</label>
+                            <input type="time" class="form-control" id="oraRitiro" name="oraRitiro" required>
+                        </div>-->
+                    </div>
+                    <div class="row">
+                        
+                        <!--<div class="col-sm-4 mx-auto mt-2">
                             <label for="oraRiconsegna">Ora di riconsegna</label>
                             <input type="time" class="form-control" id="oraRiconsegna" name="oraRiconsegna" required>
-                        </div>
+                        </div>-->
                     </div>
                     <% if(tipo_veicolo == 'Automobile'){ %>
                         <div class="col-md-4 mb-4 col-form-label mx-auto">
@@ -118,7 +121,7 @@
                                 <label for="modello_auto">Categoria</label>
                                 <select id="modello_moto" name="modello_moto" class="form-control">
                                   <option value="Ciclomotore - 50cc">Ciclomotore - 50cc</option>
-                                  <option value="‘Scooter - 125cc">Scooter - 125cc</option>
+                                  <option value="Scooter - 125cc">Scooter - 125cc</option>
                                   <option value="Turistica - 600cc">Turistica - 600cc</option>
                                   <option value="Adventure - 1200cc">Adventure - 1200cc</option>
                                 </select>
@@ -260,6 +263,12 @@
             return matchingFeatures;
         }
 
+        var p = {
+            from: 0,
+            to: 0,
+            dist: 0
+        };
+
         map.on('load', function() {
             geolocate.trigger();
             var {longitude, latitude} = map.getCenter();
@@ -308,11 +317,37 @@
             luogoArrivo.id = "div4";
 
             $('#div3 > input').attr('id', 'luogoPartenza').attr('name', 'luogo_partenza');
-            //$('#div3 > input').attr('onchange', 'console.log(\'luogo_ritiro :\' + $(\'#luogoRitiro\').value)');
             $('#div4 > input').attr('id', 'luogoArrivo').attr('name', 'luogo_arrivo');
+
+            //calcolo distanza
+            geocoder3._inputEl.addEventListener('change', function(e) {
+                map.once('moveend', function(e){
+                    var coords = map.getCenter();
+                    p.from = turf.point([coords.lng, coords.lat]);
+                    console.log('from: '+p.from);
+                }); 
+            });
+
+            geocoder4._inputEl.addEventListener('change', function(e) {
+                map.once('moveend', function(e){
+                    var coords = map.getCenter();
+                    p.to = turf.point([coords.lng, coords.lat]);
+                    console.log('to: '+p.to);
+
+                    if(p.from != 0){
+                        p.dist = turf.distance(p.from, p.to);
+                        console.log('distance: '+p.dist);
+                        sessionStorage.setItem('prezzo_stimato', 2*p.dist); //prezzo al km * distance
+                    }
+                    else{
+                        alert('Inserisci un luogo di partenza!');
+                    }
+                });                
+            });
+            //fine calcolo distanza             
         });         
 
-        var marker = new mapboxgl.Marker();
+        //var marker = new mapboxgl.Marker();
 
         /*geocoder1.on('result', function(data) {
             var point = data.result.center;
@@ -320,12 +355,10 @@
             marker.setLngLat(point).addTo(map);
             marker.setPopup(new mapboxgl.Popup({ offset: [0, -15], closeButton: false })
             .setHTML('<h5>' + 'prova' + '</h5>' +
-                     '<p>' + 'pp' + '</p>')).addTo(map);
+                     '<p>' + 'pp' + '</p>'))
+            .addTo(map);
 
         });*/ //non funziona
-
-        
-
     </script>
 
     <script>

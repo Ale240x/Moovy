@@ -80,7 +80,7 @@ app.use((req, res, next) => {
   host: 'localhost',
   user: 'root',
   password: 'root',
-  database: 'travelfox'
+  database: ''
 });
 
 connection.connect(function(err) {

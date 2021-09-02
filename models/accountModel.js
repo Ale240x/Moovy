@@ -1,3 +1,4 @@
+const { copyFileSync } = require("fs");
 const util = require("util");
 const checkDati = require('../utilities/checkDati');
 const crittografo = require('../utilities/crittografo');
@@ -8,32 +9,14 @@ var model = {};
 model.getAccount = async (dbPool, utenteId) => {
     
     try {
-
+        console.log("sono sul getAccount")
         let query = util.promisify(dbPool.query).bind(dbPool);
 
         return (await query(`SELECT  
-                                a.id_utente,
-                                a.ruolo,
-                                a.nome,
-                                a.cognome,
-                                a.data_di_nascita,
-                                a.num_telefono,
-                                a.email,
-                                p.codice_patente,
-                                p.scadenza_patente,
-                                p.tipo_a,
-                                p.tipo_b,
-                                p.tipo_am,
-                                p.tipo_a1,
-                                p.tipo_a2
-                                c.numero_carta,
-                                c.nome_intestatario,
-                                c.cognome_intestatario,
-                                c.scadenza_carta,
-                                c.cvv
+                                *
                             FROM 
                                 account AS a,
-                                patente AS p,
+                                patenti AS p,
                                 carte_di_credito AS c
                             WHERE a.id_account = p.ref_account AND c.ref_account = a.id_account
                             AND a.id_account = ?`,
@@ -62,19 +45,29 @@ model.login = async (dbPool, email, clearPassword) => {
         let utenteId = (await query(
             'SELECT id_account FROM account WHERE email = ?', 
             [email]));
+        
+        //let realPassword = (await query(
+        //    'SELECT password FROM account WHERE id_account = ?', 
+        //    [utenteId]));
+        
+        //let cryptPass = crittografo.cryptPass(clearPassword);
+        //let autenticated = (realPassword == cryptPass);
 
         let realPassword = (await query(
-            'SELECT password FROM account WHERE id_account = ?', 
-            [utenteId]));
+            'SELECT password FROM account WHERE email = ?', 
+            [email]));
         
-        let cryptPass = crittografo.cryptPass(clearPassword);
-        let autenticated = (realPassword == cryptPass);
-        
+        console.log(utenteId[0].id_account);
+
+        let autenticated = (realPassword[0].password == clearPassword);
+        console.log("controllo effettuato!");
         if(!autenticated){
+            console.log("autenticazione fallita")
             throw {message : `Autenticazione fallita`};
         }
         else{
-            return (await model.getUtente(dbPool, utenteId)); 
+            console.log("Autenticato con successo!")
+            return (await model.getAccount(dbPool, utenteId[0].id_account)); 
         }
         
     } catch (error) {

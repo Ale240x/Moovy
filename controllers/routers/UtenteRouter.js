@@ -3,7 +3,7 @@ const ClienteRouter = require("./ClienteRouter");
 const AmministratoreRouter = require("./AmministratoreRouter");
 const AutistaRouter = require("./AutistaRouter");
 const AddettoRouter = require("./AddettoRouter");
-const { response } = require('express');
+
 var router = express.Router();
 
 router.use("", (req, res, next) =>{

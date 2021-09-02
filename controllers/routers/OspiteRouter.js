@@ -1,5 +1,4 @@
 const express = require('express');
-const UtenteController = require("../UtenteController");
 const OspiteController = require("../OspiteController");
 
 var router = express.Router();
@@ -15,15 +14,15 @@ router.use("", (req,res,next) =>{
     }
 });
 
-router.get("", UtenteController.getSchermataIniziale);
+router.get("", OspiteController.getSchermataIniziale);
 
 //Regione Registrazione 
-router.get("/registrazione", UtenteController.getRegistrazioneCliente);
-router.post("/registrazione", UtenteController.postRegistrazioneCliente);
+router.get("/registrazione", OspiteController.getRegistrazioneCliente);
+router.post("/registrazione", OspiteController.postRegistrazioneCliente);
 
 //Regione Autenticazione
-router.get("/autenticazione", UtenteController.getAutenticazione);
-router.post("/autenticazione", UtenteController.postAutenticazione);
+router.get("/autenticazione", OspiteController.getAutenticazione);
+router.post("/autenticazione", OspiteController.postAutenticazione);
 
 //Regione Ricerca Veicolo
 router.get("/TipoVeicoli", OspiteController.getRicercaTipoVeicoli);
@@ -34,9 +33,9 @@ router.get("/TipoVeicoli/FormA/RisultatiRicerca/:id/InfoVeicolo/Riepilogo", Ospi
 
 //Regione recupera password? e controllo codice nuova pass
 // Da aggiungere AL CONTROLLER OSPITE/UTENTE NON SO!
-router.get("/recuperaPass", UtenteController.getRecuperaPass);
-router.post("/recuperaPass",UtenteController.postRecuperaPass);
-router.post("/recuperaPass/codice", UtenteController.postCodice);
-router.post("/recuperaPass/codice/nuovaPass", UtenteController.postNuovaPass);
+router.get("/recuperaPass", OspiteController.getRecuperaPass);
+router.post("/recuperaPass",OspiteController.postRecuperaPass);
+router.post("/recuperaPass/codice", OspiteController.postCodice);
+router.post("/recuperaPass/codice/nuovaPass", OspiteController.postNuovaPass);
 
 module.exports = router;

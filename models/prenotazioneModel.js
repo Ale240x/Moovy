@@ -255,7 +255,7 @@ model.cercaVeicolo = async (dbPool, sel) => {
             [sel.luogo_ritiro, sel.tipo_veicolo, sel.data_ritiro, sel.data_riconsegna])
             );
 
-            console.log(query.sql); //test
+            console.log('Query: '+ query.sql); //test
             return veicoli;
         }   
     }
