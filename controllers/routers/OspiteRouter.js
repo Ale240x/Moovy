@@ -1,11 +1,14 @@
 const express = require('express');
 const OspiteController = require("../OspiteController");
+const UtenteRouter = require("./UtenteRouter");
 
 var router = express.Router();
 
+router.use ("/utente", UtenteRouter);
+
 router.use("", (req,res,next) =>{
     var user = req.session.utente; //utente non definito
-
+    
     if(!user){
         next();  
     }
@@ -13,6 +16,7 @@ router.use("", (req,res,next) =>{
         res.redirect("/utente");
     }
 });
+
 
 router.get("", OspiteController.getSchermataIniziale);
 
