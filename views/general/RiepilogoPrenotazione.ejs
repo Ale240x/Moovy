@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <%- include('../partials/head.ejs') %>
+
+    <title>Riepilogo Prenotazione</title>
+ </head>
+<body>
+    <%- include('../partials/navbar.ejs') %>
+
+    <div class="container mx-auto">
+        <br>
+        
+        <div class="card card-body border-success">
+            <br>                
+            <h5>Riepilogo Prenotazione</h5>
+            <br>
+            <div class="card text-center border-success">
+                <div class="card-body border-success">
+                    <div class="row my-2">
+                        <div class="col-sm-4 mx-auto">
+                            <label for="luogo1">Luogo di ritiro</label>
+                            <input id="luogo1" class="form-control" type="text" readonly>
+                        </div>
+                        <div class="col-sm-4 mx-auto">
+                            <label for="luogo2">Luogo di riconsegna</label>
+                            <input id="luogo2" class="form-control" type="text" readonly>
+                        </div>
+                    </div>
+                    <div class="row my-2">
+                        <div class="col-sm-4 mx-auto">
+                            <label for="data_ritiro">Data di ritiro</label>
+                            <input id="data_ritiro" name="data_ritiro" class="form-control" type="text" readonly>
+                        </div>
+                        <div class="col-sm-4 mx-auto">
+                            <label for="data_ritiro">Data di riconsegna</label>
+                            <input id="data_riconsegna" name="data_riconsegna" class="form-control" type="text" readonly>
+                        </div>
+                    </div>
+                    <div class="row my-2">
+                        <div class="col-sm-4 mx-auto">
+                            <label for="nome_veicolo">Veicolo</label>
+                            <input id="nome_veicolo" name="nome_veicolo" class="form-control" type="text" readonly>
+                        </div>
+                        <div class="col-sm-4 mx-auto">
+                            <label for="prezzo_stimato">Prezzo stimato</label>
+                            <input id="prezzo_stimato" name="prezzo_stimato" class="form-control" type="text" readonly>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6 mx-auto my-3">
+                        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked">
+                        <label class="form-check-label" for="flexCheckChecked">
+                        Dichiaro di possedere un dispositivo mobile
+                        </label>
+                    </div>
+                    <div class="col-sm-4 mx-auto my-3">
+                        <a href="#" class="btn btn-success">Conferma</a>
+                    </div>   
+                </div>
+            </div>
+        </div>
+    
+    </div>
+
+    <%- include('../partials/footer.ejs') %>
+
+    <script>
+        if(sessionStorage.autista == 1){
+            $('#luogo1').attr('name', 'luogo_partenza').attr('value', sessionStorage.luogo_partenza);
+            $('label[for=luogo1]').text('Luogo di partenza');
+            $('#luogo2').attr('name', 'luogo_arrivo').attr('value', sessionStorage.luogo_arrivo);
+            $('label[for=luogo2]').text('Luogo di arrivo');
+            $('#prezzo_stimato').attr('value', sessionStorage.prezzo_stimato + ' €');
+        }
+        else{
+            $('#luogo1').attr('name', 'luogo_ritiro').attr('value', sessionStorage.luogo_ritiro);
+            $('label[for=luogo1]').text('Luogo di ritiro');
+            $('#luogo2').attr('name', 'luogo_riconsegna').attr('value', sessionStorage.luogo_riconsegna);
+            $('label[for=luogo2]').text('Luogo di riconsegna');
+        }
+        $('#data_ritiro').attr('value', sessionStorage.data_ritiro.replace('T', '  '));
+        $('#data_riconsegna').attr('value', sessionStorage.data_riconsegna.replace('T', '  '));
+        $('#nome_veicolo').attr('value', sessionStorage.nome_veicolo);
+        $('#prezzo_stimato').attr('value', sessionStorage.prezzo_stimato + ' €'); //qui il prezzo è diverso, si deve calcolare dalla control
+    </script>
+
+</body>
+</html>

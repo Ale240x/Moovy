@@ -2,7 +2,6 @@
 <html>
 <head>
     <%- include('../partials/head.ejs') %>
-  
     <title>Info Veicolo</title>
     
 </head>
@@ -15,15 +14,18 @@
                 <img src="/images/C3.jpg" class="img-fluid float-left" width="500px"> 
             </div>
             <div class="col-md p-3">
+                <form action="/TipoVeicoli/FormA/RisultatiRicerca/<%= veicolo[0].id_veicolo %>/InfoVeicolo/Riepilogo" method="GET">
+                    <p id="id_v" style="display: none;"><%= veicolo[0].id_veicolo %></p>
+                    <h4 id="nome_veicolo"><%= veicolo[0].nome_veicolo %></h4>
+                    <p><%= veicolo[0].descrizione %></p>
+                    <h4 align="right"><%= veicolo[0].tariffa %> € / ora</h4>
+                    <br>
+                    <p align="right">
+                        <button type="submit" class="btn btn-success">Prenota ></button>
+                    </p>
+                    
+                </form>
                 
-                <h4><%= veicolo[0].nome_veicolo %></h4>
-                <p><%= veicolo[0].descrizione %></p>
-                <h4 align="right"><%= veicolo[0].tariffa %> € / ora</h4>
-                <br>
-                <p align="right">
-                    <button type="button" class="btn btn-outline-success">Prenota ></button>
-                </p>
-                <p id="id_v" style="display: none;"><%= veicolo[0].id_veicolo %></p>
             
             </div>
         </div> 
@@ -33,6 +35,7 @@
     
     <script>
         sessionStorage.setItem('ref_veicolo', document.getElementById('id_v').innerHTML);
+        sessionStorage.setItem('nome_veicolo', document.getElementById('nome_veicolo').innerHTML);
             /*for(prop in veicolo){
                 sessionStorage.setItem(prop, veicolo[prop]);
             };*/

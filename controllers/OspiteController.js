@@ -195,6 +195,7 @@ try{
 
 }  
 
+//Regione Ricerca Veicoli
 controller.getRicercaTipoVeicoli = (req, res) => {  
     res.render('general/TipiVeicoli.ejs');   
 };
@@ -214,11 +215,12 @@ controller.postFormA = async (req,res) =>{
     sel.data_riconsegna = req.body.data_riconsegna.replace('T', ' ') + ':00';
     luogo_ritiro = req.body.luogo_ritiro.split(',');
     sel.luogo_ritiro = luogo_ritiro[0];
-    console.log('Luogo ritiro: '+ sel.luogo_ritiro); //test
+
+    /*console.log('Luogo ritiro: '+ sel.luogo_ritiro); //test
     console.log('Autista: '+ sel.autista); //test
     console.log('Categoria: '+ sel.modello_auto); //test
     console.log('Luogo partenza: ' + sel.luogo_partenza); //test
-    console.log('Data ritiro: '+ sel.data_ritiro); //test
+    console.log('Data ritiro: '+ sel.data_ritiro); //test*/
     
     try {
 
@@ -226,10 +228,22 @@ controller.postFormA = async (req,res) =>{
                 dbPool, 
                 sel
             );
-        console.log(veicoli);
+
         res.render('general/RisultatiRicerca.ejs', 
         { 
-            veicoli: veicoli
+            veicoli: veicoli,
+            sel: {
+                tipo_veicolo: sel.tipo_veicolo,
+                autista: sel.autista,
+                luogo_partenza: sel.luogo_partenza,
+                luogo_arrivo: sel.luogo_arrivo,
+                luogo_ritiro: sel.luogo_ritiro,
+                luogo_riconsegna: sel.luogo_riconsegna,
+                data_ritiro: sel.luogo_ritiro,
+                luogo_riconsegna: sel.luogo_riconsegna,
+                modello_auto: sel.modello_auto,
+                modello_moto: sel.modello_moto
+            }
         });
         
 
@@ -248,7 +262,7 @@ controller.postFormA = async (req,res) =>{
 controller.getInfoVeicolo = async(req,res) =>{
     var dbPool = req.dbPool;
     var id_veicolo = req.params.id;
-    console.log('id_veicolo: '+id_veicolo); //test
+    console.log('id_veicolo: '+id_veicolo); //test  
     
     try{
         var veicolo = await prenotazioneModel.getVeicolo(dbPool, id_veicolo);
@@ -271,12 +285,11 @@ controller.getInfoVeicolo = async(req,res) =>{
 
 //Mostra schermata riepilogo con veicolo selezionato e i filtri 
 controller.getRiepilogo = async(req,res) =>{
-    res.render('general/RiepilogoPrenot.ejs', {
-        'veicolo' : veicolo,
-        'pre' : pre,
-    });
+    res.render('general/RiepilogoPrenotazione.ejs');
 };
 
+
+//Regione Recupera Password
 async function recuperoPasswordEmail(transporter, email, codice ){
 
     try{
