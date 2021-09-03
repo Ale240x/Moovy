@@ -56,7 +56,6 @@ model.login = async (dbPool, email, clearPassword) => {
         let realPassword = (await query(
             'SELECT password FROM account WHERE email = ?', 
             [email]));
-        ;
         
         console.log(utenteId[0].id_account);
 

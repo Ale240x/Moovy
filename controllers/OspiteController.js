@@ -210,9 +210,13 @@ controller.getFormA = (req, res) => {
 controller.postFormA = async (req,res) =>{
     var dbPool = req.dbPool;
     var sel = req.body;
-    console.log('Autista: '+ req.body.autista); //test
-    console.log('Categoria: '+ req.modello_auto); //test
-    console.log('Luogo partenza: ' + req.luogo_partenza)
+    sel.data_ritiro = req.body.data_ritiro.replace('T', ' ') + ':00';
+    sel.data_riconsegna = req.body.data_riconsegna.replace('T', ' ') + ':00';
+    
+    console.log('Autista: '+ sel.autista); //test
+    console.log('Categoria: '+ sel.modello_auto); //test
+    console.log('Luogo partenza: ' + sel.luogo_partenza); //test
+    console.log('Data ritiro: '+ sel.data_ritiro);
     try {
 
         let veicoli = await prenotazioneModel.cercaVeicolo( 
@@ -220,10 +224,11 @@ controller.postFormA = async (req,res) =>{
                 sel
             );
         
-            res.render('general/RisultatiRicerca.ejs', {
-           'veicoli' : veicoli , 
-           'sel' : sel //undefined
-                });
+            
+        res.render('general/RisultatiRicerca.ejs', {
+            'veicoli' : veicoli,
+            'sel' : sel //undefined
+        });
 
     } catch (error) {
 
