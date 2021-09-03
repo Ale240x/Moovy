@@ -44,11 +44,13 @@ CREATE TABLE `account` (
 
 INSERT INTO `account` (`id_account`, `ruolo`, `nome`, `cognome`, `data_di_nascita`, `num_telefono`, `password`, `email`) VALUES
 (1, 'Amministratore', 'Mario', 'Rossi', '1992-07-15', '3281234567', 'Password1', 'amministratore@mail.it'),
-(2, 'Addetto', 'Giuseppe', 'Verdi', '1994-07-01', '3771234567', 'Password1', 'parcheggiatore@mail.it'),
-(3, 'Addetto', 'Francesco', 'Neri', '1997-04-03', '3213216547', 'Password1', 'altroaddetto@mail.it'),
+(2, 'Addetto', 'Giuseppe', 'Verdi', '1994-07-01', '3771234567', 'Password1', 'addetto2@mail.it'),
+(3, 'Addetto', 'Francesco', 'Neri', '1997-04-03', '3213216547', 'Password1', 'addetto3@mail.it'),
 (4, 'Cliente', 'Luisa', 'Gialli', '2001-10-25', '3681234567', 'Password1', 'cliente@mail.it'),
 (5, 'Autista', 'Guido', 'Marroni', '1992-09-15', '3331234657', 'Password1', 'autista@mail.it'),
-(6, 'Cliente', 'Gino', 'Fiori', '1993-12-08', '3321234657', 'Password1', 'gino@mail.it');
+(6, 'Cliente', 'Gino', 'Fiori', '1993-12-08', '3321234657', 'Password1', 'gino@mail.it'),
+(7, 'Addetto', 'Mario', 'Bianchi', '1997-02-10', '3407654185', 'Password1', 'addetto7@mail.it'),
+(8, 'Addetto', 'Maria', 'Bronte', '1997-03-10', '3407554185', 'Password1', 'addetto8@mail.it');
 
 -- --------------------------------------------------------
 
@@ -79,7 +81,7 @@ INSERT INTO `carte_di_credito` (`numero_carta`, `ref_account`, `nome_intestatari
 --
 
 CREATE TABLE `parcheggi` (
-  `id_parcheggio` int(11) NOT NULL,
+  `id_parcheggio` varchar(255) NOT NULL,
   `indirizzo` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `ref_addetto` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -89,8 +91,10 @@ CREATE TABLE `parcheggi` (
 --
 
 INSERT INTO `parcheggi` (`id_parcheggio`, `indirizzo`, `ref_addetto`) VALUES
-(1, 'Via Ernesto Basile, 15', 2),
-(2, 'Piazza Sturzo, 2', 3);
+('Parcheggio Basile', 'Via Ernesto Basile 110', 2),
+('Parcheggio Calatafimi', 'Corso Calatafimi 9', 3),
+('Parcheggio Oreto', 'Via Oreto 20', 7),
+('Parcheggio Roma', 'Via Roma 97', 8);
 
 -- --------------------------------------------------------
 
@@ -148,7 +152,7 @@ CREATE TABLE `veicoli` (
   `modello_moto` enum('Ciclomotore - 50cc','Scooter - 125cc','Turistica - 600cc','Adventure - 1200cc') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `patente_richiesta` enum('tipo_a','tipo_b','tipo_am','tipo_a1','tipo_a2') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `stato_veicolo` enum('Ritirato','Riconsegnato') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `ref_parcheggio` int(11) DEFAULT NULL,
+  `ref_parcheggio` varchar(255) DEFAULT NULL,
   `posizione` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `tariffa` float NOT NULL,
   `descrizione` varchar(500) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -160,8 +164,8 @@ CREATE TABLE `veicoli` (
 --
 
 INSERT INTO `veicoli` (`id_veicolo`, `nome_veicolo`, `tipo_veicolo`, `modello_auto`, `modello_moto`, `patente_richiesta`, `stato_veicolo`, `ref_parcheggio`, `posizione`, `tariffa`, `descrizione`, `immagine`) VALUES
-(53626, 'Dacia Duster', 'Automobile', 'Suv', NULL, 'tipo_b', NULL, 1, '', 6, '', NULL),
-(198730, 'Xiaomi', 'Monopattino', NULL, NULL, NULL, NULL, 2, '', 2, '', NULL),
+(53626, 'Dacia Duster', 'Automobile', 'Suv', NULL, 'tipo_b', NULL, 'Parcheggio Basile', '', 6, '', NULL),
+(198730, 'Xiaomi', 'Monopattino', NULL, NULL, NULL, NULL, 'Parcheggio Calatafimi', '', 2, '', NULL),
 (663481, 'Rockrider', 'Bicicletta', NULL, NULL, NULL, NULL, NULL, 'Via Libertà, 12', 2, '', NULL);
 
 --
@@ -221,12 +225,6 @@ ALTER TABLE `veicoli`
 --
 ALTER TABLE `account`
   MODIFY `id_account` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
-
---
--- AUTO_INCREMENT per la tabella `parcheggi`
---
-ALTER TABLE `parcheggi`
-  MODIFY `id_parcheggio` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT per la tabella `prenotazioni`

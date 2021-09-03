@@ -212,23 +212,27 @@ controller.postFormA = async (req,res) =>{
     var sel = req.body;
     sel.data_ritiro = req.body.data_ritiro.replace('T', ' ') + ':00';
     sel.data_riconsegna = req.body.data_riconsegna.replace('T', ' ') + ':00';
-    
+    luogo_ritiro = req.body.luogo_ritiro.split(',');
+    sel.luogo_ritiro = luogo_ritiro[0];
+    console.log('Luogo ritiro: '+ sel.luogo_ritiro); //test
     console.log('Autista: '+ sel.autista); //test
     console.log('Categoria: '+ sel.modello_auto); //test
     console.log('Luogo partenza: ' + sel.luogo_partenza); //test
-    console.log('Data ritiro: '+ sel.data_ritiro);
+    console.log('Data ritiro: '+ sel.data_ritiro); //test
+    
     try {
 
-        let veicoli = await prenotazioneModel.cercaVeicolo( 
+        var veicoli = await prenotazioneModel.cercaVeicolo( 
                 dbPool, 
                 sel
             );
-        
-            
-        res.render('general/RisultatiRicerca.ejs', {
-            'veicoli' : veicoli,
-            'sel' : sel //undefined
+          
+        res.render('general/RisultatiRicerca.ejs', 
+        { 
+            veicoli: veicoli,
+            sel: sel
         });
+        
 
     } catch (error) {
 

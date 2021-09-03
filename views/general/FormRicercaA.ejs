@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<head>
+<head> <!--il controllo della data non va bene-->
     <%- include('../partials/head.ejs') %>
     <link rel="stylesheet" href="/stylesheets/RicercaVeicolo.css">
 
@@ -90,7 +90,7 @@
                         </div>
                         <div class="col-sm-4 mx-auto mt-2">
                             <label for="dataRiconsegna">Data di riconsegna</label>
-                            <input type="datetime-local" class="form-control" id="dataRiconsegna" name="data_riconsegna" min="<%= new Date().toISOString().slice(0, 16) %>"required>
+                            <input type="datetime-local" class="form-control" id="dataRiconsegna" name="data_riconsegna" onfocus="validateDate()" required>
                         </div>
                         <!--<div class="col-sm-4 mx-auto">
                             <label for="oraRitiro">Ora di ritiro</label>
@@ -130,7 +130,7 @@
                     <% } %>
                     <br>
                     <div class="mx-auto px-4 text-right">   
-                        <button type="submit" id="submit" class="btn btn-success mt-3" >Conferma</button>    
+                        <button type="submit" id="submit" class="btn btn-success mt-3" onclick="salvaDati()">Conferma</button>    
                     </div>  
                 </form>
             </div>
@@ -140,6 +140,46 @@
 
     <%- include('../partials/footer.ejs') %>
 
+    <script>
+        function validateDate(){
+            var date = $('#dataRitiro').val()
+            console.log($('#dataRitiro').val());
+
+            var data = date.split("-");
+            var year = data[0];
+            var month = data[1];
+            var day = data[2].slice(0, 2);
+            var hours = date.slice(11, 13);
+            var minutes = date.slice(14, 16);
+
+            if(Number(minutes) < 30){
+                min = Number(minutes) + 30;
+                date = year+'-'+month+'-'+day+'T'+hours+':'+min;
+            }
+            else if(Number(minutes) > 30){
+                min = (Number(minutes) + 30) % 60;
+                hh = ((Number(hours)) + 1);
+                h = hh%24;
+                if(hh > 23){
+                    if(day < 9){
+                        day = '0' + (day+1);
+                    }
+                    else{
+                        day = day+1;
+                    }
+                }
+                date = year+'-'+month+'-'+day+'T'+h+':'+min;
+            }
+            else{ //minutes == 30
+                h = (Number(hours) + 1)%24;
+                date = year+'-'+month+'-'+day+'T'+h+':00';
+                date.replace(minutes, '00');
+            }
+
+            $('#dataRiconsegna').attr('min', date);
+        }
+        
+    </script>
     <script> //mappa
         
         mapboxgl.accessToken = 'pk.eyJ1IjoiYWxlMjQweCIsImEiOiJja3IwdTRqem0xdjM3MnpxYTJneHVuNXptIn0.mZ7elTikfESfGCOnYRUMsg';
@@ -337,7 +377,7 @@
                     if(p.from != 0){
                         p.dist = turf.distance(p.from, p.to);
                         console.log('distance: '+p.dist);
-                        sessionStorage.setItem('prezzo_stimato', 2*p.dist); //prezzo al km * distance
+                        sessionStorage.setItem('prezzo_stimato', 2*p.dist); //prezzo al km (2€) * distance
                     }
                     else{
                         alert('Inserisci un luogo di partenza!');
@@ -405,30 +445,19 @@
 
     <script>
         
-        /*function salvaDati(){ //non funziona, forse si devono memorizzare nella prox pagina
-            if(tipo_veicolo == 'Automobile'){ 
-                sessionStorage.setItem('modello_auto', $('#modello_auto').value);
-                if($('#autista').value == 1){   //per decidere se aggiungere luogoRitiro o luogoPartenza, non so se è giusto
-                    sessionStorage.setItem('luogoPartenza', $('#luogoPartenza').value);
-                    sessionStorage.setItem('luogoArrivo', $('#luogoArrivo').value);
-                }
-                else{
-                    sessionStorage.setItem('luogoRitiro', $('#luogoRitiro').value);
-                    sessionStorage.setItem('luogoRiconsegna', $('#luogoRiconsegna').value);
-                }
+        function salvaDati(){
+            
+            if($('#autista').val() == 1){
+                sessionStorage.setItem('luogo_partenza', $('#luogoPartenza').val());
+                sessionStorage.setItem('luogo_arrivo', $('#luogoArrivo').val());
             }
-            else if(tipo_veicolo == 'Moto'){
-                sessionStorage.setItem('modello_moto', $('#modello_moto').value);
+            else if($('#autista').val() == null || $('#autista').val() == undefined){ //per tutti i veicoli tranne le auto
+                sessionStorage.setItem('luogo_ritiro', $('#luogoRitiro').val());
+                sessionStorage.setItem('luogo_riconsegna', $('#luogoRiconsegna').val());
             }
-            if($('#autista').value == undefined){ //per tutti i veicoli tranne le auto
-                sessionStorage.setItem('luogoRitiro', $('#luogoRitiro').value);
-                sessionStorage.setItem('luogoRiconsegna', $('#luogoRiconsegna').value);
-            }
-            sessionStorage.setItem('dataRitiro', $('#dataRitiro').value);
-            sessionStorage.setItem('dataRiconsegna', $('#dataRiconsegna').value);
-            sessionStorage.setItem('oraRitiro', $('#oraRitiro').value);
-            sessionStorage.setItem('oraRiconsegna', $('#oraRiconsegna').value);
-        };*/
+            sessionStorage.setItem('data_ritiro', $('#dataRitiro').val());
+            sessionStorage.setItem('data_riconsegna', $('#dataRiconsegna').val());
+        };
     </script>
 </body>
 </html>
