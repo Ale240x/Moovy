@@ -1,23 +1,11 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <link rel="icon" href="../../public/images/logo1.png">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-    <title>Moovy</title>
+    <%- include('../partials/head.ejs') %>
  </head>
-<body>
-    <img class="img-fluid" src="../../public/images/banner2.png" width="100%">
-    
+<body>    
     <!--Navbar-->
-    <%- include('../partials/navbar.ejs') %>
+    <%- include('../partials/navbarClie.ejs') %>
 
     <form action="/formModifica" method="POST">
         <div class="container my-5 text-center" style="max-width: 580px;">
@@ -26,24 +14,24 @@
         <div class="container my-5 text-left" style="max-width: 580px;">
         <div class="mb-3">
             <label for="nome" class="form-label">Nome</label>
-            <input type="text" class="form-control form-control-md" value="" placeholder="Nome" id="nome" name="nome">
+            <input type="text" class="form-control form-control-md"  placeholder="Nome" id="nome" name="nome" value="<%= utente.nome %>">
         </div>
         <div class="mb-3">
             <label for="cognome" class="form-label">Cognome</label>
-            <input type="text" class="form-control form-control-md" value="" placeholder="Cognome" id="cognome" name="cognome">
+            <input type="text" class="form-control form-control-md"  placeholder="Cognome" id="cognome" name="cognome" value="<%= utente.cognome %>" >
         </div>
         <div class="mb-3">
             <label for="dataNascita" class="form-label">Data di nascita</label>
-           <input class="form-control" type="text" name="dataNascita" id="dataNascita" value="Disabled readonly input" aria-label="Disabled input example" disabled readonly>
+           <input class="form-control" type="text" name="dataNascita" id="dataNascita" value="<%= utente.data_di_nascita %>" aria-label="Disabled input example"  readonly>
         </div>
         <div class="mb-3">
             <label for="phoneNumber" class="form-label">Numero di cellulare</label>
-            <input type="tel" id="phoneNumber" name="phoneNumber" value="" class="form-control form-control-md" placeholder="Numero di telefono">
+            <input type="tel" id="phoneNumber" name="phoneNumber" value="" class="form-control form-control-md" placeholder="Numero di telefono" value="<%= utente.numero_di_telefono %>">
         </div>
         <div class="mb-3 my-4">
             <legend style="text-align:center; font-size:medium;">Metodo di pagamento</legend>
             <label for="cardNumber" class="form-label">Numero della carta</label>
-            <input type="text" id="cardNumber" name="cardNumber" value="" class="form-control form-control-md" placeholder="Numero della carta">
+            <input type="text" id="cardNumber" name="cardNumber" value="" class="form-control form-control-md" placeholder="Numero della carta" >
         </div>
         <div class="mb-3">
             <label for="nomeIntes" class="form-label">Nome dell'intestatario</label>

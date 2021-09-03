@@ -1,7 +1,7 @@
 const { render } = require('ejs');
+const { redirect } = require('ejs');
 const accountModel = require('../models/accountModel');
 const prenotazioneModel = require('../models/prenotazioneModel');
-
 
 var controller = {};
 
@@ -29,7 +29,7 @@ controller.postRegistrazioneCliente = async (req, res) => {
            req.body.email,
            req.body.dataNascita,
            req.body.numeroTelefono,
-           req.body.psw, 
+           req.body.password, 
            req.body.codicePatente,
            req.body.dataScadenza,
            req.body.a,
@@ -84,8 +84,8 @@ controller.postAutenticazione = async (req, res) => {
                 'message' : 'Benvenuto su Moovy! ' + req.session.utente[0].nome,
             
             };
-            res.render('cliente/areaPersonaleC.ejs');
-            //res.redirect('/utente/cliente/AreaPersonaleCliente'); 
+            //res.render('cliente/areaPersonaleC.ejs');
+            res.redirect('/utente/cliente/AreaPersonaleCliente'); 
         }
         else if(req.session.utente[0].ruolo == "Amministratore"){
            

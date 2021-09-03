@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%- include('../partials/head.ejs') %>
+      
+    <title>Moovy</title>
+  </head>
+  <body>
+    <img class="img-fluid" src="/images/banner2.png" width="100%">
+
+<nav class="navbar navbar-expand-lg navbar-dark" style="background-color: rgba(3, 78, 13, 0.795);">
+    <a class="navbar-brand" href="/"><img class="img-fluid" src="/images/logo_navbar.png" width="50px"></a>
+    <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#collapsibleNavId" aria-controls="collapsibleNavId"
+        aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="collapsibleNavId">
+        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+            <li class="nav-item active">
+                <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/TipoVeicoli">Veicoli</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/utente/cliente/AreaPersonaleCliente">Area Personale</a>
+            </li>  
+        </ul>
+        <ul class="navbar-nav justify-content-end">
+            <li class="nav-item">
+                <a class="nav-link" href="/utente/cliente/disconnetti">Logout</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<% /* %> <% if(alert){%>
+    <div class="alert <%= alert.style %> alert-dismissible fade show" role="alert">
+      <%= alert.message %>
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <% } %> <% */ %>
+
+    <!--Carousel-->
+    <div id="caroselloHome" class="container h-100">
+      <div class="row justify-content-center align-items-center">
+          <div id="caroselloScritta" class="col-xs-12 col-md-6">
+              <h1>Prenota da noi!</h1>
+              <p>Prezzi bassi, ampia scelta di mezzi.</p>
+          </div>
+
+          <div class="col-xs-12 col-md-6">
+              <div id="carousel" class="carousel slide" data-ride="carousel">
+                  <div class="carousel-inner">
+                      <div class="carousel-item active">
+                           <img class="d-block img-fluid" src="/images/carosello1.jpeg" alt="First slide">
+                      </div>
+                      <div class="carousel-item">
+                          <img class="d-block img-fluid" src="/images/carosello2.jpg" alt="Second slide">
+                      </div>
+                <div class="carousel-item">
+                          <img class="d-block img-fluid" src="/images/carosello3.jpg" alt="Third slide">
+                      </div>
+                      <div class="carousel-item">
+                            <img class="d-block img-fluid" src="/images/carosello4.jpg" alt="Third slide">
+                      </div>
+                  </div>
+                        
+              </div>
+          </div>
+      </div>
+    </div>
+
+    <div class="container h-100">
+          <div class="justify-content-center align-items-center">
+              <h3>Su Moovy potrai:</h3>
+              <h6>Noleggiare una moto, un'auto, un monopattino o una bicicletta. 
+                <br> Inoltre potrai richiedere uno dei nostri autisti e farti accompagnare direttamente alla tua meta! 
+                Scopri tutti i mezzi a disposizione cliccando in alto sulla scritta "Veicoli"
+                e accedi per poter prenotare un veicolo.
+              </h6>
+          </div>
+    </div>  
+    
+    <%- include('../partials/footer.ejs') %>
+  </body>
+</html>

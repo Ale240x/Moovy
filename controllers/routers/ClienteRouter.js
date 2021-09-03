@@ -3,14 +3,14 @@ const express = require('express');
 const ClienteController = require("../cliente/ClienteController");
 const PrenotazioniClienteController = require("../cliente/PrenotazioniClienteController");
 const OspiteController = require("../OspiteController");
-const UtenteController = require("../UtenteController");
+
 
 var router = express.Router();
 
 router.use("", (req,res,next) =>{
     var utente = req.session.utente;
 
-    if(utente.ruolo == 'cliente'){
+    if(utente[0].ruolo == 'Cliente'){
         next();  
     }
     else{
@@ -19,7 +19,8 @@ router.use("", (req,res,next) =>{
 });
 
 //Regione SchermataInizialeCliente
-router.get("/", OspiteController.getSchermataIniziale);
+router.get("/", ClienteController.getSchermataIniziale);
+//router.get("/logout", ClienteController.getLogout);
 router.get("/disconnetti", ClienteController.getDisconnetti);
 
 //Regione AreaPersonale
