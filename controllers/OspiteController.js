@@ -226,11 +226,10 @@ controller.postFormA = async (req,res) =>{
                 dbPool, 
                 sel
             );
-          
+        console.log(veicoli);
         res.render('general/RisultatiRicerca.ejs', 
         { 
-            veicoli: veicoli,
-            sel: sel
+            veicoli: veicoli
         });
         
 
@@ -247,9 +246,27 @@ controller.postFormA = async (req,res) =>{
 };
 
 controller.getInfoVeicolo = async(req,res) =>{
-    res.render('general/InfoVeicolo.ejs', {
-        'veicolo' : veicolo,
-    });
+    var dbPool = req.dbPool;
+    var id_veicolo = req.params.id;
+    console.log('id_veicolo: '+id_veicolo); //test
+    
+    try{
+        var veicolo = await prenotazioneModel.getVeicolo(dbPool, id_veicolo);
+
+        res.render('general/InfoVeicolo.ejs', {
+            veicolo: veicolo
+        });
+        
+
+    } catch (error) {
+
+        req.session.alert = {
+            
+            'style' : 'alert-warning',
+            'message' : error.message
+    
+        }      
+    }   
 };
 
 //Mostra schermata riepilogo con veicolo selezionato e i filtri 

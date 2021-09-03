@@ -18,26 +18,18 @@
          
         <%  } else { %>
 
-                <% let idPrenotazione = ""; %>
-                
                 <table class="table table-hover">
                     <tbody>
 
                 <% veicoli.forEach( (veicolo) => { %>
-                        
+
                         <tr>
-                            <td><a href="#"><%= veicolo.nome_veicolo %></a></td>
-                    <% if(veicolo.tipo_veicolo == 'Automobile') { %>
-                        <td><a href="#"><%= veicolo.modello_auto %></a></td>
+                            <td><a href="/TipoVeicoli/FormA/RisultatiRicerca/<%= veicolo.id_veicolo %>/InfoVeicolo"><%= veicolo.nome_veicolo %></a></td>
+
+                        <td><%= veicolo.tariffa %>€ / ora</td>
+                        </tr> 
                     
-                    <% } else if(veicolo.tipo_veicolo == 'Moto') { %>
-                        <td><a href="#"><%= veicolo.modello_moto %></a></td>
-                    <% } %>
-                        <td><a href="#"><%= veicolo.tariffa %></a></td>
-                        </tr>
-                    
-                    <% idPrenotazione = prenotazione.prenotazioneId; %>                         
-                <% }); %>
+                <% }) %>
                     </tbody>
                 </table>                                    
         <% } %>
@@ -45,6 +37,7 @@
         <!--<ul class="row" style="list-style-type: none;">
             <li class="col-md pb-4 text-center">
                 <img src="public/images/C3.jpg" alt="c3" class="img-thumbnail border-success" height="156px">
+                <%/*%><%= veicolo.nome_veicolo %><%*/%> <br> <%/*%><%= veicolo.tariffa %><%*/%>
             </li>                                               
             <li class="col-md pb-4 text-center">
                 <img src="public/images/Moto.jpg" class="img-thumbnail border-success" height="156px">
@@ -62,19 +55,6 @@
     </div>
     <br>
     <%- include('../partials/footer.ejs') %>
-
-    <script>
-        /*if(sel.autista == 1){
-            sessionStorage.setItem('luogo_partenza', sel.luogo_partenza);
-            sessionStorage.setItem('luogo_arrivo', sel.luogo_arrivo);
-        }
-        else if(sel.autista == null || sel.autista == undefined){ //per tutti i veicoli tranne le auto
-            sessionStorage.setItem('luogo_ritiro', sel.luogo_ritiro);
-            sessionStorage.setItem('luogo_riconsegna', sel.luogo_riconsegna);
-        }
-        sessionStorage.setItem('data_ritiro', sel.data_ritiro);
-        sessionStorage.setItem('data_riconsegna', sel.data_riconsegna);*/
-    </script>
 
 </body>
 </html>

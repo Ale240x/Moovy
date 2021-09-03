@@ -15,13 +15,15 @@
                 <img src="/images/C3.jpg" class="img-fluid float-left" width="500px"> 
             </div>
             <div class="col-md p-3">
-                <h4><%= veicolo.nome_veicolo %></h4>
-            <p><%= veicolo.descrizione %></p>
-            <h4 align="right"><%= veicolo.tariffa %></h4>
-            <br>
-            <p align="right">
-                <button type="button" class="btn btn-outline-success" onclick="salvaIdVeicolo()">Prenota ></button>
-            </p>
+                
+                <h4><%= veicolo[0].nome_veicolo %></h4>
+                <p><%= veicolo[0].descrizione %></p>
+                <h4 align="right"><%= veicolo[0].tariffa %> € / ora</h4>
+                <br>
+                <p align="right">
+                    <button type="button" class="btn btn-outline-success">Prenota ></button>
+                </p>
+                <p id="id_v" style="display: none;"><%= veicolo[0].id_veicolo %></p>
             
             </div>
         </div> 
@@ -29,14 +31,11 @@
     
     <%- include('../partials/footer.ejs') %>
     
-    <script> //non serve perchè si deve aggiungere solo il ref_veicolo
-        function salvaIdVeicolo(){
-            sessionStorage.setItem('ref_veicolo', veicolo.id_veicolo);
+    <script>
+        sessionStorage.setItem('ref_veicolo', document.getElementById('id_v').innerHTML);
             /*for(prop in veicolo){
                 sessionStorage.setItem(prop, veicolo[prop]);
             };*/
-            
-        }
     </script>
 </body>
 </html>
