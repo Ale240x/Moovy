@@ -65,7 +65,22 @@ controller.getInfoPrenotazione = async (req, res) => {
 
 //Per la modifica dei dati personali del cliente
 controller.getModificaDati = (req, res) => {  
-    res.render('cliente/DatiCliente.ejs');   
+
+    var dbPool = req.dbPool;
+    var utente = accountModel.getAccount(dbPool, req.session.utente[0].id_account)
+    console.log(utente[0].nome);
+
+    try{
+        
+        res.render('cliente/DatiCliente.ejs',
+        utente);  
+    
+
+    }catch(err){
+        throw err;
+    }
+
+     
 };
 
 controller.postModificaDati = async (req, res) => {  
@@ -78,9 +93,26 @@ controller.postModificaDati = async (req, res) => {
     try {
         
             await accountModel.modificaDatiCliente(
-                dbPool, 
-                modifiche 
-                //devo mettere tutti i dati?
+                dbPool,
+                req.body.nome,
+                req.body.cognome,
+                req.body.email,
+                req.body.dataNascita,
+                req.body.numeroTelefono,
+                req.body.password, 
+                req.body.codicePatente,
+                req.body.dataScadenza,
+                req.body.a,
+                req.body.b,
+                req.body.am,
+                req.body.a1,
+                req.body.a2, 
+                req.body.numeroCarta,
+                req.body.nomeIntestatario, // Da mettere?
+                req.body.cognomeIntestatario,// Da mettere?
+                req.body.scadenzaCarta,
+                req.body.cvv,    
+                
                 );
         
 
@@ -100,7 +132,7 @@ controller.postModificaDati = async (req, res) => {
             'message' : error.message
         }
 
-        res.redirect('/utente/home'); //o '' ?
+        res.redirect('/utente/cliente'); //o '' ?
 
     }
 }; 
@@ -109,7 +141,7 @@ async function aggiornaSessioneUtente(dbConnection, session){
 
     try {
 
-        session.utente = await accountModel.getAccount(dbPool, session.utente.id);
+        session.utente = await accountModel.getAccount(dbPool, session.utente[0].id_account);
         
         
     } catch(error) {

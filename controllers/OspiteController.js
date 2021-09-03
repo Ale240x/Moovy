@@ -29,7 +29,7 @@ controller.postRegistrazioneCliente = async (req, res) => {
            req.body.email,
            req.body.dataNascita,
            req.body.numeroTelefono,
-           req.body.psw, 
+           req.body.password, 
            req.body.codicePatente,
            req.body.dataScadenza,
            req.body.a,
