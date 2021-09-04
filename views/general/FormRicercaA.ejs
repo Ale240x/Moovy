@@ -45,11 +45,11 @@
                             </div>
                             <div class="custom-control custom-radio custom-control-inline">
                                 <p>Autista:</p> &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-                                <input type="radio" class="custom-control-input" id="aut-si" name="autista" value="1">
+                                <input type="radio" onclick="salvaAutSi()" class="custom-control-input" id="aut-si" name="autista" value="1">
                                 <label class="custom-control-label" for="aut-si">Sì</label>
                               </div>
                               <div class="custom-control custom-radio custom-control-inline">
-                                <input type="radio" class="custom-control-input" id="aut-no" name="autista" value="null">
+                                <input type="radio" onclick="salvaAutNo()"class="custom-control-input" id="aut-no" name="autista" value="null">
                                 <label class="custom-control-label" for="aut-no">No</label>
                               </div>
                         </div>
@@ -143,8 +143,7 @@
 
     <script>
         function validateDate(){
-            var date = $('#dataRitiro').val()
-            console.log($('#dataRitiro').val());
+            var date = $('#dataRitiro').val();
 
             var data = date.split("-");
             var year = data[0];
@@ -378,7 +377,7 @@
                     if(p.from != 0){
                         p.dist = turf.distance(p.from, p.to);
                         console.log('distance: '+p.dist);
-                        sessionStorage.setItem('prezzo_stimato', 2*p.dist); //prezzo al km (2€) * distance
+                        sessionStorage.setItem('prezzo_stimato', (Math.round(2*p.dist * 100)/100)); //prezzo al km (2€) * distance
                     }
                     else{
                         alert('Inserisci un luogo di partenza!');
@@ -445,14 +444,22 @@
     </script>
 
     <script>
-        
+        function salvaAutSi(){
+            sessionStorage.setItem('autista', 1);
+        }
+
+        function salvaAutNo(){
+            sessionStorage.setItem('autista', null);
+        }
+
         function salvaDati(){
             
-            if($('#autista').val() == 1){
+            
+            if(sessionStorage.autista == 1){
                 sessionStorage.setItem('luogo_partenza', $('#luogoPartenza').val());
                 sessionStorage.setItem('luogo_arrivo', $('#luogoArrivo').val());
             }
-            else if($('#autista').val() == null || $('#autista').val() == undefined){ //per tutti i veicoli tranne le auto
+            else if(sessionStorage.autista == 'null' || sessionStorage.autista == undefined){ //per tutti i veicoli tranne le auto
                 sessionStorage.setItem('luogo_ritiro', $('#luogoRitiro').val());
                 sessionStorage.setItem('luogo_riconsegna', $('#luogoRiconsegna').val());
             }

@@ -211,8 +211,10 @@ controller.getFormA = (req, res) => {
 controller.postFormA = async (req,res) =>{
     var dbPool = req.dbPool;
     var sel = req.body;
+    
     sel.data_ritiro = req.body.data_ritiro.replace('T', ' ') + ':00';
     sel.data_riconsegna = req.body.data_riconsegna.replace('T', ' ') + ':00';
+    
     luogo_ritiro = req.body.luogo_ritiro.split(',');
     sel.luogo_ritiro = luogo_ritiro[0];
 
@@ -228,11 +230,11 @@ controller.postFormA = async (req,res) =>{
                 dbPool, 
                 sel
             );
-
+        
         res.render('general/RisultatiRicerca.ejs', 
         { 
             veicoli: veicoli,
-            sel: {
+            /*sel: {
                 tipo_veicolo: sel.tipo_veicolo,
                 autista: sel.autista,
                 luogo_partenza: sel.luogo_partenza,
@@ -243,7 +245,7 @@ controller.postFormA = async (req,res) =>{
                 luogo_riconsegna: sel.luogo_riconsegna,
                 modello_auto: sel.modello_auto,
                 modello_moto: sel.modello_moto
-            }
+            }*/
         });
         
 
@@ -266,7 +268,7 @@ controller.getInfoVeicolo = async(req,res) =>{
     
     try{
         var veicolo = await prenotazioneModel.getVeicolo(dbPool, id_veicolo);
-
+        
         res.render('general/InfoVeicolo.ejs', {
             veicolo: veicolo
         });
@@ -287,7 +289,6 @@ controller.getInfoVeicolo = async(req,res) =>{
 controller.getRiepilogo = async(req,res) =>{
     res.render('general/RiepilogoPrenotazione.ejs');
 };
-
 
 //Regione Recupera Password
 async function recuperoPasswordEmail(transporter, email, codice ){

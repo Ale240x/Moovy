@@ -71,7 +71,6 @@
             $('label[for=luogo1]').text('Luogo di partenza');
             $('#luogo2').attr('name', 'luogo_arrivo').attr('value', sessionStorage.luogo_arrivo);
             $('label[for=luogo2]').text('Luogo di arrivo');
-            $('#prezzo_stimato').attr('value', sessionStorage.prezzo_stimato + ' €');
         }
         else{
             $('#luogo1').attr('name', 'luogo_ritiro').attr('value', sessionStorage.luogo_ritiro);
@@ -82,7 +81,7 @@
         $('#data_ritiro').attr('value', sessionStorage.data_ritiro.replace('T', '  '));
         $('#data_riconsegna').attr('value', sessionStorage.data_riconsegna.replace('T', '  '));
         $('#nome_veicolo').attr('value', sessionStorage.nome_veicolo);
-        $('#prezzo_stimato').attr('value', sessionStorage.prezzo_stimato + ' €'); //qui il prezzo è diverso, si deve calcolare dalla control
+        $('#prezzo_stimato').attr('value', sessionStorage.prezzo_stimato + ' €');
     </script>
 
 </body>
