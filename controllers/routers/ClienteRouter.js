@@ -28,7 +28,7 @@ router.get("/disconnetti", ClienteController.getDisconnetti);
 //Regione AreaPersonale
 router.get("/AreaPersonaleCliente", ClienteController.getAreaPersonaleCliente);
 router.get("/AreaPersonaleCliente/mostrastorico", ClienteController.getStoricoPrenotazioni);
-router.get("/AreaPersonaleCliente/mostrastorico/:id/InfoPrenotazione", ClienteController.getInfoPrenotazione);
+router.get("/AreaPersonaleCliente/mostrastorico/:id", ClienteController.getInfoPrenotazione);
 router.get("/AreaPersonaleCliente/formModifica", ClienteController.getModificaDati);
 router.post("/AreaPersonaleCliente/formModifica", ClienteController.postModificaDati);
 

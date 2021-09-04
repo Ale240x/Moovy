@@ -1,70 +1,32 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <link rel="icon" href="public/images/logo1.png">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-    <title>Moovy</title>
-    <style>
-    </style>
+    <%- include('../partials/head.ejs') %>
+</style>
+<title>Moovy</title>
 </head>
 <body>
-    <img class="img-fluid" src="public/images/banner2.png" width="100%">
-    
-    <!--Navbar loogato-->
-    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: rgba(3, 78, 13, 0.795);">
-        <a class="navbar-brand" href="#"><img class="img-fluid" src="public/images/Logo2.png" width="50px"></a>
-        <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#collapsibleNavId" aria-controls="collapsibleNavId"
-            aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="collapsibleNavId">
-            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-                <li class="nav-item active">
-                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Veicoli</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Area Personale</a>
-                </li>  
-            </ul>
-            <ul class="navbar-nav justify-content-end">
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Logout</a>
-                </li>
-            </ul>
-        </div>
-    </nav>
-    <!--Navbar-->
+    <%- include('../partials/navbarClie.ejs') %>
 
     <div class="container-sm"  style="padding: 5%;">
        <br>      
        <h2>Info prenotazione</h2>  
        <br>
-        <div class="card border-success  card-body text-lg-center" >
-            <div class="row">
-                <div class="col-3">
+        <div class="card border-success  card-body text-lg-center"  id="prenotazione">
+            <div class="row"  >
+                <div class="col-3" >
                    <h4>ID prenotazione</h4>       
-                   <p> <%= prenotazione.id_prenotazione %></p>          
+                   <p> <%= prenotazione.id_prenotazione %></p>        
                 </div>
-                <div class="col-3">
+                <div class="col-3" >
                         <h4>Metodo di pagamento</h4>
                         <p> <%= prenotazione.ref_carta %></p>                             
                 </div>
-                <div class="col-3">
+                <div class="col-3" >
                     <h4>Stato Prenotazione</h4>
                         <p> <%= prenotazione.stato_prenotazione %></p>     
                 </div>
-                <div class="col-3">
+                <div class="col-3" >
                     <h4>Prezzo totale</h4>
                         <p> <%= prenotazione.prezzo_finale %></p>    
                 </div>
@@ -75,8 +37,8 @@
     <br>
         <h2>Dati ritiro/rilascio</h2>  
         <br>
-         <div class="card border-success  card-body text-lg-center" >
-             <div class="row">
+         <div class="card border-success  card-body text-lg-center">
+             <div class="row" id="prenotazione"  >
                  <div class="col-3">
                     <h4>Luogo ritiro</h4>       
                     <p> <%= prenotazione.luogo_ritiro %></p>          
@@ -85,7 +47,7 @@
                          <h4>Luogo riconsegna</h4>
                          <p> <%= prenotazione.luogo_riconsegna %></p>                             
                  </div>
-                 <div class="col-3">
+                 <div class="col-3" id="prenotazione">
                      <h4>Data ritiro</h4>
                          <p> <%= prenotazione.data_ritiro %></p>     
                  </div>
@@ -95,8 +57,8 @@
                  </div>
              </div> 
              <hr>
-             <div class="row">
-                 <div class="col-3">
+             <div class="row"  >
+                 <div class="col-3"  >
                          <h4>Tipo veicolo</h4>
                          <p> <%= prenotazione.tipo_veicolo %></p>                             
                  </div>
@@ -118,11 +80,6 @@
      </div>
      <br>
 <!--footer-->   
-<footer class="text-center text-lg-start bg-light text-muted ">
-    <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05);">
-        <p class="">Contattaci: Tel + 01 234 567 88</p>
-      © 2021 Copyright AMIL
-    </div>
-  </footer>
+<%- include('../partials/footer.ejs') %>
 </body>
 </html>
