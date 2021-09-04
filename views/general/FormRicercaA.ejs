@@ -458,9 +458,6 @@
 
         function salvaDati(){
             
-            if(sessionStorage.prezzo_stimato == undefined){ //se non c'è autista
-            sessionStorage.setItem('prezzo_stimato', 'da calcolare');
-            }
             if(sessionStorage.autista == 1){
                 sessionStorage.setItem('luogo_partenza', $('#luogoPartenza').val());
                 sessionStorage.setItem('luogo_arrivo', $('#luogoArrivo').val());

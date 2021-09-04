@@ -42,7 +42,7 @@
         sessionStorage.setItem('ref_veicolo', document.getElementById('id_v').innerHTML);
         sessionStorage.setItem('nome_veicolo', document.getElementById('nome_veicolo').innerHTML);
 
-        if(sessionStorage.prezzo_stimato == 'da calcolare'){
+        if(sessionStorage.autista == 'null' || sessionStorage.autista == undefined){
             tariffa = Number(document.getElementById('tariffa').innerHTML.split(' ')[2]);
             prezzo_stimato = calcolaPrezzo(sessionStorage.data_ritiro, sessionStorage.data_riconsegna, tariffa);
             sessionStorage.setItem('prezzo_stimato', prezzo_stimato);
