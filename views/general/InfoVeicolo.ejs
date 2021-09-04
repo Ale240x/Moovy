@@ -2,7 +2,6 @@
 <html>
 <head>
     <%- include('../partials/head.ejs') %>
-  
     <title>Info Veicolo</title>
     
 </head>
@@ -15,13 +14,18 @@
                 <img src="/images/C3.jpg" class="img-fluid float-left" width="500px"> 
             </div>
             <div class="col-md p-3">
-                <h4><%= veicolo.nome_veicolo %></h4>
-            <p><%= veicolo.descrizione %></p>
-            <h4 align="right"><%= veicolo.tariffa %></h4>
-            <br>
-            <p align="right">
-                <button type="button" class="btn btn-outline-success" onclick="salvaIdVeicolo()">Prenota ></button>
-            </p>
+                <form action="/TipoVeicoli/FormA/RisultatiRicerca/<%= veicolo[0].id_veicolo %>/InfoVeicolo/Riepilogo" method="GET">
+                    <p id="id_v" style="display: none;"><%= veicolo[0].id_veicolo %></p>
+                    <h4 id="nome_veicolo"><%= veicolo[0].nome_veicolo %></h4>
+                    <p><%= veicolo[0].descrizione %></p>
+                    <h4 id="tariffa" align="right"><%= veicolo[0].tariffa %> € / ora</h4>
+                    <br>
+                    <p align="right">
+                        <button type="submit" class="btn btn-success">Prenota ></button>
+                    </p>
+                    
+                </form>
+                
             
             </div>
         </div> 
@@ -29,14 +33,26 @@
     
     <%- include('../partials/footer.ejs') %>
     
-    <script> //non serve perchè si deve aggiungere solo il ref_veicolo
-        function salvaIdVeicolo(){
-            sessionStorage.setItem('ref_veicolo', veicolo.id_veicolo);
+    <script>
+        sessionStorage.setItem('ref_veicolo', document.getElementById('id_v').innerHTML);
+        sessionStorage.setItem('nome_veicolo', document.getElementById('nome_veicolo').innerHTML);
+
+        if(sessionStorage.prezzo_stimato == undefined){
+            tariffa = Number(document.getElementById('tariffa').innerHTML.split(' ')[0]);
+            prezzo_stimato = calcolaPrezzo(sessionStorage.data_ritiro, sessionStorage.data_riconsegna, tariffa);
+            sessionStorage.setItem('prezzo_stimato', prezzo_stimato);
+        }
+
+        function calcolaPrezzo(data_ritiro, data_riconsegna, tariffa){
+            d1 = new Date(data_ritiro + ':00Z');
+            d2 = new Date(data_riconsegna + ':00Z');
+            durata_prenotazione = (d2 - d1)/(1000*60*60) //in ore
+            console.log('d1: '+d1+'\nd2 :'+d2+'\ndurata_prenotazione :'+durata_prenotazione);
+            return tariffa * durata_prenotazione;
+        }
             /*for(prop in veicolo){
                 sessionStorage.setItem(prop, veicolo[prop]);
             };*/
-            
-        }
     </script>
 </body>
 </html>
