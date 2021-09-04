@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.0
+-- version 5.1.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Creato il: Lug 19, 2021 alle 17:25
+-- Creato il: Set 04, 2021 alle 17:50
 -- Versione del server: 10.4.19-MariaDB
--- Versione PHP: 8.0.6
+-- Versione PHP: 8.0.7
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -81,7 +81,7 @@ INSERT INTO `carte_di_credito` (`numero_carta`, `ref_account`, `nome_intestatari
 --
 
 CREATE TABLE `parcheggi` (
-  `id_parcheggio` varchar(255) NOT NULL,
+  `id_parcheggio` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `indirizzo` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `ref_addetto` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -141,6 +141,18 @@ CREATE TABLE `prenotazioni` (
 -- --------------------------------------------------------
 
 --
+-- Struttura della tabella `sessions`
+--
+
+CREATE TABLE `sessions` (
+  `session_id` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `expires` int(11) UNSIGNED NOT NULL,
+  `data` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
 -- Struttura della tabella `veicoli`
 --
 
@@ -152,11 +164,11 @@ CREATE TABLE `veicoli` (
   `modello_moto` enum('Ciclomotore - 50cc','Scooter - 125cc','Turistica - 600cc','Adventure - 1200cc') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `patente_richiesta` enum('tipo_a','tipo_b','tipo_am','tipo_a1','tipo_a2') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `stato_veicolo` enum('Ritirato','Riconsegnato') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `ref_parcheggio` varchar(255) DEFAULT NULL,
+  `ref_parcheggio` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `posizione` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `tariffa` float NOT NULL,
   `descrizione` varchar(500) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `immagine` blob DEFAULT NULL
+  `immagine` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -164,9 +176,9 @@ CREATE TABLE `veicoli` (
 --
 
 INSERT INTO `veicoli` (`id_veicolo`, `nome_veicolo`, `tipo_veicolo`, `modello_auto`, `modello_moto`, `patente_richiesta`, `stato_veicolo`, `ref_parcheggio`, `posizione`, `tariffa`, `descrizione`, `immagine`) VALUES
-(53626, 'Dacia Duster', 'Automobile', 'Suv', NULL, 'tipo_b', NULL, 'Parcheggio Basile', '', 6, '', NULL),
-(198730, 'Xiaomi', 'Monopattino', NULL, NULL, NULL, NULL, 'Parcheggio Calatafimi', '', 2, '', NULL),
-(663481, 'Rockrider', 'Bicicletta', NULL, NULL, NULL, NULL, NULL, 'Via Libertà, 12', 2, '', NULL);
+(53626, 'Dacia Duster', 'Automobile', 'Suv', NULL, 'tipo_b', NULL, 'Parcheggio Basile', '', 6, 'Suv 4x4-Cambio Manuale-Carburante: Benzina', '/images/carosello1.jpeg'),
+(198730, 'Xiaomi', 'Monopattino', NULL, NULL, NULL, NULL, 'Parcheggio Calatafimi', '', 2, '', '/images/xiaomi.jpg'),
+(663481, 'Rockrider', 'Bicicletta', NULL, NULL, NULL, NULL, NULL, 'Via Libertà, 12', 2, '', '/images/rockrider.jpg');
 
 --
 -- Indici per le tabelle scaricate
@@ -210,6 +222,12 @@ ALTER TABLE `prenotazioni`
   ADD KEY `ref_veicolo` (`ref_veicolo`);
 
 --
+-- Indici per le tabelle `sessions`
+--
+ALTER TABLE `sessions`
+  ADD PRIMARY KEY (`session_id`);
+
+--
 -- Indici per le tabelle `veicoli`
 --
 ALTER TABLE `veicoli`
@@ -224,7 +242,7 @@ ALTER TABLE `veicoli`
 -- AUTO_INCREMENT per la tabella `account`
 --
 ALTER TABLE `account`
-  MODIFY `id_account` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id_account` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT per la tabella `prenotazioni`
