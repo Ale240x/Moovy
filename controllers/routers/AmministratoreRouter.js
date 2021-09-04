@@ -2,41 +2,42 @@ const express = require('express');
 
 const AmministratoreController = require("../amministratore/AmministratoreController");
 const PrenotazioniAmministratoreController = require("../amministratore/PrenotazioneAmministratoreController");
+const OspiteController = require("../OspiteController");
 
 var router = express.Router();
 
 router.use("", (req,res,next) =>{
     var utente = req.session.utente;
 
-    if(utente.ruolo == 'amministratore'){
+    if(utente[0].ruolo == 'Amministratore'){
         next();  
     }
     else{
-        res.redirect("/amministratore");
+        res.redirect("/");
     }
 });
 // homepage accessibile a tutti
-//router.get("/", AmministratoreController.getHome);
+router.get("/", AmministratoreController.getSchermataIniziale);
 router.get("/disconnetti", AmministratoreController.getDisconnetti);
 
-//area personale?? 
+//area personale amministratore
 router.get("/AreaPersonaleAmministratore", AmministratoreController.getAreaPersonaleAmministratore);
 
 //registrazione Impiegati
-//router.get("/registrazioneImpiegati",AmministratoreController.getRegistazioneImpiegati);
-//router.post("/registrazioneImpiegati",AmministratoreController.postRegistazioneImpiegati);
+router.get("/AreaPersonaleAmministratore/registrazioneImpiegati",AmministratoreController.getRegistrazioneImpiegati);
+router.post("/AreaPersonaleAmministratore/registrazioneImpiegati",AmministratoreController.postRegistrazioneImpiegati);
 
 //modifica dati impiegati
-router.get("/datiImpiegati",AmministratoreController.getDatiImpiegati);
-router.post("/datiImpigati",AmministratoreController.postDatiImpiegati);
-router.get("/datiImpigati/:id/modificaDatiImpiegati",AmministratoreController.getFormModifica);
-router.post("/datiImpigati/:id/modificaDatiImpiegati",AmministratoreController.postFormModifica);
+router.get("/AreaPersonaleAmministratore/datiImpiegati",AmministratoreController.getDatiImpiegati);
+//router.post("/AreaPersonaleAmministratore/datiImpigati",AmministratoreController.postDatiImpiegati);
+router.get("/AreaPersonaleAmministratore/datiImpiegati/:id/modificaDatiImpiegati",AmministratoreController.getFormModifica);
+router.post("/AreaPersonaleAmministratore/datiImpiegati/:id/modificaDatiImpiegati",AmministratoreController.postFormModifica);
 
 //elimina account
-router.post("/datiAccounts",AmministratoreController.getFormFiltraggio);
-router.post("/datiAccounts",AmministratoreController.postFormFiltraggio);
-router.get("/datiAccounts/:id/eliminaAccount",AmministratoreController.getDatiAccount);
-router.post("/datiAccounts/:id/eliminaAccount",AmministratoreController.postDatiAccount);
+router.get("/AreaPersonaleAmministratore/datiAccounts",AmministratoreController.getFormFiltraggio);
+router.post("/AreaPersonaleAmministratore/datiAccounts",AmministratoreController.postFormFiltraggio);
+router.get("/AreaPersonaleAmministratore/datiAccounts/:id/eliminaAccount",AmministratoreController.getDatiAccount);
+router.post("/AreaPersonaleAmministratore/datiAccounts/:id/eliminaAccount",AmministratoreController.postDatiAccount);
 
 //gestione prenotazione
 /*router.get("/prenotazioniAttive", PrenotazioniAmministratoreController.getElencoPrenotazioniAttive);

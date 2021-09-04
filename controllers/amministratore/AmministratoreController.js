@@ -2,18 +2,27 @@ const accountModel = require('../../models/accountModel');
 const prenotazioneModel = require('../../models/prenotazioneModel');
 ////const convertitore = require('');
 
+
 var controller={};
-//Area Personale Amministratore
-controller.getAreaPersonaleAmministratore = ( req, res) => {
-    res.render('amministratore/AreaPersonaleAmministratore.ejs');
+
+//schermata iniziale dopo l'autenticazione Amministratore
+controller.getSchermataIniziale = (req, res) => {  
+    res.render('amministratore/HomeAutenticatoAmm.ejs');   
 };
+
 
 //Disconnetti
 
 controller.getDisconnetti = (req, res) => {
+
     req.session.destroy();
     res.clearCookie("SID");
-    res.redirect("/ospite");  ///??? OSPITE
+    res.redirect("/");  //ospite
+};
+
+//Area Personale Amministratore
+controller.getAreaPersonaleAmministratore = ( req, res) => {
+    res.render('amministratore/areaPersonaleAmm.ejs');
 };
 
 ////Registrazione Impiegati
@@ -76,36 +85,34 @@ controller.postRegistrazioneImpiegati = async(req,res)=> {
 //Modifica Dati Impiegati
 
 controller.getDatiImpiegati = async(req,res)=>{
-    var dbConnection=req.dbPool;
+    var dbPool = req.dbPool;
 
-    try{ 
-        let id=await accountModel.getAccounts(dbConnection);// DA AGGIUNGERE AL MODEL ACCOUNT PER PRENDERE TUTTI GLI ACCOUNT
-        id.forEach(id_account => {
-           if(  id.ruolo=='autista'|| 'addetto'){ 
+   try{ 
+        var impiegati =await accountModel.getAccountsImpiegati(dbPool);
+       // console.log(impiegati[0].id_account);
+        res.render("amministratore/DatiImpiegati.ejs", 
+            {impiegati : impiegati,
+            
+        })
 
-            res.render('amministratore/DatiImpiegati.ejs',{
-                'idaccount':idaccount,
-                'ruolo':ruolo,
-                'nome':nome,
-                'cognome':cognome
-                });
-
-            };
-        });
     }catch(error){
         req.session.alert={
             'style':'alert-warining',
             'message': error.message
         }
-        res.redirect('/amministratore/AreaPersonaleAmministratore');
+        res.redirect('/utente/amministratore/AreaPersonaleAmministratore');
 
     }
 };
-controller.postDatiImpiegati =async(req,res)=>{
-    var dbConnection= req.dbPool;
+
+
+/*controller.postDatiImpiegati =async(req,res)=>{
+    var dbPool= req.dbPool;
 
     try{
-        let impiegato= req.body.id_account;
+        console.log(req.body.id_account);
+        let impiegato = await accountModel.getAccount(dbPool, req.body.id_account);
+        console.log(impiegato[0].nome);
 
         req.render('amministratore/FormModifica.ejs',{
             'nome':impiegato.nome,
@@ -132,111 +139,144 @@ controller.postDatiImpiegati =async(req,res)=>{
     
         }         
 };
+*/
 
 controller.getFormModifica=async(req,res)=>{
-    res.render('/amministratore/FormModifica.ejs');
-}
-controller.postFormModifica=async(req,res)=>{
-    var dbPoolConncection=req.dbPool;
+    var dbPool =req.dbPool;
+    var id_account = req.params.id;
+   // console.log("sono su get modifica")
+   // console.log(req.params.id);
     
+    try{
+
+        var impiegato = await accountModel.getImpiegato(dbPool, id_account);
+
+        res.render("amministratore/FormModifica.ejs",{
+            impiegato: impiegato
+        });
+
+    }catch (error) {
+
+        req.session.alert = {
+            
+            'style' : 'alert-warning',
+            'message' : error.message
+        }    
+
+        res.redirect('/utente/amministratore/AreaPersonaleAmministratore')
+    }  
+   
+}
+
+
+controller.postFormModifica=async(req,res)=>{
+    var dbPool=req.dbPool;
+   // console.log(req.params.id);
     try{ 
-        await accountModel.modificaDati(
-            dbPoolConncection,
-            req.body.id_account,
+        await accountModel.modificaDatiImpiegato(
+            dbPool,
+            req.params.id,
             req.body.nome,
             req.body.cognome,
+            req.body.data_di_nascita,
+            req.body.num_telefono,
             req.body.email,
-            req.body.datadinascita,
             req.body.ruolo,
-            req.body.numerodicellulare,
-            req.body.codicepatente,
-            req.body.datarilasciopatente,
-            req.body.scadenzapatente,
-            req.body.tipipatente,
-            req.body.password,
+            req.body.codice_patente,
+            req.body.scadenza_patente,
             );
+            req.session.alert = {
+                'style' : 'alert-success',
+                'message' : "Dati dell'impiegato  modificati con successo!"
+            };
             
-            res.render('/amministratore/AreaPersonaleAmministratore');
+            res.redirect('/utente/amministratore/AreaPersonaleAmministratore');
        
     }catch(error){
         req.session.alert={
             'style' : 'alert-warning',
             'message' : error.message
         }
-        res.render('/amministratore/AreaPersonaleAmministratore');
+        res.redirect('/utente/amministratore/AreaPersonaleAmministratore');
     }
     
 }
-// SESSIONE?
 
-async function aggiornaSessioneAccount(dbConnection, session){
-
-    try {
-
-        session.account = await accountModel.getaccounnt(dbConnection, session.account.id);
-      //  session.account.ddn = convertitore.getDataTypeData(session.account.ddn);
-        
-    } catch(error) {
-
-        throw error;
-
-    }
-};
 
 //eliminaAccount
-controller.getFormFiltraggio= (req,res)=>{
-    res.render('amministratore/FormFiltraggio.ejs',{
-        'cognome':cognome,
-        'nome':nome,
-        'ruolo':ruolo
-    });
-};
+
+controller.getFormFiltraggio = (req,res) =>{
+
+    res.render('amministratore/FormFiltraggio.ejs');
+}
 
 controller.postFormFiltraggio = async(req,res)=>{
-    var dbConnection= req.dbPool;
+    var dbPool= req.dbPool;
+
     try{ 
-        await accountModel.getAccountsFiltrati( //account filtrati metodo da aggiugere al model account 
-            dbConnection,
+       var accounts =  await accountModel.getAccountsFiltrati( //account filtrati metodo da aggiugere al model account 
+            dbPool,
             req.body.nome,
             req.body.cognome,
             req.body.ruolo,
             );
-    res.render('amministratore/DatiAccount.ejs',{
-        'nome':nome,
-        'cognome':cognome,
-        'ruolo':ruolo
-    });
+        
+       // console.log(accounts);
+
+        res.render('amministratore/DatiAccount.ejs',{
+            accounts : accounts,
+        });
+
+
     }catch(error){
 
-       res.render('amministratore/DatiAccount.ejs');
+        req.session.alert={
+            'style' : 'alert-warning',
+            'message' : error.message
+        }
+        res.redirect('/utente/amministratore/AreaPersonaleAmministratore');
     }
 };
 
 
-controller.getDatiAccount = (req, res) => {  
-    res.render('amministratore/DatiAccount.ejs');   
-};
+controller.getDatiAccount = (req, res) => { 
+    let id= req.params.id; 
+   // console.log("sono su get " + id);
+    res.render('amministratore/Elimina.ejs',{
+        id : id,
+    });   
+}; 
 
 controller.postDatiAccount = async (req, res) => {  
-        var dbConnection= req.dbPool;
-    
-    
+        var dbPool= req.dbPool;
         try{
-            let id =req.body.id_account;
-            let account=await accountModel.getAccount(dbConnection,id);
+            
+            let id =req.params.id;
+            //console.log("sono su post  "+id);
 
             await accountModel.eliminaAccount(
-                    dbConnection,
-                    account,
+                    dbPool,
+                    req.params.id,
                 );
-            req.render('amministratore/AreaPersonaleAmminstratore.ejs');
+            
+            req.session.alert = {
+                'style' : 'alert-success',
+                'message' : "Account eliminato con successo!"
+                };
+            
+            res.redirect('/utente/amministratore/AreaPersonaleAmministratore');
                 
             }catch(error) { 
-    
-                req.render('amministratore/AreaPersonaleAmminstratore.ejs');
+
+                req.session.alert = {
+                    'style' : 'alert-warning',
+                    'message' : error.message
+                    };
+                
+                res.redirect('/utente/amministratore/AreaPersonaleAmministratore');
             } 
     
         
-    }
+    };
     
-module.exports = controller
+module.exports = controller;

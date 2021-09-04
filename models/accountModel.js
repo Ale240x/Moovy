@@ -9,7 +9,7 @@ var model = {};
 model.getAccount = async (dbPool, utenteId) => {
     
     try {
-        console.log("sono sul getAccount")
+       // console.log("sono sul getAccount")
         let query = util.promisify(dbPool.query).bind(dbPool);
 
         return (await query(`SELECT  
@@ -18,8 +18,8 @@ model.getAccount = async (dbPool, utenteId) => {
                                 account AS a,
                                 patenti AS p,
                                 carte_di_credito AS c
-                            WHERE a.id_account = p.ref_account AND c.ref_account = a.id_account
-                            AND a.id_account = ?`,
+                            WHERE a.id_account = p.ref_account OR c.ref_account = a.id_account
+                            OR a.id_account = ?`,
                             [utenteId]));
 
     } catch(error) {
@@ -28,6 +28,70 @@ model.getAccount = async (dbPool, utenteId) => {
     }
 };
 
+model.getImpiegato =async (dbPool, utenteId) =>{
+     
+    try{
+
+        let query = util.promisify(dbPool.query).bind(dbPool);
+
+        return (await query(`SELECT  
+                                *
+                            FROM 
+                                account AS a,
+                                patenti AS p
+                            WHERE a.id_account = p.ref_account AND a.id_account = ?`,
+                            [utenteId]));
+
+    }catch(err){
+
+        req.session.alert = {
+            
+            'style' : 'alert-warning',
+            'message' : error.message
+    
+        }    
+    
+    }
+
+}
+
+model.getAccountsImpiegati = async (dbPool) => {
+    
+    try {
+        //console.log("gli account degli impiegati");
+        let query = util.promisify(dbPool.query).bind(dbPool);
+
+        return (await query(`SELECT  
+                                *
+                            FROM 
+                                account AS a
+                            WHERE ruolo = ?  OR  ruolo =?`,
+                            ['Addetto', 'Autista']));
+
+    } catch(error) {
+
+        throw error;
+    }
+};
+
+model.getAccountsFiltrati = async (dbPool,nome, cognome, ruolo) => {
+    
+    try {
+        //console.log("gli account degli impiegati");
+        let query = util.promisify(dbPool.query).bind(dbPool);
+
+        return (await query(`SELECT  
+                                *
+                            FROM 
+                                account AS a
+                            WHERE a.nome = ? OR a.cognome = ? OR a.ruolo = ? OR a.ruolo= ?  OR a.ruolo= ? OR a.ruolo= ?`,
+                            [nome,cognome,ruolo, 'Autista','Addetto', 'Cliente']));
+
+    } catch(error) {
+
+        throw error;
+    }
+};
 
 //login
 model.login = async (dbPool, email, clearPassword) => {
@@ -57,16 +121,16 @@ model.login = async (dbPool, email, clearPassword) => {
             'SELECT password FROM account WHERE email = ?', 
             [email]));
         
-        console.log(utenteId[0].id_account);
+        //console.log(utenteId[0].id_account);
 
         let autenticated = (realPassword[0].password == clearPassword);
-        console.log("controllo effettuato!");
+       // console.log("controllo effettuato!");
         if(!autenticated){
-            console.log("autenticazione fallita")
+            //console.log("autenticazione fallita")
             throw {message : `Autenticazione fallita`};
         }
         else{
-            console.log("Autenticato con successo!")
+           // console.log("Autenticato con successo!")
             return (await model.getAccount(dbPool, utenteId[0].id_account)); 
         }
         
@@ -216,12 +280,12 @@ model.registrazioneImpiegato = async (dbPool, ruolo, nome, cognome, email, data_
 };
 
 //modifica dati Cliente
-model.modificaDatiCliente = async (dbPool, utenteId, num_telefono, codice_patente, scadenza_patente, tipo_a, tipo_b, tipo_am, tipo_a1, tipo_a2, numero_carta, scadenza_carta, cvv) => {
+model.modificaDatiCliente = async (dbPool,utenteId, nome, cognome,data_di_nascita, num_telefono,email,ruolo,  numero_carta, nome_intestatario, cognome_intestatario ,cvv , scadenza_carta,codice_patente, scadenza_patente, tipo_a, tipo_b, tipo_am, tipo_a1, tipo_a2) => {
 
     let query = util.promisify(dbPool.query).bind(dbPool);
 
     try{
-        if(
+        /*if(
             !(
                 checkDati.isEmail(email) &&
                 checkDati.controlloTel(num_telefono)&& //serve?
@@ -229,19 +293,16 @@ model.modificaDatiCliente = async (dbPool, utenteId, num_telefono, codice_patent
                 checkDati.controlloCarta(numero_carta) &&
                 checkDati.isInt(cvv)
     
-            )){}
+            )){} */
     
-        await query('UPDATE account SET nome = ?, cognome = ?, email = ?, data_di_nascita = ?, num_telefono = ? WHERE id_account = ?', 
-        [nome, cognome, email, data_di_nascita, num_telefono], [0]
-        );
+        await query('UPDATE account SET nome = ?, cognome = ?, num_telefono = ? WHERE id_account = ?', 
+        [nome, cognome, num_telefono,utenteId]);
     
-        await query('UPDATE patente SET codice_patente = ?, scadenza_patente = ?  tipo_a = ?, tipo_b = ?, tipo_am = ?, tipo_a1 = ?, tipo_a2 = ? WHERE id_account = ?', 
-        [codice_patente, scadenza_patente, tipo_a, tipo_b, tipo_am, tipo_a1, tipo_a2, utenteId], [0]
-        );
+        await query('UPDATE patenti SET codice_patente = ?, scadenza_patente = ?  WHERE ref_account = ?', 
+        [codice_patente, scadenza_patente, utenteId]);
 
-        await query('UPDATE carta_di_credito SET numero_carta = ?, scadenza_carta = ?, cvv = ? WHERE id_account = ?', 
-        [numero_carta, scadenza_carta, cvv, utenteId], [0]
-        );
+        await query('UPDATE carte_di_credito SET numero_carta = ?,nome_intestatario = ?, cognome_intestatario = ?, cvv = ?,  scadenza_carta = ? WHERE ref_account = ?', 
+        [ numero_carta, nome_intestatario, cognome_intestatario ,cvv , scadenza_carta, utenteId]);
 
     } catch (error) {
 
@@ -251,28 +312,25 @@ model.modificaDatiCliente = async (dbPool, utenteId, num_telefono, codice_patent
 };
 
 //modifica dati impiegati 
-model.modificaDatiImpiegato = async (dbPool, utenteId, nome, cognome, email, data_di_nascita, num_telefono, nuovaClearPassword, codice_patente, scadenza_patente) => {
+model.modificaDatiImpiegato = async (dbPool, utenteId, nome, cognome, data_di_nascita, num_telefono , email,ruolo, codice_patente, scadenza_patente,tipi_patente) => {
 
     let query = util.promisify(dbPool.query).bind(dbPool);
 
     try{
-        if(
+       /* if(
             !(
                 checkDati.letteraMaiuscola(nome) &&
                 checkDati.letteraMaiuscola(cognome) &&
                 checkDati.isEmail(email) &&
                 checkDati.controlloTel(num_telefono)&&
-                checkDati.controlloPassword(nuovaClearPassword) &&
                 checkDati.controlloPatente(codice_patente)
-            )){}
+            )){}*/
     
-        await query('UPDATE account SET nome = ?, cognome = ?, email = ?, data_di_nascita = ?, num_telefono = ? WHERE id_account = ?', 
-        [nome, cognome, email, data_di_nascita, num_telefono], [0]
-        );
+        await query('UPDATE account SET nome = ?, cognome = ?, num_telefono = ?, email = ?, ruolo = ? WHERE id_account = ?', 
+        [nome, cognome, email,ruolo, data_di_nascita, num_telefono, utenteId]);
     
-        await query('UPDATE patente SET codice_patente = ?, scadenza_patente = ?  tipo_a = ?, tipo_b = ?, tipo_am = ?, tipo_a1 = ?, tipo_a2 = ? WHERE id_account = ?', 
-        [codice_patente, scadenza_patente, tipo_a, tipo_b, tipo_am, tipo_a1, tipo_a2, utenteId], [0]
-        );
+        await query('UPDATE patenti SET codice_patente = ?, scadenza_patente = ?  WHERE ref_account = ?', 
+        [codice_patente, scadenza_patente, utenteId]);
 
     } catch (error) {
 
@@ -285,15 +343,10 @@ model.modificaDatiImpiegato = async (dbPool, utenteId, nome, cognome, email, dat
 model.eliminaAccount = async (dbPool, utenteId) => {
     
     try {
-        if(!(
-            validatoreDati.isInt(utenteId)
-            )){
-            throw {message:  'Argomento non valido'}
-        }
 
     let query = util.promisify(dbPool.query).bind(dbPool);
-    
-    await query(`DELETE * FROM account WHERE id = ?`, [utenteId] 
+    //console.log("sono su eliminaAccount -> model");
+    await query(` DELETE  FROM account WHERE id_account = ? `, [utenteId] 
     );
 
     } catch(error) {
