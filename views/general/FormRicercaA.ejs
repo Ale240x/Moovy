@@ -87,23 +87,16 @@
                     <div class="row">
                         <div class="col-sm-4 mx-auto">
                             <label for="dataRitiro">Data di ritiro</label>
-                            <input type="datetime-local" class="form-control" id="dataRitiro" name="data_ritiro" min="<%= new Date().toISOString().slice(0, 16) %>" required> 
+                            <input type="datetime-local" class="form-control" id="dataRitiro" name="data_ritiro" 
+                            onfocus="calcolaDataMin()" required>                            
                         </div>
                         <div class="col-sm-4 mx-auto mt-2">
                             <label for="dataRiconsegna">Data di riconsegna</label>
-                            <input type="datetime-local" class="form-control" id="dataRiconsegna" name="data_riconsegna" onfocus="validateDate()" required>
+                            <input type="datetime-local" class="form-control" id="dataRiconsegna" name="data_riconsegna" 
+                            onfocus="validateDate()" required>
                         </div>
-                        <!--<div class="col-sm-4 mx-auto">
-                            <label for="oraRitiro">Ora di ritiro</label>
-                            <input type="time" class="form-control" id="oraRitiro" name="oraRitiro" required>
-                        </div>-->
                     </div>
                     <div class="row">
-                        
-                        <!--<div class="col-sm-4 mx-auto mt-2">
-                            <label for="oraRiconsegna">Ora di riconsegna</label>
-                            <input type="time" class="form-control" id="oraRiconsegna" name="oraRiconsegna" required>
-                        </div>-->
                     </div>
                     <% if(tipo_veicolo == 'Automobile'){ %>
                         <div class="col-md-4 mb-4 col-form-label mx-auto">
@@ -177,6 +170,17 @@
             }
 
             $('#dataRiconsegna').attr('min', date);
+        }
+
+        function calcolaDataMin(){ //prenotazione almeno mezz'ora prima dell'effettivo noleggio
+            console.log(new Date());
+            data = new Date().getTime();
+            console.log(data);
+            min = data + (1000*60*30) + (2*1000*3600); //+ 2 ore per il formato ISO che è indietro di due
+            console.log(min);
+            dMin = new Date(min).toISOString().slice(0, 16);
+            console.log(dMin);
+            $('#dataRitiro').attr('min', dMin);
         }
         
     </script>
@@ -454,7 +458,9 @@
 
         function salvaDati(){
             
-            
+            if(sessionStorage.prezzo_stimato == undefined){ //se non c'è autista
+            sessionStorage.setItem('prezzo_stimato', 'da calcolare');
+            }
             if(sessionStorage.autista == 1){
                 sessionStorage.setItem('luogo_partenza', $('#luogoPartenza').val());
                 sessionStorage.setItem('luogo_arrivo', $('#luogoArrivo').val());

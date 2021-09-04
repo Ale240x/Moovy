@@ -301,7 +301,7 @@ async function recuperoPasswordEmail(transporter, email, codice ){
         Recupera Password.
         <br>
         Gentile Utente,
-        ecco il codice ${codice} per resettare la tua password;
+        ecco il codice ${codice} per resettare la sua password;
         <br>
         <br>
         Saluti,

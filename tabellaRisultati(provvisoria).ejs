@@ -1,0 +1,14 @@
+<table class="table table-hover"> //tutto questo dentro l'else
+    <tbody>
+
+<% veicoli.forEach( (veicolo) => { %>
+
+        <tr>
+            <td><a href="/TipoVeicoli/FormA/RisultatiRicerca/<%= veicolo.id_veicolo %>/InfoVeicolo"><%= veicolo.nome_veicolo %></a></td>
+
+        <td><%= veicolo.tariffa %>€ / ora</td>
+        </tr> 
+    
+<% }) %>
+    </tbody>
+</table>    
