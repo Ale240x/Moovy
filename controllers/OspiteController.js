@@ -71,10 +71,9 @@ controller.postAutenticazione = async (req, res) => {
     try {
   
         let attempt = req.body;
-        console.log("sono sul controller")
-        console.log(attempt);
+
         req.session.utente = await accountModel.login(req.dbPool, attempt.email, attempt.password); 
-        console.log(req.session.utente[0].ruolo);
+        //console.log(req.session.utente[0].ruolo);
         
         if(req.session.utente[0].ruolo == "Cliente"){ // Cliente 
                     

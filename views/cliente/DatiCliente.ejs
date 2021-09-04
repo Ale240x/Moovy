@@ -7,108 +7,141 @@
     <!--Navbar-->
     <%- include('../partials/navbarClie.ejs') %>
 
-    <form action="/formModifica" method="POST">
+    <form action="/utente/cliente/AreaPersonaleCliente/formModifica" method="POST">
         <div class="container my-5 text-center" style="max-width: 580px;">
 
         <legend style="text-align: center; font-size:150%">Modifica Dati</legend>
         <div class="container my-5 text-left" style="max-width: 580px;">
+            <legend style="text-align:center; font-size:medium;">Dati generali</legend>
         <div class="mb-3">
             <label for="nome" class="form-label">Nome</label>
-            <input type="text" class="form-control form-control-md"  placeholder="Nome" id="nome" name="nome" value="<%= utente.nome %>">
+            <input type="text" class="form-control form-control-md"  placeholder="Nome" id="nome" name="nome" value="<%= utente[0].nome %>">
         </div>
         <div class="mb-3">
             <label for="cognome" class="form-label">Cognome</label>
-            <input type="text" class="form-control form-control-md"  placeholder="Cognome" id="cognome" name="cognome" value="<%= utente.cognome %>" >
+            <input type="text" class="form-control form-control-md"  placeholder="Cognome" id="cognome" name="cognome" value="<%= utente[0].cognome %>" >
         </div>
         <div class="mb-3">
             <label for="dataNascita" class="form-label">Data di nascita</label>
-           <input class="form-control" type="text" name="dataNascita" id="dataNascita" value="<%= utente.data_di_nascita %>" aria-label="Disabled input example"  readonly>
+           <input class="form-control" type="text" name="dataNascita" id="dataNascita"  value="<%= utente[0].data_di_nascita %>" aria-label="Disabled input example"  readonly>
         </div>
         <div class="mb-3">
-            <label for="phoneNumber" class="form-label">Numero di cellulare</label>
-            <input type="tel" id="phoneNumber" name="phoneNumber" value="" class="form-control form-control-md" placeholder="Numero di telefono" value="<%= utente.numero_di_telefono %>">
+            <label for="num_telefono" class="form-label">Numero di cellulare</label>
+            <input type="tel" id="num_telefono" name="num_telefono"  class="form-control form-control-md" placeholder="Numero di telefono" value="<%= utente[0].num_telefono %>">
+        </div>
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" id="email" name="email"  class="form-control form-control-md" placeholder="email" value="<%= utente[0].email %>" readonly>
+        </div>
+        <div class="mb-3">
+            <label for="ruolo" class="form-label">Ruolo</label>
+            <input type="text" class="form-control form-control-md" id="ruolo" name="ruolo" value="<%= utente[0].ruolo %>" readonly>
         </div>
         <div class="mb-3 my-4">
             <legend style="text-align:center; font-size:medium;">Metodo di pagamento</legend>
-            <label for="cardNumber" class="form-label">Numero della carta</label>
-            <input type="text" id="cardNumber" name="cardNumber" value="" class="form-control form-control-md" placeholder="Numero della carta" >
+            <label for="numero_carta" class="form-label">Numero della carta</label>
+            <input type="text" id="numero_carta" name="numero_carta" value="<%= utente[0].numero_carta %>" class="form-control form-control-md" placeholder="Numero della carta" >
         </div>
         <div class="mb-3">
-            <label for="nomeIntes" class="form-label">Nome dell'intestatario</label>
-            <input type="text" id="nomeIntes" name="nomeIntes" value="" class="form-control form-control-md" placeholder="Nome dell'intestatario">
+            <label for="nome_intestatario" class="form-label">Nome dell'intestatario</label>
+            <input type="text" id="nome_intestatario" name="nome_intestatario" value="<%= utente[0].nome_intestatario %>" class="form-control form-control-md" placeholder="Nome dell'intestatario">
         </div>
         <div class="mb-3">
-            <label for="cognomeIntes" class="form-label">Cognome dell'intestatario</label>
-            <input type="text" id="cognomeIntes" name="cognomeIntes" value="" class="form-control form-control-md" placeholder="Cognome dell'instestatario">
+            <label for="cognome_intestatario" class="form-label">Cognome dell'intestatario</label>
+            <input type="text" id="cognome_intestatario" name="cognome_intestatario" value="<%= utente[0].cognome_intestatario %>" class="form-control form-control-md" placeholder="Cognome dell'instestatario">
         </div>
         <div class="mb-3">
             <label for="cvv" class="form-label">cvv</label>
-            <input type="number" id="cvv" name="cvv" value="" class="form-control form-control-md" placeholder="cvv">
+            <input type="number" id="cvv" name="cvv" value="<%= utente[0].cvv %>" class="form-control form-control-md" placeholder="cvv">
         </div>
         <div class="mb-3">
             <div class="form-outline">
-                <label class="form-label" for="scadenzaCarta">Scadenza della carta</label>
-                <input type="date" id="scadenzaCarta" name="scadenzaCarta" value="" class="form-control form-control-md">
+                <label class="form-label" for="scadenza_carta">Scadenza della carta</label>
+                <input type="text" id="scadenza_carta" name="scadenza_carta" placeholder="mm-yyyy" value="<%= utente[0].scadenza_carta %>" class="form-control form-control-md">
             </div>     
         </div>    
         <div class="mb-3 my-3">
             <legend style="text-align:center; font-size:medium;">Patente</legend>
-            <label for="codicePatente" class="form-label">Codice patente</label>
-            <input type="name" id="codicePatente" name="codicePatente" value="" class="form-control form-control-md" placeholder="Codice patente">
+            <label for="codice_patente" class="form-label">Codice patente</label>
+            <input type="name" id="codice_patente" name="codice_patente" value="<%= utente[0].codice_patente %>" class="form-control form-control-md" placeholder="Codice patente">
         </div>
         <div class="mb-3">
             <div class="form-outline">
                 <label class="form-label" for="dataRilascio">Data di rilascio patente</label>
-                <input type="date" id="dataRilascio" name="dataRilascio" value="" class="form-control form-control-md"  />
+                <input type="text" id="dataRilascio" name="dataRilascio" value="" placeholder="dd-mm-yyyy" class="form-control form-control-md"  />
             </div> 
         </div>  
         <div class="mb-3">
             <div class="form-outline">
-                <label class="form-label" for="dataScadenza">Scadenza patente</label>
-                <input type="date" id="dataScadenza" name="dataScadenza" value="" class="form-control form-control-md"  />
+                <label class="form-label" for="scadenza_patente">Scadenza patente</label>
+                <input type="text" id="scadenza_patente" name="scadenza_patente" placeholder="dd-mm-yyyy" value="<%= utente[0].scadenza_patente %>" class="form-control form-control-md"  />
               </div> 
         </div>
+        <!--
         <div class="mb-3;  btn-group text-center" style="width:100%">
             <button class="btn dropdown-toggle  btn-success " style="width:100%" type="button" data-toggle="dropdown"
                aria-haspopup="true" aria-expanded="false">Tipi</button>                       
             <div class="dropdown-menu " >
             <a class="dropdown-item ">
             <div class="custom-control custom-checkbox ">
-            <input type="checkbox" class="custom-control-input" id="AM">
-            <label class="custom-control-label" for="AM">AM</label>
+            <input type="checkbox" class="custom-control-input" id="AM" pattern="^[01]" value ="<%= utente[0].tipo_am %>"  >
+            <label class="custom-control-label" for="AM"  >AM</label>
             </div>
             </a>
             <a class="dropdown-item" href="#">
             <div class="custom-control custom-checkbox">
-            <input type="checkbox" class="custom-control-input" id="A" >
-            <label class="custom-control-label"for="A">A</label>
+            <input type="checkbox" class="custom-control-input" id="A" value ="<%= utente[0].tipo_a %>" >
+            <label class="custom-control-label"for="A"  >A</label>
             </div>
             </a>
             <a class="dropdown-item" href="#">
             <div class="custom-control custom-checkbox">
-            <input type="checkbox" class="custom-control-input" id="A1">
-            <label class="custom-control-label" for="A1">A1</label>
+            <input type="checkbox" class="custom-control-input" id="A1" value ="<%= utente[0].tipo_a1 %>">
+            <label class="custom-control-label" for="A1"  >A1</label>
             </div>
             </a>
             <a class="dropdown-item" href="#">
             <div class="custom-control custom-checkbox">
-            <input type="checkbox" class="custom-control-input" id="A2">                
-            <label class="custom-control-label" for="A2">A2</label>
+            <input type="checkbox" class="custom-control-input" id="A2" value ="<%= utente[0].tipo_a2 %>">                
+            <label class="custom-control-label" for="A2"  >A2</label>
             </div>
             </a>
             <a class="dropdown-item" href="#">
             <div class="custom-control custom-checkbox">
-            <input type="checkbox" class="custom-control-input" id="B" >
-            <label class="custom-control-label" for="B">B</label>
+            <input type="checkbox" class="custom-control-input" id="B" value ="<%= utente[0].tipo_b %>"  >
+            <label class="custom-control-label" for="B" >B</label>
             </div>
             </a>
             </div>
         </div>
+        -->
         <div class="container my-5 text-center">
-            <button type="Torna in dietro" class="btn btn-success"style="">Indietro</button>
-            <button type="submit" class="btn btn-success"style="">Conferma</button>
+            <button type="button" class="btn btn-success"style="">Indietro</button>
+            <button type="submit" id ="conferma"  class="btn btn-success"style="">Conferma</button>
         </div>
       </form>
+
+<!--<script>
+$(document).ready ( ()=>{
+
+    $("#conferma").on('input', () => {
+        am= $('#AM');
+        a1= $('#A1');
+        a2= $('#A2');
+        a= $('#A');
+        b= $('#B');
+        $(am.val()== '1').each(function () {
+            var ischecked = $(this).is(":checked");
+            if (ischecked) {
+                checkbox_value += $(this).val() + ",";
+            }
+        });
+        alert(checkbox_value);
+    });
+    
+})  
+</script> -->
+      
 <!--footer--> 
 <%- include('../partials/footer.ejs') %>
 </body>

@@ -10,6 +10,8 @@ var router = express.Router();
 router.use("", (req,res,next) =>{
     var utente = req.session.utente;
 
+    //console.log(utente[0].ruolo);
+
     if(utente[0].ruolo == 'Cliente'){
         next();  
     }

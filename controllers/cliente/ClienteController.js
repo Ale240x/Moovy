@@ -64,66 +64,44 @@ controller.getInfoPrenotazione = async (req, res) => {
 
 
 //Per la modifica dei dati personali del cliente
-controller.getModificaDati = (req, res) => {  
-
-    var dbPool = req.dbPool;
-    var utente = accountModel.getAccount(dbPool, req.session.utente[0].id_account)
-    console.log(utente[0].nome);
-
-    try{
-        
-        res.render('cliente/DatiCliente.ejs',
-        utente);  
-    
-
-    }catch(err){
-        throw err;
-    }
-
-     
+controller.getModificaDati = (req, res) => {          
+        res.render('cliente/DatiCliente.ejs');   
 };
 
 controller.postModificaDati = async (req, res) => {  
-
-    // connessione + richiama autenticazione utente
     var dbPool = req.dbPool;
-    var utente = req.session.utente;
-    var modifiche = req.body.account;
-
+    // connessione + richiama autenticazione utente
     try {
-        
+       
+        var utente = req.session.utente;
+               
             await accountModel.modificaDatiCliente(
                 dbPool,
+                req.session.utente[0].id_account,
                 req.body.nome,
                 req.body.cognome,
+                req.body.data_di_nascita,
+                req.body.num_telefono, 
                 req.body.email,
-                req.body.dataNascita,
-                req.body.numeroTelefono,
-                req.body.password, 
-                req.body.codicePatente,
-                req.body.dataScadenza,
-                req.body.a,
-                req.body.b,
-                req.body.am,
-                req.body.a1,
-                req.body.a2, 
-                req.body.numeroCarta,
-                req.body.nomeIntestatario, // Da mettere?
-                req.body.cognomeIntestatario,// Da mettere?
-                req.body.scadenzaCarta,
-                req.body.cvv,    
-                
+                req.body.ruolo,
+                req.body.numero_carta,
+                req.body.nome_intestatario,
+                req.body.cognome_intestatario,
+                req.body.cvv,
+                req.body.scadenza_carta,
+                req.body.codice_patente,
+                req.body.scadenza_patente,                
                 );
         
-
-        await aggiornaSessioneUtente(req.dbConnection, req.session);
+        
+        await aggiornaSessioneUtente(req.dbPool, req.session);
         
         req.session.alert = {
             'style' : 'alert-success',
             'message' : 'Dati utente modificati con successo'
         };
 
-        res.redirect('/AreaPersonaleCliente');
+        res.redirect('/utente/cliente/AreaPersonaleCliente');
         
     } catch (error) {
 
@@ -132,12 +110,12 @@ controller.postModificaDati = async (req, res) => {
             'message' : error.message
         }
 
-        res.redirect('/utente/cliente'); //o '' ?
+        res.redirect('/utente/cliente/AreaPersonaleCliente'); 
 
     }
 }; 
 
-async function aggiornaSessioneUtente(dbConnection, session){
+async function aggiornaSessioneUtente(dbPool, session){
 
     try {
 
