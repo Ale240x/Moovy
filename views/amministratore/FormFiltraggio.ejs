@@ -1,68 +1,33 @@
 <!DOCTYPE html>
 <html lang="it">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <head>
+        <%- include('../partials/head.ejs') %>
 
-    <link rel="icon" href="../../public/images/logo1.png">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <title>Moovy</title>
 
-    <title>Moovy</title>
- </head>
-<body>
-    <img class="img-fluid" src="../../public/images/banner2.png" width="100%">
+      </head>
     
-    <!--Navbar-->
-    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: rgba(3, 78, 13, 0.795);">
-        <a class="navbar-brand" href="#"><img class="img-fluid" src="../../public/images/logo1.png" width="50px"></a>
-        <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#collapsibleNavId" aria-controls="collapsibleNavId"
-            aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="collapsibleNavId">
-            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-                <li class="nav-item active">
-                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Area Personale</a>
-                </li>  
-            </ul>
-            <ul class="navbar-nav justify-content-end">
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Logout</a>
-                </li>
-            </ul>
-        </div>
-    </nav>
+      <body>
+        <%- include('../partials/navbarAmm.ejs') %>
     <!--Navbar-->
 
-    <form>
+    <form action="/utente/amministratore/AreaPersonaleAmministratore/datiAccounts" method="POST" >
         <div class="container my-5 text-center" style="max-width: 580px;">
             <legend style="text-align:center; font-size:150%;">Form Filtraggio Account</legend>
         <div class=" mb-3 my-3" style="max-width: 580px;">
-            <label for="name" class="form-label">Cognome</label>
-            <input type="text" class="form-control form-control-md" placeholder="Cognome">
+            <label for="cognome" class="form-label">Cognome</label>
+            <input type="text" class="form-control form-control-md" id="cognome" name="cognome" placeholder="Cognome">
         </div>
         <div class=" mb-3 my-3" style="max-width: 580px;">
-            <label for="name" class="form-label">Nome</label>
-            <input type="text" class="form-control form-control-md" placeholder="Nome">
+            <label for="nome" class="form-label">Nome</label>
+            <input type="text" class="form-control form-control-md" id="nome" name="nome" placeholder="Nome">
         </div>
-            <div class="input-group mb-3 my-3 text-center" style="max-width: 580px;">
-                <select class="custom-select" id="inputGroupSelect01">
-                  <option selected>Seleziona ruolo </option>
-                  <option value="1">Autista</option>
-                  <option value="2">Addetto</option>
-                  <option value="2">Cliente</option>
-                </select>
-            </div>
+        <div class=" mb-3 my-3" style="max-width: 580px;">
+            <label for="ruolo" class="form-label">Ruolo</label>
+            <input type="text" class="form-control form-control-md" id="ruolo" name="ruolo" placeholder="Ruolo">
         </div>
         <div class="container my-5 text-center">
-            <button type="conferma" class="btn btn-success"style="">Conferma</button>
+            <button type="submit" class="btn btn-success"style="">Filtra</button>
         </div>
       </form>
 <!--footer-->   

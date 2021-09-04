@@ -91,32 +91,32 @@ controller.postAutenticazione = async (req, res) => {
             req.session.alert = {
   
                 'style' : 'alert-success',
-                'message' : 'Benvenuto su Moovy! ' + req.session.utente.nome,
+                'message' : 'Benvenuto su Moovy! ' + req.session.utente[0].nome,
             
             };
-            res.render('amministratore/areaPersonaleAmm.ejs');
-            //res.redirect('/utente/amministratore/AreaPersonaleAmm'); 
+            //res.render('amministratore/areaPersonaleAmm.ejs');
+            res.redirect('/utente/amministratore/AreaPersonaleAmministratore'); 
         }
         else if(req.session.utente[0].ruolo == "Autista"){
        
           req.session.alert = {
   
               'style' : 'alert-success',
-              'message' : 'Benvenuto su Moovy!' + req.session.utente.nome,
+              'message' : 'Benvenuto su Moovy!' + req.session.utente[0].nome,
           
           };
-          res.render('autista/areaPersonaleAut.ejs');
-         // res.redirect('/utente/autista/AreaPersonaleAut'); 
+         // res.render('autista/areaPersonaleAut.ejs');
+          res.redirect('/utente/autista/AreaPersonaleAutista'); 
       }
       else {
           req.session.alert = {
   
               'style' : 'alert-success',
-              'message' : 'Benvenuto su Moovy!' + req.session.utente.nome,
+              'message' : 'Benvenuto su Moovy!' + req.session.utente[0].nome,
           
           };
-          res.render('addetto/areaPersonaleAdd.ejs');
-         // res.redirect('/utente/addetto/AreaPersonaleAdd'); 
+          //res.render('addetto/areaPersonaleAdd.ejs');
+          res.redirect('/utente/addetto/AreaPersonaleAddetto'); 
       }
       
   

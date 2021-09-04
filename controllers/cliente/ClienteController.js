@@ -4,9 +4,9 @@ const prenotazioneModel = require('../../models/prenotazioneModel');
 var controller = {}; //assegna al controller un valore nullo
 
 //Regione Area Personale Cliente
-
+//schermata iniziale dopo l'autenticazione Cliente
 controller.getSchermataIniziale = (req, res) => {  
-    res.render('general/HomeAutenticato.ejs');   
+    res.render('cliente/HomeAutenticatoCliente.ejs');   
 };
 //logout.ejs non serve? 
 controller.getLogout = (req, res) => {  
@@ -18,7 +18,7 @@ controller.getDisconnetti = (req, res) => {
     
     req.session.destroy();
     res.clearCookie("SID");
-    res.redirect("/");
+    res.redirect("/"); //ospite
 };
 controller.getAreaPersonaleCliente = (req, res) => {  
     res.render('cliente/areaPersonaleC.ejs');   
