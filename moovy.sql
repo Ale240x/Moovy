@@ -176,9 +176,24 @@ CREATE TABLE `veicoli` (
 --
 
 INSERT INTO `veicoli` (`id_veicolo`, `nome_veicolo`, `tipo_veicolo`, `modello_auto`, `modello_moto`, `patente_richiesta`, `stato_veicolo`, `ref_parcheggio`, `posizione`, `tariffa`, `descrizione`, `immagine`) VALUES
-(53626, 'Dacia Duster', 'Automobile', 'Suv', NULL, 'tipo_b', NULL, 'Parcheggio Basile', '', 6, 'Suv 4x4-Cambio Manuale-Carburante: Benzina', '/images/carosello1.jpeg'),
-(198730, 'Xiaomi', 'Monopattino', NULL, NULL, NULL, NULL, 'Parcheggio Calatafimi', '', 2, '', '/images/xiaomi.jpg'),
-(663481, 'Rockrider', 'Bicicletta', NULL, NULL, NULL, NULL, NULL, 'Via Libertà, 12', 2, '', '/images/rockrider.jpg');
+(536264, 'Dacia Duster', 'Automobile', 'Suv', NULL, 'tipo_b', NULL, 'Parcheggio Basile', '', 6, 'Suv 4x4-Cambio Manuale-Carburante: Benzina', '/images/carosello1.jpeg'),
+(198730, 'Xiaomi', 'Monopattino', NULL, NULL, NULL, NULL, 'Parcheggio Calatafimi', '', 2, 'Monopattino elettrico', '/images/xiaomi.jpg'),
+(395737, 'Obi', 'Monopattino', NULL, NULL, NULL, NULL, 'Parcheggio Calatafimi', '', 2, 'Monopattino elettrico', '/images/obi.jpg'),
+(663481, 'Rockrider nera', 'Bicicletta', NULL, NULL, NULL, NULL, NULL, 'Parcheggio Oreto', 2, 'Mountain Bike', '/images/rockrider.jpg'),
+(652964, 'Rockrider gialla', 'Bicicletta', NULL, NULL, NULL, NULL, NULL, 'Parcheggio Oreto', 2, 'Mountain Bike', '/images/rockrider.jpg'),
+(288634, 'Ducati Multistrada V4', 'Moto', NULL, 'Adventure - 1200cc', 'tipo_a', NULL, 'Parcheggio Roma', '', 5, 'Moto Adventure da 1200cc-Patente richiesta: A-Carburante: Benzina', '/images/Ducati-Multistrada.jpg'),
+(172946, 'Citroen C3', 'Automobile', 'Utilitaria', NULL, 'tipo_b', NULL, 'Parcheggio Oreto', '', 4, 'Utilitaria 5 porte-Cambio Manuale-Carburante: Benzina', '/images/C3.jpg'),
+(302750, 'Yamaha Tracer 900', 'Moto', NULL, 'Turistica - 600cc', 'tipo_a2', NULL, 'Parcheggio Roma', '', 6, 'Moto Turistica da 600cc-Patente richiesta: A2-Carburante: Benzina', '/images/Yamaha-Tracer-900.jpg'),
+(302864, 'Suzuki VStrom 650XT', 'Moto', NULL, 'Turistica - 600cc', 'tipo_a2', NULL, 'Parcheggio Roma', '', 5, 'Moto Turistica da 600c-Patente richiesta: A2-Carburante: Benzina', '/images/Suzuki-VStrom-650XT.jpg'),
+(692682, 'Yamaha Super Teneré XT1200Z', 'Moto', NULL, 'Adventure - 1200cc', 'tipo_a', NULL, 'Parcheggio Roma', '', 6, 'Moto Adventure da 1200cc-Patente richiesta: A-Carburante: Benzina', '/images/Yamaha-Super-Tenere-XT1200Z.jpg'),
+(174026, 'Nissan Qashqai', 'Automobile', 'Suv', NULL, 'tipo_b', NULL, 'Parcheggio Basile', '', 6, 'Suv 5 porte-Cambio Manuale-Carburante: Benzina', '/images/Nissan-Qashqai.jpg'),
+(283649, 'Fiat 500', 'Automobile', 'Utilitaria', NULL, 'tipo_b', NULL, 'Parcheggio Oreto', '', 5, 'Utilitaria 5 porte-Cambio Manuale-Carburante: Benzina', '/images/fiat-500.jpg'),
+(156780, 'BMW Serie 3', 'Automobile', 'Berlina', NULL, 'tipo_b', NULL, 'Parcheggio Basile', '', 4, 'Berlina 5 porte-Cambio Manuale-Carburante: Benzina', '/images/bmw-serie-3.jpg'),
+(201936, 'Audi A4', 'Automobile', 'Berlina', NULL, 'tipo_b', NULL, 'Parcheggio Basile', '', 4, 'Berlina 5 porte-Cambio Manuale-Carburante: Benzina', '/images/Audi-A4.jpg'),
+(729264, 'Piaggio Liberty 125 ABS', 'Moto', NULL, 'Scooter - 125cc', 'tipo_a1', NULL, 'Parcheggio Calatafimi', '', 4, 'Scooter da 125cc-Patente richiesta: A1-Carburante: Benzina', '/images/piaggio-liberty-abs-125.jpg'),
+(203847, 'Honda Sh 125i', 'Moto', NULL, 'Scooter - 125cc', 'tipo_a1', NULL, 'Parcheggio Calatafimi', '', 4, 'Scooter da 125cc-Patente richiesta: A1-Carburante: Benzina', '/images/honda-sh-125i.jpg'),
+(109364, 'Vespa Primavera', 'Moto', NULL, 'Ciclomotore - 50cc', 'tipo_am', NULL, 'Parcheggio Oreto', '', 3, 'Ciclomotore da 50cc-Patente richiesta: AM-Carburante: Benzina', '/images/Vespa-Primavera.jpg'),
+(457239, 'Piaggio Liberty 2T', 'Moto', NULL, 'Ciclomotore - 50cc', 'tipo_am', NULL, 'Parcheggio Oreto', '', 3, 'Ciclomotore da 50cc-Patente richiesta: AM-Carburante: Benzina', '/images/Piaggio-Liberty-2T.jpg');
 
 --
 -- Indici per le tabelle scaricate
