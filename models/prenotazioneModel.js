@@ -2,6 +2,28 @@ const util = require("util");
 
 var model = {};
 
+model.getPrenotazione = async (dbPool, prenotazioneId) => {
+    
+    try {
+       // console.log("sono sul get prenotazione")
+        let query = util.promisify(dbPool.query).bind(dbPool);
+
+        return (await query(`SELECT
+                                *
+                            FROM 
+                                prenotazioni 
+
+                            WHERE id_prenotazione = ?`,
+                            [prenotazioneId])); 
+
+    } catch(error) {
+
+        throw error;
+    }
+};
+
+
+
 model.aggiungiPrenotazione = async (dbPool, ref_cliente, ref_autista, tipo_veicolo, ref_veicolo, mancia, data_ritiro, data_riconsegna, luogo_ritiro, luogo_riconsegna, prezzo_stimato) => {
 
     try{
@@ -153,7 +175,7 @@ model.modificaPrenotazione = async (dbPool, id_prenotazione, data_riconsegna, lu
                 WHERE id_prenotazione = ? `,
                 [data_riconsegna, luogo_riconsegna, id_prenotazione]
             );
-            console.log('Dati prenotazione aggiornati con successo');
+           // console.log('Dati prenotazione aggiornati con successo');
     }
     catch(error){
         throw error;

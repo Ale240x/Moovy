@@ -11,6 +11,13 @@ controller.getSchermataIniziale = (req, res) => {
 
 };
 
+controller.getDisconnetti = (req, res) => {
+
+    req.session.destroy();
+    res.clearCookie("SID");
+    res.redirect("/");  //ospite
+};
+
 controller.getRegistrazioneCliente = (req, res) => {  
 
     res.render('general/RegistrazioneForm.ejs');   
@@ -63,7 +70,9 @@ controller.postRegistrazioneCliente = async (req, res) => {
 
 
 controller.getAutenticazione = (req, res) => { 
-  res.render('general/loginForm.ejs');   
+  res.render('general/loginForm.ejs');
+  
+   
 };
 
 controller.postAutenticazione = async (req, res) => {
@@ -71,9 +80,9 @@ controller.postAutenticazione = async (req, res) => {
     try {
   
         let attempt = req.body;
-
         req.session.utente = await accountModel.login(req.dbPool, attempt.email, attempt.password); 
-        //console.log(req.session.utente[0].ruolo);
+        
+
         
         if(req.session.utente[0].ruolo == "Cliente"){ // Cliente 
                     

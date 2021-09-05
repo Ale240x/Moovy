@@ -9,7 +9,7 @@ var model = {};
 model.getAccount = async (dbPool, utenteId) => {
     
     try {
-       // console.log("sono sul getAccount")
+        //console.log("sono sul getAccount " + utenteId)
         let query = util.promisify(dbPool.query).bind(dbPool);
 
         return (await query(`SELECT  
@@ -18,8 +18,8 @@ model.getAccount = async (dbPool, utenteId) => {
                                 account AS a,
                                 patenti AS p,
                                 carte_di_credito AS c
-                            WHERE a.id_account = p.ref_account OR c.ref_account = a.id_account
-                            OR a.id_account = ?`,
+                            WHERE a.id_account = p.ref_account AND a.id_account = c.ref_account 
+                            AND a.id_account = ?`,
                             [utenteId]));
 
     } catch(error) {

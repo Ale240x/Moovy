@@ -2,27 +2,27 @@ const accountModel = require('../../models/accountModel');
 const prenotazioneModel = require('../../models/prenotazioneModel');
 const util = require("util");
 const { render } = require('ejs');
-const { SSL_OP_ALLOW_UNSAFE_LEGACY_RENEGOTIATION } = require('constants');
+//const { SSL_OP_ALLOW_UNSAFE_LEGACY_RENEGOTIATION } = require('constants');
 ////const convertitore = require('');
 
 var controller ={};
 
 //Gestione Prenotazioni
 
-controller.getAreaPersonaleAmministratore = ( req, res) => {
-    res.render('amministratore/AreaPersonaleAmministratore.ejs');
-};
-
 controller.getElencoPrenotazioniAttive= async (req,res)=>{
-    var dbConnection= req.dbPool;
-    let prenotazioniA= await prenotazioneModel.getPrenotazioniAttiveA(dbConnection);
+    var dbPool= req.dbPool;
+    try{ 
+    var prenotazioni= await prenotazioneModel.getPrenotazioniAttiveA(dbPool);
     res.render('amministratore/ElencoPrenotazioniAttive.ejs',{
-        'prenotazioniA' : prenotazioniA 
+        prenotazioni : prenotazioni,
 
     });
+    }catch(err){
+        throw err;
+    }
 };
 
-controller.postElencoPrenotazioniAttive= async (req,res)=>{
+/*controller.postElencoPrenotazioniAttive= async (req,res)=>{
     var dbConnection=req.dbPool;
     
     try{
@@ -38,49 +38,59 @@ controller.postElencoPrenotazioniAttive= async (req,res)=>{
     };      
 
 };
+*/
 
-controller.getInfoPrenotAmm =(req,res)=>{
-    req.render('amministratore/InfoPrenotAmm.ejs');
+controller.getInfoPrenotAmm =async (req,res)=>{
+    var dbPool= req.dbPool;
+    var id_prenotazione= req.params.id;
+    //console.log(id_prenotazione);
+    try{
+        var prenotazione = await prenotazioneModel.getPrenotazione(dbPool,id_prenotazione);
+        //console.log(prenotazione);
+        res.render("amministratore/InfoPrenotAmm.ejs",{
+            prenotazione: prenotazione,
+        });
+
+    }catch(error){
+        throw error;
+    }
+    
 };
 //elimina prenotazione
 controller.getCancellaPrenotazione=async(req,res)=>{
-    var dbConnection=req.dbPool;
-    var id= req.body.id_prenotazione;
+    var dbPool=req.dbPool;
+    var id= req.params.id;
+    console.log("sono su get cancella controller")
 
     try{
-        var stato_prenotazione="Annullata";
-        await prenotazioneModel.annullaPrenotazione(dbConnection,id);
+        await prenotazioneModel.annullaPrenotazione(dbPool,id);
+
+        req.session.alert = {
+            'style' : 'alert-success',
+            'message' : "Prenotazione annullata con successo!"
+        };
+        
+        res.redirect('/utente/amministratore/AreaPersonaleAmministratore');
+
     }catch(error){
         req.session.alert={
             'style':'alert-warining',
             'message': error.message
         };
-        res.redirect('/amministratore/AreaPersonaleAmministratore');
+        res.redirect('/utente/amministratore/AreaPersonaleAmministratore');
     };
 };
 //modifica prenotazione
-controller.getDatiPrenotAmm=async(req,res)=>{
-    var dbConnection=req.dbPool;
+controller.getModificaPrenotazione=async(req,res)=>{
+    var dbPool=req.dbPool;
+    var id = req.params.id;
+   // console.log("sono su get modifica controller")
     try{ 
 
-    let id_prenotazione= req.body.id_prenotazione;
-
-    let prenotazione= await prenotazioneModel.getPrenotazione(dbConnection,id_prenotazione); // dovremmo aggiungere nel model
-    render('amministratore/DatiPrenotAmm.ejs',{
-        'luogodiritiro':prenotazione.luogodiritiro,
-        'luogodiriconsegna':prenotazione.luogodiriconsegna,
-        'datadiritiro':prenotazione.datadiritiro,
-        'orariodiritiro':prenotazione.orariodiritiro,
-        'datadiriconsegna':prenotazione.datadiriconsegna,
-        'orariodiriconsgna':prenotazione.orariodiriconsgna,
-        'tipoveicolo':prenotazione.tipoveicolo,
-        'modelloveicolo':prenotazione.modelloveicolo,
-        'autista':prenotazione.autista,
-        'statoprenotazione':statoprenotazione,
-        'imprevisti':prenotazione.imprevisti,
-        'prezzototale':prenotazione.prezzototale
-//OPPURE DIRETTAMENTE
-    //  'prenotazione':prenotazione
+    var prenotazione= await prenotazioneModel.getPrenotazione(dbPool,id); 
+       // console.log(prenotazione);
+    res.render("amministratore/DatiPrenotAmm.ejs",{
+        prenotazione :prenotazione,
 
     });
     
@@ -91,21 +101,31 @@ controller.getDatiPrenotAmm=async(req,res)=>{
             'message' : error.message
     
         };
-    res.redirect('/amministratore/AreaPersonaleAmministratore/');
+    res.redirect('/utente/amministratore/AreaPersonaleAmministratore');
     };
 };
 
-controller.postDatiPrenotAmm=async(req,res)=>{
-    var dbConnection=req.dbPool;
+controller.postModificaPrenotazione = async(req,res)=>{
+    var dbPool=req.dbPool;
     try{ 
 
-        let attempt= req.body;
-        await prenotazioneModel.modificaPrenotazione(
-            dbConnection,
-            req.body.id_prenotazione,
+      // console.log(req.params.id); 
+     //  console.log(req.body.data_riconsegna);
+      // console.log(req.body.luogo_riconsegna);
+        
+       await prenotazioneModel.modificaPrenotazione(
+            dbPool,
+            req.params.id,
             req.body.data_riconsegna,
-            req.body.luogo_riconsegna
+            req.body.luogo_riconsegna,
             );
+            req.session.alert = {
+                'style' : 'alert-success',
+                'message' : "La prenotazione è modificata con successo!"
+            };
+            
+            res.redirect('/utente/amministratore/AreaPersonaleAmministratore');
+    
     }catch(error){
         req.session.alert = {
             
@@ -113,7 +133,7 @@ controller.postDatiPrenotAmm=async(req,res)=>{
             'message' : error.message
     
         };
-        res.redirect('/amministratore/AreaPersonaleAmministratore/');
+        res.redirect('/utente/amministratore/AreaPersonaleAmministratore');
     };
 };
 
@@ -173,3 +193,5 @@ controller.postRimborso=async(req,res)=>{
         throw error;
     }
 }
+
+module.exports = controller;
