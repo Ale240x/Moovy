@@ -182,6 +182,28 @@ model.modificaPrenotazione = async (dbPool, id_prenotazione, data_riconsegna, lu
     }
 };
 
+model.getPrenotazione = async (dbPool, ref_prenotazione) => { 
+
+    try{
+        let query = util.promisify(dbPool.query).bind(dbPool);
+        result =  await query(`
+                SELECT *
+                FROM prenotazioni
+                WHERE id_prenotazione = ? 
+                `, [ref_prenotazione]
+                );
+       
+
+        if(result.length == 0){
+            throw {'message' : 'Questa prenotazione non esiste'};
+        }
+        return result;
+    }
+    catch(error){
+        throw error;
+    }
+};
+
 model.getPrenotazioniAttiveC = async (dbPool, ref_cliente) => { //prenotazioni attive cliente
 
     try{
@@ -231,7 +253,7 @@ model.cercaVeicolo = async (dbPool, sel) => {
         let query = util.promisify(dbPool.query).bind(dbPool); 
         //AND (v.ref_parcheggio = ? OR v.posizione = ?) si riferisce al parcheggio o posizione fuori stallo in cui si trova il veicolo
         //2° SELECT prende i veicoli non prenotati nell'intervallo richiesto
-        var sql = 'SELECT v.id_veicolo, v.nome_veicolo, v.tariffa '+
+        var sql = 'SELECT v.id_veicolo, v.nome_veicolo, v.tariffa, v.immagine '+
         'FROM parcheggi AS pa, veicoli AS v '+
         'WHERE pa.id_parcheggio = v.ref_parcheggio '+
         'AND v.tipo_veicolo = ? '+
@@ -262,7 +284,7 @@ model.cercaVeicolo = async (dbPool, sel) => {
         }
         else{ //bici e monopattini
 
-            var sql = 'SELECT v.id_veicolo, v.nome_veicolo, v.tariffa '+
+            var sql = 'SELECT v.id_veicolo, v.nome_veicolo, v.tariffa, v.immagine '+
             'FROM parcheggi AS pa, veicoli AS v '+
             'WHERE pa.id_parcheggio = v.ref_parcheggio '+
             'AND v.ref_parcheggio = ? '+

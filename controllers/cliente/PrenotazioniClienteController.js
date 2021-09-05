@@ -8,7 +8,7 @@ const convertitore = require('../../utilities/Convertitore');  // Per gestire le
 var controller = {}; 
 
 //funzione che controlla se ci sono le condizioni per il rimborso
-async function checkRimborso(prenotazione,datacorrente){
+function checkRimborso(prenotazione,datacorrente){
     
     if(getOre(prenotazione.data_ritiro,datacorrente)>2){
         return true;
@@ -21,7 +21,7 @@ async function checkRimborso(prenotazione,datacorrente){
 };
 
 //Funzione che calcola prezzo
-async function calcolaPrezzo(pre,veicolo){
+function calcolaPrezzo(pre,veicolo){
 
     ore= getOre((pre.data_ritiro,pre.data_riconsegna));
     importo = ore * veicolo.tariffa;
@@ -30,7 +30,7 @@ return importo;
 };
 
 //controlla se abbiamo la giusta patente
-async function checkPatente(veicolo) {
+function checkPatente(veicolo) {
 var utente = req.session.utente;
 var veicolo = req.body;
 var tipo = veicolo.patente_richiesta

@@ -38,6 +38,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use((req, res, next) =>{
   req.dbPool = dbMiddleware.pool;
+  req.transporter = smtpMiddleware.transporter;
   next();
 });
 

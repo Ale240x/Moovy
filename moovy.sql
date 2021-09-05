@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.0
+-- version 5.1.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Creato il: Lug 19, 2021 alle 17:25
+-- Creato il: Set 04, 2021 alle 17:50
 -- Versione del server: 10.4.19-MariaDB
--- Versione PHP: 8.0.6
+-- Versione PHP: 8.0.7
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -81,7 +81,7 @@ INSERT INTO `carte_di_credito` (`numero_carta`, `ref_account`, `nome_intestatari
 --
 
 CREATE TABLE `parcheggi` (
-  `id_parcheggio` varchar(255) NOT NULL,
+  `id_parcheggio` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `indirizzo` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `ref_addetto` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -141,6 +141,18 @@ CREATE TABLE `prenotazioni` (
 -- --------------------------------------------------------
 
 --
+-- Struttura della tabella `sessions`
+--
+
+CREATE TABLE `sessions` (
+  `session_id` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `expires` int(11) UNSIGNED NOT NULL,
+  `data` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
 -- Struttura della tabella `veicoli`
 --
 
@@ -152,11 +164,11 @@ CREATE TABLE `veicoli` (
   `modello_moto` enum('Ciclomotore - 50cc','Scooter - 125cc','Turistica - 600cc','Adventure - 1200cc') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `patente_richiesta` enum('tipo_a','tipo_b','tipo_am','tipo_a1','tipo_a2') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `stato_veicolo` enum('Ritirato','Riconsegnato') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `ref_parcheggio` varchar(255) DEFAULT NULL,
+  `ref_parcheggio` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `posizione` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `tariffa` float NOT NULL,
   `descrizione` varchar(500) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `immagine` blob DEFAULT NULL
+  `immagine` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -164,9 +176,24 @@ CREATE TABLE `veicoli` (
 --
 
 INSERT INTO `veicoli` (`id_veicolo`, `nome_veicolo`, `tipo_veicolo`, `modello_auto`, `modello_moto`, `patente_richiesta`, `stato_veicolo`, `ref_parcheggio`, `posizione`, `tariffa`, `descrizione`, `immagine`) VALUES
-(53626, 'Dacia Duster', 'Automobile', 'Suv', NULL, 'tipo_b', NULL, 'Parcheggio Basile', '', 6, '', NULL),
-(198730, 'Xiaomi', 'Monopattino', NULL, NULL, NULL, NULL, 'Parcheggio Calatafimi', '', 2, '', NULL),
-(663481, 'Rockrider', 'Bicicletta', NULL, NULL, NULL, NULL, NULL, 'Via Libertà, 12', 2, '', NULL);
+(536264, 'Dacia Duster', 'Automobile', 'Suv', NULL, 'tipo_b', NULL, 'Parcheggio Basile', '', 6, 'Suv 4x4-Cambio Manuale-Carburante: Benzina', '/images/carosello1.jpeg'),
+(198730, 'Xiaomi', 'Monopattino', NULL, NULL, NULL, NULL, 'Parcheggio Calatafimi', '', 2, 'Monopattino elettrico', '/images/xiaomi.jpg'),
+(395737, 'Obi', 'Monopattino', NULL, NULL, NULL, NULL, 'Parcheggio Calatafimi', '', 2, 'Monopattino elettrico', '/images/obi.jpg'),
+(663481, 'Rockrider nera', 'Bicicletta', NULL, NULL, NULL, NULL, NULL, 'Parcheggio Oreto', 2, 'Mountain Bike', '/images/rockrider.jpg'),
+(652964, 'Rockrider gialla', 'Bicicletta', NULL, NULL, NULL, NULL, NULL, 'Parcheggio Oreto', 2, 'Mountain Bike', '/images/rockrider.jpg'),
+(288634, 'Ducati Multistrada V4', 'Moto', NULL, 'Adventure - 1200cc', 'tipo_a', NULL, 'Parcheggio Roma', '', 5, 'Moto Adventure da 1200cc-Patente richiesta: A-Carburante: Benzina', '/images/Ducati-Multistrada.jpg'),
+(172946, 'Citroen C3', 'Automobile', 'Utilitaria', NULL, 'tipo_b', NULL, 'Parcheggio Oreto', '', 4, 'Utilitaria 5 porte-Cambio Manuale-Carburante: Benzina', '/images/C3.jpg'),
+(302750, 'Yamaha Tracer 900', 'Moto', NULL, 'Turistica - 600cc', 'tipo_a2', NULL, 'Parcheggio Roma', '', 6, 'Moto Turistica da 600cc-Patente richiesta: A2-Carburante: Benzina', '/images/Yamaha-Tracer-900.jpg'),
+(302864, 'Suzuki VStrom 650XT', 'Moto', NULL, 'Turistica - 600cc', 'tipo_a2', NULL, 'Parcheggio Roma', '', 5, 'Moto Turistica da 600c-Patente richiesta: A2-Carburante: Benzina', '/images/Suzuki-VStrom-650XT.jpg'),
+(692682, 'Yamaha Super Teneré XT1200Z', 'Moto', NULL, 'Adventure - 1200cc', 'tipo_a', NULL, 'Parcheggio Roma', '', 6, 'Moto Adventure da 1200cc-Patente richiesta: A-Carburante: Benzina', '/images/Yamaha-Super-Tenere-XT1200Z.jpg'),
+(174026, 'Nissan Qashqai', 'Automobile', 'Suv', NULL, 'tipo_b', NULL, 'Parcheggio Basile', '', 6, 'Suv 5 porte-Cambio Manuale-Carburante: Benzina', '/images/Nissan-Qashqai.jpg'),
+(283649, 'Fiat 500', 'Automobile', 'Utilitaria', NULL, 'tipo_b', NULL, 'Parcheggio Oreto', '', 5, 'Utilitaria 5 porte-Cambio Manuale-Carburante: Benzina', '/images/fiat-500.jpg'),
+(156780, 'BMW Serie 3', 'Automobile', 'Berlina', NULL, 'tipo_b', NULL, 'Parcheggio Basile', '', 4, 'Berlina 5 porte-Cambio Manuale-Carburante: Benzina', '/images/bmw-serie-3.jpg'),
+(201936, 'Audi A4', 'Automobile', 'Berlina', NULL, 'tipo_b', NULL, 'Parcheggio Basile', '', 4, 'Berlina 5 porte-Cambio Manuale-Carburante: Benzina', '/images/Audi-A4.jpg'),
+(729264, 'Piaggio Liberty 125 ABS', 'Moto', NULL, 'Scooter - 125cc', 'tipo_a1', NULL, 'Parcheggio Calatafimi', '', 4, 'Scooter da 125cc-Patente richiesta: A1-Carburante: Benzina', '/images/piaggio-liberty-abs-125.jpg'),
+(203847, 'Honda Sh 125i', 'Moto', NULL, 'Scooter - 125cc', 'tipo_a1', NULL, 'Parcheggio Calatafimi', '', 4, 'Scooter da 125cc-Patente richiesta: A1-Carburante: Benzina', '/images/honda-sh-125i.jpg'),
+(109364, 'Vespa Primavera', 'Moto', NULL, 'Ciclomotore - 50cc', 'tipo_am', NULL, 'Parcheggio Oreto', '', 3, 'Ciclomotore da 50cc-Patente richiesta: AM-Carburante: Benzina', '/images/Vespa-Primavera.jpg'),
+(457239, 'Piaggio Liberty 2T', 'Moto', NULL, 'Ciclomotore - 50cc', 'tipo_am', NULL, 'Parcheggio Oreto', '', 3, 'Ciclomotore da 50cc-Patente richiesta: AM-Carburante: Benzina', '/images/Piaggio-Liberty-2T.jpg');
 
 --
 -- Indici per le tabelle scaricate
@@ -210,6 +237,12 @@ ALTER TABLE `prenotazioni`
   ADD KEY `ref_veicolo` (`ref_veicolo`);
 
 --
+-- Indici per le tabelle `sessions`
+--
+ALTER TABLE `sessions`
+  ADD PRIMARY KEY (`session_id`);
+
+--
 -- Indici per le tabelle `veicoli`
 --
 ALTER TABLE `veicoli`
@@ -224,7 +257,7 @@ ALTER TABLE `veicoli`
 -- AUTO_INCREMENT per la tabella `account`
 --
 ALTER TABLE `account`
-  MODIFY `id_account` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id_account` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT per la tabella `prenotazioni`

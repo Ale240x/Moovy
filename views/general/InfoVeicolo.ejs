@@ -11,14 +11,19 @@
     <div class="container" style="min-height: 450px;">
         <div class="row pt-5">
             <div class="col-md">
-                <img src="/images/C3.jpg" class="img-fluid float-left" width="500px"> 
+                <img src="<%= veicolo[0].immagine %>" class="img-fluid float-left" width="500px"> 
             </div>
             <div class="col-md p-3">
                 <form action="/TipoVeicoli/FormA/RisultatiRicerca/<%= veicolo[0].id_veicolo %>/InfoVeicolo/Riepilogo" method="GET">
                     <p id="id_v" style="display: none;"><%= veicolo[0].id_veicolo %></p>
-                    <h4 id="nome_veicolo"><%= veicolo[0].nome_veicolo %></h4>
-                    <p><%= veicolo[0].descrizione %></p>
-                    <h4 id="tariffa" align="right"><%= veicolo[0].tariffa %> € / ora</h4>
+                    <h3 id="nome_veicolo"><%= veicolo[0].nome_veicolo %></h3>
+                    <br>
+                    <% let descr = veicolo[0].descrizione.split('-'); %>
+                    <% for(row in descr){ %>
+                        <h5><%= descr[row] %><br></h5>
+                    <% } %>
+                    
+                    <h4 id="tariffa" align="right">Prezzo orario: <%= veicolo[0].tariffa %> €</h4>
                     <br>
                     <p align="right">
                         <button type="submit" class="btn btn-success">Prenota ></button>
@@ -37,8 +42,8 @@
         sessionStorage.setItem('ref_veicolo', document.getElementById('id_v').innerHTML);
         sessionStorage.setItem('nome_veicolo', document.getElementById('nome_veicolo').innerHTML);
 
-        if(sessionStorage.prezzo_stimato == undefined){
-            tariffa = Number(document.getElementById('tariffa').innerHTML.split(' ')[0]);
+        if(sessionStorage.autista == 'null' || sessionStorage.autista == undefined){
+            tariffa = Number(document.getElementById('tariffa').innerHTML.split(' ')[2]);
             prezzo_stimato = calcolaPrezzo(sessionStorage.data_ritiro, sessionStorage.data_riconsegna, tariffa);
             sessionStorage.setItem('prezzo_stimato', prezzo_stimato);
         }
@@ -48,7 +53,7 @@
             d2 = new Date(data_riconsegna + ':00Z');
             durata_prenotazione = (d2 - d1)/(1000*60*60) //in ore
             console.log('d1: '+d1+'\nd2 :'+d2+'\ndurata_prenotazione :'+durata_prenotazione);
-            return tariffa * durata_prenotazione;
+            return (Math.round(tariffa * durata_prenotazione * 100) / 100);
         }
             /*for(prop in veicolo){
                 sessionStorage.setItem(prop, veicolo[prop]);
