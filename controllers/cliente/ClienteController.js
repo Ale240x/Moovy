@@ -26,14 +26,25 @@ controller.getAreaPersonaleCliente = (req, res) => {
 
 //per visualizzare storico prenotazioni
 controller.getStoricoPrenotazioni = async (req, res) => {
-    
-    var dbPoolConnection = req.dbPool;
-    var utente = req.session.utente;
 
-    let prenotazioni = await prenotazioneModel.getStoricoPrenotazioni(req.dbPoolConnection,utente.id);
+    try{
+    
+    var dbPool = req.dbPool;
+
+    let prenotazioni = await prenotazioneModel.getStoricoPrenotazioni(dbPool, req.session.utente[0].id_account);
     res.render('cliente/Storico_B.ejs', {
-     'prenotazioni' : prenotazioni}
-    );  
+     'prenotazioni' : prenotazioni
+    });  
+} catch (error) {
+        
+    req.session.alert = {
+        
+        'style' : 'alert-warning',
+        'message' : error.message
+
+    }
+   
+}
     
 };
 
@@ -41,11 +52,14 @@ controller.getInfoPrenotazione = async (req, res) => {
   
     try {
 
-        var dbConnection = req.dbPool;
-        var prenotazione = req.body;
+        var dbPool= req.dbPool;
+        var id_prenotazione = req.params.id;
 
+        let prenotazioneC = await prenotazioneModel.getPrenotazione(dbPool, id_prenotazione);
+
+        
             res.render('cliente/InfoPrenotazione_B.ejs', {
-                'prenotazione' : prenotazione,
+                'prenotazione' : prenotazioneC[0],
                
             });
     } catch (error) {
@@ -56,10 +70,9 @@ controller.getInfoPrenotazione = async (req, res) => {
             'message' : error.message
     
         }
-        res.redirect('/AreaPersonaleCliente');
+        
     }
 };
-
 
 
 

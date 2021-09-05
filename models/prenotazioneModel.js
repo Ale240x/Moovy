@@ -160,6 +160,28 @@ model.modificaPrenotazione = async (dbPool, id_prenotazione, data_riconsegna, lu
     }
 };
 
+model.getPrenotazione = async (dbPool, ref_prenotazione) => { 
+
+    try{
+        let query = util.promisify(dbPool.query).bind(dbPool);
+        result =  await query(`
+                SELECT *
+                FROM prenotazioni
+                WHERE id_prenotazione = ? 
+                `, [ref_prenotazione]
+                );
+       
+
+        if(result.length == 0){
+            throw {'message' : 'Questa prenotazione non esiste'};
+        }
+        return result;
+    }
+    catch(error){
+        throw error;
+    }
+};
+
 model.getPrenotazioniAttiveC = async (dbPool, ref_cliente) => { //prenotazioni attive cliente
 
     try{

@@ -1,18 +1,18 @@
-<a href="/AreaPersonaleCliente/mostrastorico">
-<table class="table table-bordered table-bordered-success table-hover">
-    <thead>
-      <tr>
-        <th>ID prenotazione</th>
-        <th>Data ritiro </th>
-        <th>Stato</th>
-      </tr>
-    </thead>
-    <tbody>       
-      <tr >
-        <td><%= data_ritiro %></td> 
-        <td><%= nome_annuncio %></td>
-        <td><%= stato_prenotazione %></td>
-      </tr>
-    </tbody>
-  </table>
-</a>
+<a href="/utente/cliente/AreaPersonaleCliente/mostrastorico/<%= id_prenotazione %>">
+  <table class="table table-bordered table-bordered-success table-hover">
+      <thead>
+        <tr>
+          <th>ID prenotazione</th>
+          <th>Data ritiro </th>
+          <th>Stato</th>
+        </tr>
+      </thead>
+      <tbody>       
+        <tr >
+          <td><%= id_prenotazione %></td> 
+          <td><%= data_ritiro %></td> 
+          <td><%= stato_prenotazione %></td>
+        </tr>
+      </tbody>
+    </table>
+  </a>
