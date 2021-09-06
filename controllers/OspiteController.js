@@ -70,9 +70,9 @@ controller.postRegistrazioneCliente = async (req, res) => {
 
 
 controller.getAutenticazione = (req, res) => { 
-  res.render('general/loginForm.ejs');
-  
-   
+    //var referer = req.get('referer').split('3000')[1];
+    res.render('general/loginForm.ejs' 
+  /*{ 'referer' : referer }*/);   
 };
 
 controller.postAutenticazione = async (req, res) => {
@@ -80,11 +80,12 @@ controller.postAutenticazione = async (req, res) => {
     try {
   
         let attempt = req.body;
-        //alert(sessionStorage.getItem(tipo_veicolo));
-        req.session.utente = await accountModel.login(req.dbPool, attempt.email, attempt.password); 
-        
+        //var referer = req.body.referer;
 
-        
+        req.session.utente = await accountModel.login(req.dbPool, attempt.email, attempt.password); 
+        //console.log(req.session.utente[0].ruolo);
+        //res.redirect(referer);
+
         if(req.session.utente[0].ruolo == "Cliente"){ // Cliente 
                     
             req.session.alert = {
@@ -192,26 +193,26 @@ res.render('general/NuovaPass.ejs')
 
 
 controller.postNuovaPass = async (req,res)=>{
-var dbPool = req.dbPool;
-try{
-    let NuovaPassword = req.body.nuovaPass;
-    req.session.utente
-    await accountModel.recuperoPassword(dbPool, req.session.utente);
-    
-}catch(error){
-    throw error;
-}
+    var dbPool = req.dbPool;
+    try{
+        let NuovaPassword = req.body.nuovaPass;
+        req.session.utente
+        await accountModel.recuperoPassword(dbPool, req.session.utente);
+        
+    }catch(error){
+        throw error;
+    }
 
 
 }  
 
 //Regione Ricerca Veicoli
 controller.getRicercaTipoVeicoli = (req, res) => {  
-    res.render('general/TipiVeicoli.ejs');   
+    res.render('general/TipiVeicoli.ejs');  
 };
 
 
-controller.getFormA = (req, res) => { 
+controller.getFormA = (req, res) => {
     var url = req.url.split('=');
     var tipo_veicolo = url[1];
     res.render('general/FormRicercaA.ejs', { 'tipo_veicolo' : tipo_veicolo });

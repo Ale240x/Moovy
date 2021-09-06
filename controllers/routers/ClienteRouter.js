@@ -1,9 +1,7 @@
 const express = require('express');
-
+const OspiteController = require("../OspiteController");
 const ClienteController = require("../cliente/ClienteController");
 const PrenotazioniClienteController = require("../cliente/PrenotazioniClienteController");
-const OspiteController = require("../OspiteController");
-
 
 var router = express.Router();
 
@@ -19,6 +17,7 @@ router.use("", (req,res,next) =>{
         res.redirect("/");
     }
 });
+
 
 //Regione SchermataInizialeCliente
 router.get("/", ClienteController.getSchermataIniziale);
@@ -47,12 +46,12 @@ router.post("/AreaPersonaleCliente/VeicoliRitirati/:id/luogoriconsegna", Prenota
 
 // Regione Modifica e elimina prenotazione
 router.get("/AreaPersonaleCliente/ElencoPrenotazioni", PrenotazioniClienteController.getElencoPrenotazioni);
-router.get("/AreaPersonaleCliente/ElencoPrenotazioni/:id/modificaPrenotazione", PrenotazioniClienteController.getModificaPrenotazione);
-router.post("/AreaPersonaleCliente/ElencoPrenotazioni/:id/modificaPrenotazione", PrenotazioniClienteController.postModificaPrenotazione);
+router.get("/AreaPersonaleCliente/ElencoPrenotazioni/:id", PrenotazioniClienteController.getModificaPrenotazione);
+router.post("/AreaPersonaleCliente/ElencoPrenotazioni/:id", PrenotazioniClienteController.postModificaPrenotazione);
 router.get("/AreaPersonaleCliente/ElencoPrenotazioni/:id/eliminaPrenotazione", PrenotazioniClienteController.getEliminaPrenotazione);
 
 //Regione prenotazione
-router.get("/Riepilogo", OspiteController.getRiepilogo);
+//router.get("/TipoVeicoli", PrenotazioniClienteController.getRicercaTipoVeicoli);
 router.get("/Riepilogo/Mancia", PrenotazioniClienteController.getMancia);
 router.post("/Riepilogo", PrenotazioniClienteController.postPrenotaVeicolo);
 router.get("/Riepilogo/FormPatente",PrenotazioniClienteController.getPatente);

@@ -1,11 +1,13 @@
 const express = require('express');
 const OspiteController = require("../OspiteController");
 const UtenteRouter = require("./UtenteRouter");
+//const ClienteRouter = require("../routers/ClienteRouter");
 
 
 var router = express.Router();
 
 router.use ("/utente", UtenteRouter);
+//router.use("/Riepilogo", ClienteRouter);
 
 router.use("", (req,res,next) =>{
     var user = req.session.utente; //utente non definito
