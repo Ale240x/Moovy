@@ -242,7 +242,7 @@ controller.postRitiroVeicolo = async (req, res) => {
        // console.log(codice);
        // console.log(id_veicolo);
         var prenotazione = await prenotazioneModel.getPrenotazioneDelVeicolo(dbPool,id_veicolo);
-        var stato = "Ritirato";
+        var stato = "Veicolo Ritirato";
 
        // console.log(prenotazione);
 
