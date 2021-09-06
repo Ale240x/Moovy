@@ -23,7 +23,8 @@
         </div>
         <div class="mb-3">
             <label for="dataNascita" class="form-label">Data di nascita</label>
-           <input class="form-control" type="text" name="dataNascita" id="dataNascita"  value="<%= utente[0].data_di_nascita %>" aria-label="Disabled input example"  readonly>
+            <% data_n = utente[0].data_di_nascita.slice(0, 10); %>
+           <input class="form-control" type="date" name="dataNascita" id="dataNascita"  value="<%= data_n %>" aria-label="Disabled input example"  readonly>
         </div>
         <div class="mb-3">
             <label for="num_telefono" class="form-label">Numero di cellulare</label>
@@ -57,7 +58,7 @@
         <div class="mb-3">
             <div class="form-outline">
                 <label class="form-label" for="scadenza_carta">Scadenza della carta</label>
-                <input type="text" id="scadenza_carta" name="scadenza_carta" placeholder="mm-yyyy" value="<%= utente[0].scadenza_carta %>" class="form-control form-control-md">
+                <input type="text" id="scadenza_carta" name="scadenza_carta" placeholder="yyyy-mm" value="<%= utente[0].scadenza_carta %>" class="form-control form-control-md">
             </div>     
         </div>    
         <div class="mb-3 my-3">
@@ -74,7 +75,8 @@
         <div class="mb-3">
             <div class="form-outline">
                 <label class="form-label" for="scadenza_patente">Scadenza patente</label>
-                <input type="text" id="scadenza_patente" name="scadenza_patente" placeholder="dd-mm-yyyy" value="<%= utente[0].scadenza_patente %>" class="form-control form-control-md"  />
+                <% scadenza_p = utente[0].scadenza_patente.slice(0, 10); %>
+                <input type="date" id="scadenza_patente" name="scadenza_patente" placeholder="dd-mm-yyyy" value="<%= scadenza_p %>" class="form-control form-control-md"  />
               </div> 
         </div>
         <!--
