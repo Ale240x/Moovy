@@ -113,6 +113,13 @@ CREATE TABLE `patenti` (
   `ref_account` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dump dei dati per la tabella `patenti`
+--
+
+INSERT INTO `patenti` (`codice_patente`, `scadenza_patente`, `tipo_a`, `tipo_b`, `tipo_am`, `tipo_a1`, `tipo_a2`, `ref_account`) VALUES
+('023944', '2023-03-01', 1, 1, 1, 1, 1, 4);
+
 -- --------------------------------------------------------
 
 --

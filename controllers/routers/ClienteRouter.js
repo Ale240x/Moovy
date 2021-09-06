@@ -2,8 +2,6 @@ const express = require('express');
 
 const ClienteController = require("../cliente/ClienteController");
 const PrenotazioniClienteController = require("../cliente/PrenotazioniClienteController");
-const OspiteController = require("../OspiteController");
-
 
 var router = express.Router();
 
@@ -19,6 +17,7 @@ router.use("", (req,res,next) =>{
         res.redirect("/");
     }
 });
+
 
 //Regione SchermataInizialeCliente
 router.get("/", ClienteController.getSchermataIniziale);
@@ -52,7 +51,6 @@ router.post("/AreaPersonaleCliente/ElencoPrenotazioni/:id/modificaPrenotazione",
 router.get("/AreaPersonaleCliente/ElencoPrenotazioni/:id/eliminaPrenotazione", PrenotazioniClienteController.getEliminaPrenotazione);
 
 //Regione prenotazione
-router.get("/Riepilogo", OspiteController.getRiepilogo);
 router.get("/Riepilogo/Mancia", PrenotazioniClienteController.getMancia);
 router.post("/Riepilogo", PrenotazioniClienteController.postPrenotaVeicolo);
 router.get("/Riepilogo/FormPatente",PrenotazioniClienteController.getPatente);

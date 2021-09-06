@@ -14,7 +14,7 @@
                 <img src="<%= veicolo[0].immagine %>" class="img-fluid float-left" width="500px"> 
             </div>
             <div class="col-md p-3">
-                <form action="/TipoVeicoli/FormA/RisultatiRicerca/<%= veicolo[0].id_veicolo %>/InfoVeicolo/Riepilogo" method="GET">
+                <form action="/TipoVeicoli/FormA/RisultatiRicerca/:id/InfoVeicolo/Riepilogo" method="GET">
                     <p id="id_v" style="display: none;"><%= veicolo[0].id_veicolo %></p>
                     <h3 id="nome_veicolo"><%= veicolo[0].nome_veicolo %></h3>
                     <br>
