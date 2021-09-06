@@ -54,7 +54,7 @@ router.get("/AreaPersonaleCliente/ElencoPrenotazioni/:id/eliminaPrenotazione", P
 //router.get("/TipoVeicoli", PrenotazioniClienteController.getRicercaTipoVeicoli);
 router.get("/Riepilogo/Mancia", PrenotazioniClienteController.getMancia);
 router.post("/Riepilogo", PrenotazioniClienteController.postPrenotaVeicolo);
-router.get("/Riepilogo/FormPatente",PrenotazioniClienteController.getPatente);
+router.get("/Riepilogo/FormPatente",PrenotazioniClienteController.getPatente); //forse non serve, c'è già on postPrenotaVeicolo
 router.post("/Riepilogo/FormPatente",PrenotazioniClienteController.postAggiungiPatente);
 router.get("/Riepilogo/Pagamento",PrenotazioniClienteController.getPagamento);
 router.get("/Riepilogo/Pagamento/NuovoMetodo",PrenotazioniClienteController.getNuovoMetodoPagamento);

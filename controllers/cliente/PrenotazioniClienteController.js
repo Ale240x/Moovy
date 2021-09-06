@@ -154,7 +154,7 @@ controller.postNuovoMetodoPagamento = async (req,res) =>{
     try{
 
     await prenotazioneModel.modificaDatiClienti(dbPool,utente.id_account,req.body.numero_carta, req.body.scadenza_carta, req.body.cvv);
-
+        //nome e cognome dell'intestatario??  questo metodo non esiste!!
     }catch(error){
         
         req.session.alert = {
@@ -192,6 +192,7 @@ controller.postStatoPagamento = async (req,res) => {
 }
 };
 
+//Regione Ritiro Veicolo
 controller.getElencoVeicoliDaRitirareC = async(req,res) =>{
 
     var dbPool = req.dbPool;
@@ -247,7 +248,7 @@ controller.postRitiroVeicolo = async (req, res) => {
     res.redirect("cliente/AreaPersonaleC");
 };
 
-
+//Regione Riconsegna Veicolo
 controller.getElencoVeicoliDaRiconsegnareC = async(req,res) =>{
 
     var dbPool = req.dbPool;
@@ -327,7 +328,7 @@ controller.postRiconsegnaEffettuata = async(req,res) =>{
 
 };
 
-
+//Regione Modifica Prenotazione
 controller.getElencoPrenotazioni= async(req,res) => {
     var dbPool = req.dbPool;
     var utente = req.session.utente[0];
