@@ -1,8 +1,8 @@
 const accountModel = require('../../models/accountModel');
 const prenotazioneModel = require('../../models/prenotazioneModel');
 const util = require("util");
-const convertitore = require('../../utilities/Convertitore');  // Per gestire le date
-
+//const convertitore = require('../../utilities/Convertitore');  // Per gestire le date
+const { render } = require('ejs');
 
 
 var controller = {}; 
@@ -194,47 +194,69 @@ controller.postStatoPagamento = async (req,res) => {
 
 //Regione Ritiro Veicolo
 controller.getElencoVeicoliDaRitirareC = async(req,res) =>{
-
+    
     var dbPool = req.dbPool;
-    var utente = req.session.utente;   
 
     try{
+        var utente = req.session.utente;
 
-        let veicoli= await prenotazioneModel.getVeicoliDaRitirareC(dbPool, utente.id_account);
+        var veicoli= await prenotazioneModel.getVeicoliDaRitirareC(dbPool, utente[0].id_account);
 
-        res.render('cliente/VeicoliPrenotatiC.ejs',{
-            'veicoli' : veicoli,
+        //console.log(veicoli[0].id_veicolo);
+        
+        res.render("cliente/VeicoliPrenotatiCliente.ejs",{
+            veicoli : veicoli,
         });
+
     }catch(error){
         req.session.alert={
             'style' : 'alert-warning',
             'message' : error.message
-        }     
+        }  
+        res.redirect('/utente/cliente/AreaPersonaleCliente');   
 
     }    
 };
 
 controller.getInfoVeicoloDaRitirare = async(req,res)=>{
+        var dbPool= req.dbPool;
+        var id= req.params.id;
+        try {
+            var veicolo = await prenotazioneModel.getVeicolo(dbPool,id);
+            res.render("cliente/InfoRitiro.ejs",{
+                veicolo: veicolo,           
+            });
 
-        var veicolo = req.body.veicolo;
-        
-        res.render("general/InfoRitiro.ejs",{
-            'veicolo': veicolo,           
-        });
-
+        }catch (error){
+            throw error;
+        }
 };
 
 controller.postRitiroVeicolo = async (req, res) => { 
     var dbPool = req.dbPool;
-    var codice = req.body.codice;
-    var idPrenotazione = req.params.id_prenotazione;
-    var veicolo = req.body.veicolo;
 
     try{
-        if (veicolo.id_veicolo == codice){
-            await prenotazioneModel.setStatoPrenotazione(dbPool,idPrenotazione, "Ritirato");
+        var codice = req.body.codiceVeicolo;
+        var id_veicolo= req.params.id;
+        
+       // console.log(codice);
+       // console.log(id_veicolo);
+        var prenotazione = await prenotazioneModel.getPrenotazioneDelVeicolo(dbPool,id_veicolo);
+        var stato = "Ritirato";
+
+       // console.log(prenotazione);
+
+        if (id_veicolo == codice){
+
+            await prenotazioneModel.setStatoPrenotazione(dbPool, prenotazione[0].id_prenotazione ,stato);
         } 
-    
+
+        req.session.alert = {
+            'style' : 'alert-success',
+            'message' : 'Veicolo ritirato con successo!'
+        };
+
+        res.redirect('/utente/cliente/AreaPersonaleCliente');
        
     }
     catch(error){
@@ -244,8 +266,9 @@ controller.postRitiroVeicolo = async (req, res) => {
             'message' : error.message
     
         }
+        res.redirect('/utente/cliente/AreaPersonaleCliente');
     }
-    res.redirect("cliente/AreaPersonaleC");
+   
 };
 
 //Regione Riconsegna Veicolo

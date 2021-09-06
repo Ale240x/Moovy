@@ -21,8 +21,8 @@ router.use("", (req,res,next) =>{
 
 //Regione SchermataInizialeCliente
 router.get("/", ClienteController.getSchermataIniziale);
-//router.get("/logout", ClienteController.getLogout);
-router.get("/disconnetti", ClienteController.getDisconnetti);
+router.get("/logout", ClienteController.getLogout);
+router.get("/disconnetti", OspiteController.getDisconnetti);
 
 //Regione AreaPersonale
 router.get("/AreaPersonaleCliente", ClienteController.getAreaPersonaleCliente);
@@ -33,9 +33,9 @@ router.post("/AreaPersonaleCliente/formModifica", ClienteController.postModifica
 
 
 //Regione Ritiro
-router.get("/AreaPersonaleCliente/VeicoliPrenotati", PrenotazioniClienteController.getElencoVeicoliDaRiconsegnareC);
-router.get("/AreaPersonaleCliente/VeicoliPrenotati/:id/InfoRitiro", PrenotazioniClienteController.getInfoVeicoloDaRitirare);
-router.post("/AreaPersonaleCliente/VeicoliPrenotati/:id/InfoRitiro", PrenotazioniClienteController.postRitiroVeicolo);
+router.get("/AreaPersonaleCliente/veicoliPrenotati", PrenotazioniClienteController.getElencoVeicoliDaRitirareC);
+router.get("/AreaPersonaleCliente/veicoliPrenotati/:id/InfoRitiro", PrenotazioniClienteController.getInfoVeicoloDaRitirare);
+router.post("/AreaPersonaleCliente/veicoliPrenotati/:id/InfoRitiro", PrenotazioniClienteController.postRitiroVeicolo);
 
 //Regione Riconsegna
 router.get("/AreaPersonaleCliente/VeicoliRitirati", PrenotazioniClienteController.getInfoVeicoloDaRitirare);
@@ -50,8 +50,14 @@ router.get("/AreaPersonaleCliente/ElencoPrenotazioni/:id", PrenotazioniClienteCo
 router.post("/AreaPersonaleCliente/ElencoPrenotazioni/:id", PrenotazioniClienteController.postModificaPrenotazione);
 router.get("/AreaPersonaleCliente/ElencoPrenotazioni/:id/eliminaPrenotazione", PrenotazioniClienteController.getEliminaPrenotazione);
 
+// Ricerca veicolo
+router.get("/TipoVeicoli", ClienteController.getRicercaTipoVeicoli);
+router.get("/TipoVeicoli/FormA", ClienteController.getFormA);
+router.post("/TipoVeicoli/FormA/RisultatiRicerca", ClienteController.postFormA);
+router.get("/TipoVeicoli/FormA/RisultatiRicerca/:id/InfoVeicolo", ClienteController.getInfoVeicolo);
+router.get("/TipoVeicoli/FormA/RisultatiRicerca/:id/InfoVeicolo/Riepilogo", ClienteController.getRiepilogo);
+
 //Regione prenotazione
-//router.get("/TipoVeicoli", PrenotazioniClienteController.getRicercaTipoVeicoli);
 router.get("/Riepilogo/Mancia", PrenotazioniClienteController.getMancia);
 router.post("/Riepilogo", PrenotazioniClienteController.postPrenotaVeicolo);
 router.get("/Riepilogo/FormPatente",PrenotazioniClienteController.getPatente); //forse non serve, c'è già on postPrenotaVeicolo
@@ -61,12 +67,6 @@ router.get("/Riepilogo/Pagamento/NuovoMetodo",PrenotazioniClienteController.getN
 router.post("/Riepilogo/Pagamento/NuovoMetodo",PrenotazioniClienteController.postNuovoMetodoPagamento);
 router.get("/Riepilogo/Pagamento/StatoPagamento",PrenotazioniClienteController.getStatoPagamento);
 router.post("/Riepilogo/Pagamento/StatoPagamento",PrenotazioniClienteController.postStatoPagamento);
-
-
-
-
-
-
 
 
 

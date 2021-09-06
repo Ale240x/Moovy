@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <%- include('partials/head.ejs') -%>
-    <title><%= title %></title>
+    <%- include('../partials/head.ejs') %>
+    <title>Moovy</title>
   </head>
   <body>
-    <%- include('partials/navbar.ejs') -%>
+    <%- include('../partials/navbarAut.ejs') %>
 
     <!--Area personale-->
 
@@ -20,13 +20,13 @@
                 <div class="row">
                       <div class="col-12">
                         <div class="list-group border border-success">
-                          <a style="text-align: center;" href="#" class="list-group-item list-group-item-action" aria-current="true">
+                          <a style="text-align: center;" href="/utente/autista/corse" class="list-group-item list-group-item-action" aria-current="true">
                             Gestione corse
                           </a>
-                          <a style="text-align: center;" href="#" class="list-group-item list-group-item-action" aria-current="true">
+                          <a style="text-align: center;" href="/utente/autista/veicoliPrenotati" class="list-group-item list-group-item-action" aria-current="true">
                             Ritira veicolo
                           </a>
-                          <a style="text-align: center;" href="#" class="list-group-item list-group-item-action" aria-current="true">
+                          <a style="text-align: center;" href="/utente/autista/veicoliRitirati" class="list-group-item list-group-item-action" aria-current="true">
                             Riconsegna veicolo
                           </a>                          
                         </div>
@@ -39,6 +39,6 @@
         </div>           
       </div>    
     
-    <% include partials/footer.ejs %>
+      <%- include('../partials/footer.ejs') %>
   </body>
 </html>

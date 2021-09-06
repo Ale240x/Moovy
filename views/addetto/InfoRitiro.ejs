@@ -4,11 +4,11 @@
         <%- include('../partials/head.ejs') %>
     </head>
 <body>
-        <%- include('../partials/navbarClie.ejs') %>
+        <%- include('../partials/navbarAdd.ejs') %>
   <!--Navbar-->
 
 <!--INDICARE LA POSIZIONE DEL VEICOLO INTERROGANDO DBMS--->
-    <form action="/utente/cliente/AreaPersonaleCliente/veicoliPrenotati/<%= veicolo[0].id_veicolo %>/InfoRitiro" method="POST" >
+    <form action="/utente/addetto/veicoliPrenotati/<%= veicolo[0].id_veicolo %>/InfoRitiro" method="POST" >
         <div class="container my-5 text-center" style="max-width: 580px;">
             <legend style="text-align:center; font-size:150%;">Ritiro Veicolo</legend>
         <div class="card my-3 text-center">

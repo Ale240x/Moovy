@@ -95,7 +95,8 @@ controller.postAutenticazione = async (req, res) => {
             
             };
             //res.render('cliente/areaPersonaleC.ejs');
-            res.redirect('/utente/cliente/AreaPersonaleCliente'); 
+            res.redirect('back');
+            //res.redirect('/utente/cliente/AreaPersonaleCliente'); 
         }
         else if(req.session.utente[0].ruolo == "Amministratore"){
            
@@ -127,7 +128,7 @@ controller.postAutenticazione = async (req, res) => {
           
           };
           //res.render('addetto/areaPersonaleAdd.ejs');
-          res.redirect('/utente/addetto/AreaPersonaleAddetto'); 
+          res.redirect('/utente/addetto/'); 
       }
       
   
@@ -137,8 +138,9 @@ controller.postAutenticazione = async (req, res) => {
             'style' : 'alert-danger',
             'message' : error.message
         }
-        
-       
+        console.log(error);
+        console.log(error.message);
+        res.redirect('/autenticazione');
   
     }
   };

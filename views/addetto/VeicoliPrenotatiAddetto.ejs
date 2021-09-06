@@ -5,7 +5,7 @@
           
 </head>
 <body>
-          <%- include('../partials/navbarAut.ejs') %>
+          <%- include('../partials/navbarAdd.ejs') %>
       
     <!--Navbar-->
 
@@ -33,7 +33,7 @@
                   <tbody>
                     <% veicoli.forEach( (veicolo)=>{ %>
                     <tr>
-                      <td><a href="/utente/autista/veicoliPrenotati/<%= veicolo.id_veicolo %>/InfoRitiro" ><%= veicolo.id_veicolo %></a></td>
+                      <td><a href="/utente/addetto/veicoliPrenotati/<%= veicolo.id_veicolo %>/InfoRitiro" ><%= veicolo.id_veicolo %></a></td>
                       <td><%= veicolo.tipo_veicolo %></td>
                       <td><%= veicolo.stato_veicolo %></td>
                     </tr>
