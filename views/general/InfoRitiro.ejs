@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="it">
+    <head>
+        <%- include('../partials/head.ejs') %>
+    </head>
+<body>
+        <%- include('../partials/navbarClie.ejs') %>
+  <!--Navbar-->
+
+<!--INDICARE LA POSIZIONE DEL VEICOLO INTERROGANDO DBMS--->
+    <form action="/utente/cliente/AreaPersonaleCliente/veicoliPrenotati/<%= veicolo[0].id_veicolo %>/InfoRitiro" method="POST" >
+        <div class="container my-5 text-center" style="max-width: 580px;">
+            <legend style="text-align:center; font-size:150%;">Ritiro Veicolo</legend>
+        <div class="card my-3 text-center">
+            <div class="card-body">
+                <h5 class="card-title">Posizione del veicolo</h5>
+                <p class="card-text"><%= veicolo[0].posizione %></p>
+            </div>
+        </div>
+        <div class=" mb-3 my-3" style="max-width: 580px;">
+            <label for="codiceVeicolo" class="form-label">Inserisci codice presente sul veicolo</label>
+            <input type="text" class="form-control form-control-md" id="codiceVeicolo" name="codiceVeicolo" placeholder="Codice">
+        </div>
+            <button type="submit" id="conferma" class="btn btn-success"style="">Conferma</button>
+        </div>        
+    </div>
+      </form>
+<!--footer-->   
+<%- include('../partials/footer.ejs') %>
+</body>
+</html>

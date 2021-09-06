@@ -80,6 +80,7 @@ controller.postAutenticazione = async (req, res) => {
     try {
   
         let attempt = req.body;
+        //alert(sessionStorage.getItem(tipo_veicolo));
         req.session.utente = await accountModel.login(req.dbPool, attempt.email, attempt.password); 
         
 
@@ -93,7 +94,8 @@ controller.postAutenticazione = async (req, res) => {
             
             };
             //res.render('cliente/areaPersonaleC.ejs');
-            res.redirect('/utente/cliente/AreaPersonaleCliente'); 
+            res.redirect('back');
+            //res.redirect('/utente/cliente/AreaPersonaleCliente'); 
         }
         else if(req.session.utente[0].ruolo == "Amministratore"){
            

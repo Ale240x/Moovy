@@ -34,9 +34,9 @@ router.post("/AreaPersonaleCliente/formModifica", ClienteController.postModifica
 
 
 //Regione Ritiro
-router.get("/AreaPersonaleCliente/VeicoliPrenotati", PrenotazioniClienteController.getElencoVeicoliDaRiconsegnareC);
-router.get("/AreaPersonaleCliente/VeicoliPrenotati/:id/InfoRitiro", PrenotazioniClienteController.getInfoVeicoloDaRitirare);
-router.post("/AreaPersonaleCliente/VeicoliPrenotati/:id/InfoRitiro", PrenotazioniClienteController.postRitiroVeicolo);
+router.get("/AreaPersonaleCliente/veicoliPrenotati", PrenotazioniClienteController.getElencoVeicoliDaRitirareC);
+router.get("/AreaPersonaleCliente/veicoliPrenotati/:id/InfoRitiro", PrenotazioniClienteController.getInfoVeicoloDaRitirare);
+router.post("/AreaPersonaleCliente/veicoliPrenotati/:id/InfoRitiro", PrenotazioniClienteController.postRitiroVeicolo);
 
 //Regione Riconsegna
 router.get("/AreaPersonaleCliente/VeicoliRitirati", PrenotazioniClienteController.getInfoVeicoloDaRitirare);
@@ -62,12 +62,6 @@ router.get("/Riepilogo/Pagamento/NuovoMetodo",PrenotazioniClienteController.getN
 router.post("/Riepilogo/Pagamento/NuovoMetodo",PrenotazioniClienteController.postNuovoMetodoPagamento);
 router.get("/Riepilogo/Pagamento/StatoPagamento",PrenotazioniClienteController.getStatoPagamento);
 router.post("/Riepilogo/Pagamento/StatoPagamento",PrenotazioniClienteController.postStatoPagamento);
-
-
-
-
-
-
 
 
 
