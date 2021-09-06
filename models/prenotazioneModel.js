@@ -116,7 +116,7 @@ model.setStatoPrenotazione = async (dbPool, id_prenotazione, stato_prenotazione)
                 UPDATE prenotazioni
                 SET stato_prenotazione = ?
                 WHERE id_prenotazione = ?`,
-                ['\''+stato_prenotazione+'\'', id_prenotazione]
+                [stato_prenotazione, id_prenotazione]
             );
             console.log('Stato prenotazione aggiornato in ' + stato_prenotazione);
     }
