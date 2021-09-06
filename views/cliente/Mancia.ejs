@@ -1,79 +1,46 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <%- include('../partials/head.ejs') %>
 
-    <link rel="icon" href="../../public/images/logo1.png">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-    <title>Moovy</title>
+    <title>Prenotazione</title>
  </head>
 <body>
-    <img class="img-fluid" src="../../public/images/banner2.png" width="100%">
-    
-    <!--Navbar-->
-    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: rgba(3, 78, 13, 0.795);">
-        <a class="navbar-brand" href="#"><img class="img-fluid" src="../../public/images/logo1.png" width="50px"></a>
-        <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#collapsibleNavId" aria-controls="collapsibleNavId"
-            aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="collapsibleNavId">
-            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-                <li class="nav-item active">
-                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Veicoli</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Area Personale</a>
-                </li>  
-            </ul>
-            <ul class="navbar-nav justify-content-end">
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Logout</a>
-                </li>
-            </ul>
-        </div>
-    </nav>
-    <!--Navbar-->
-    <!--AGGIUNGGERE JAVASCRIPT IN  MODO TALE DA MOSTRARE L'IMPORTO DOPO AVER FATTO CHECKED-->
-    <form>
+    <%- include('../partials/navbarClie.ejs') %>
+    <form action="" method="">
         <div class="container my-5 text-center" style="max-width: 580px;">
 
             <legend style="text-align: center; font-size:150%">Mancia</legend>
             <div class="form-check my-4">
-                <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked">
-                <label class="form-check-label" for="flexCheckChecked">
+                <input class="form-check-input" type="checkbox" onclick="$('#mancia').prop('disabled', false);" id="checkMancia">
+                <label class="form-check-label" for="checkMancia">
                 Aggiungi la mancia per l'autista
                 </label>
-            </div> 
-            <button type="conferma" class="btn btn-success"style="">Conferma</button>
-
+            </div>
             <div class="container mb-3 my-5 text-center" style="max-width: 580px;"id="demo" style="display:none">
               
                     <label for="mancia" class="form-label">Inserisci Importo</label>
-                    <input type="text" class="form-control form-control-md" placeholder="Importo" id="mancia">
-                
+                    <input type="text" id="mancia" name="mancia" class="form-control form-control-md" placeholder="Importo" disabled>
+                    <button type="conferma" class="btn btn-success" onclick="calcolaPrezzo()">Conferma</button>
+                    <br>
+                    <p id="importo"></p>
             </div>
-            <button type="conferma" class="btn btn-success"style="">Conferma</button>
+            <button type="submit" class="btn btn-success">Procedi</button>
             </div>
 
         </div>
       </form>
 
-    <!--footer-->   
-<footer class="text-center text-lg-start bg-light text-muted fixed-bottom">
-    <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05);">
-        <p>Contattaci: Tel + 01 234 567 88</p>
-      © 2021 Copyright AMIL
-    </div>
-  </footer>
+      <%- include('../partials/footer.ejs') %>
+
+      <script>
+          function calcolaPrezzo(){
+              var mancia = $('#mancia').val();
+              if(mancia > 0){
+                  sessionStorage.prezzo_stimato += mancia; //controllare se questo funziona
+              }
+              $('#importo').html(sessionStorage.prezzo_stimato);
+          }
+      </script>
 </body>
 </html>

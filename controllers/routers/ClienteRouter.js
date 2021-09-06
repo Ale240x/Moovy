@@ -1,5 +1,5 @@
 const express = require('express');
-
+const OspiteController = require("../OspiteController");
 const ClienteController = require("../cliente/ClienteController");
 const PrenotazioniClienteController = require("../cliente/PrenotazioniClienteController");
 
@@ -51,6 +51,7 @@ router.post("/AreaPersonaleCliente/ElencoPrenotazioni/:id/modificaPrenotazione",
 router.get("/AreaPersonaleCliente/ElencoPrenotazioni/:id/eliminaPrenotazione", PrenotazioniClienteController.getEliminaPrenotazione);
 
 //Regione prenotazione
+//router.get("/TipoVeicoli", PrenotazioniClienteController.getRicercaTipoVeicoli);
 router.get("/Riepilogo/Mancia", PrenotazioniClienteController.getMancia);
 router.post("/Riepilogo", PrenotazioniClienteController.postPrenotaVeicolo);
 router.get("/Riepilogo/FormPatente",PrenotazioniClienteController.getPatente);

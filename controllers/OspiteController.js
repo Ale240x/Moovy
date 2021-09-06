@@ -11,6 +11,13 @@ controller.getSchermataIniziale = (req, res) => {
 
 };
 
+controller.getDisconnetti = (req, res) => {
+
+    req.session.destroy();
+    res.clearCookie("SID");
+    res.redirect("/");  //ospite
+};
+
 controller.getRegistrazioneCliente = (req, res) => {  
 
     res.render('general/RegistrazioneForm.ejs');   
@@ -185,15 +192,15 @@ res.render('general/NuovaPass.ejs')
 
 
 controller.postNuovaPass = async (req,res)=>{
-var dbPool = req.dbPool;
-try{
-    let NuovaPassword = req.body.nuovaPass;
-    req.session.utente
-    await accountModel.recuperoPassword(dbPool, req.session.utente);
-    
-}catch(error){
-    throw error;
-}
+    var dbPool = req.dbPool;
+    try{
+        let NuovaPassword = req.body.nuovaPass;
+        req.session.utente
+        await accountModel.recuperoPassword(dbPool, req.session.utente);
+        
+    }catch(error){
+        throw error;
+    }
 
 
 }  

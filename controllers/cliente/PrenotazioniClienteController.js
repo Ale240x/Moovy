@@ -41,6 +41,10 @@ if(tipo=="a" && utente.a==true || tipo=="a1" && utente.a1==true ||tipo=="a2" && 
 else return false; 
 };
 
+//Regione Ricerca Veicoli
+controller.getRicercaTipoVeicoli = (req, res) => {  
+    res.render('general/TipiVeicoli.ejs');  
+};
 
 controller.getMancia = (req,res) => {
 

@@ -1,7 +1,7 @@
 const express = require('express');
 
 const AmministratoreController = require("../amministratore/AmministratoreController");
-const PrenotazioniAmministratoreController = require("../amministratore/PrenotazioneAmministratoreController");
+const PrenotazioneAmministratoreController = require("../amministratore/PrenotazioneAmministratoreController");
 const OspiteController = require("../OspiteController");
 
 var router = express.Router();
@@ -16,7 +16,7 @@ router.use("", (req,res,next) =>{
         res.redirect("/");
     }
 });
-// homepage accessibile a tutti
+// home
 router.get("/", AmministratoreController.getSchermataIniziale);
 router.get("/disconnetti", AmministratoreController.getDisconnetti);
 
@@ -29,7 +29,7 @@ router.post("/AreaPersonaleAmministratore/registrazioneImpiegati",Amministratore
 
 //modifica dati impiegati
 router.get("/AreaPersonaleAmministratore/datiImpiegati",AmministratoreController.getDatiImpiegati);
-//router.post("/AreaPersonaleAmministratore/datiImpigati",AmministratoreController.postDatiImpiegati);
+//router.post("/AreaPersonaleAmministratore/datiImpigati",AmministratoreController.postDatiImpiegati); //NON SERVE
 router.get("/AreaPersonaleAmministratore/datiImpiegati/:id/modificaDatiImpiegati",AmministratoreController.getFormModifica);
 router.post("/AreaPersonaleAmministratore/datiImpiegati/:id/modificaDatiImpiegati",AmministratoreController.postFormModifica);
 
@@ -40,12 +40,15 @@ router.get("/AreaPersonaleAmministratore/datiAccounts/:id/eliminaAccount",Ammini
 router.post("/AreaPersonaleAmministratore/datiAccounts/:id/eliminaAccount",AmministratoreController.postDatiAccount);
 
 //gestione prenotazione
-/*router.get("/prenotazioniAttive", PrenotazioniAmministratoreController.getElencoPrenotazioniAttive);
-router.post("/prenotazioneAttive",PrenotazioniAmministratoreController.postElencoPrenotazioniAttive);
-router.get("/prenotazioniAttive/infoPrenotazione/:id", PrenotazioniAmministratoreController.getInfoPrenotAmm);
-router.get("/prenotazioneAttive/infoPrenotazione/:id/eliminaPrenotazione",PrenotazioniAmministratoreController.getCancellaPrenotazione);
-router.get("/prenotazioniAttive/infoPrenotazione/:id/modificaPrenotazione", PrenotazioniAmministratoreController.getDatiPrenotAmm);
-router.post("/prenotazioneAttive/infoPrenotazione/:id/modificaPrenotazione",PrenotazioniAmministratoreController.postDatiPrenotAmm);
+router.get("/AreaPersonaleAmministratore/prenotazioniAttive",PrenotazioneAmministratoreController.getElencoPrenotazioniAttive );
+//router.post("/AreaPersonaleAmministratore/prenotazioneAttive",PrenotazioniAmministratoreController.postElencoPrenotazioniAttive);//NON SERVE
+router.get("/AreaPersonaleAmministratore/prenotazioniAttive/:id", PrenotazioneAmministratoreController.getInfoPrenotAmm);
+router.get("/AreaPersonaleAmministratore/prenotazioniAttive/:id/eliminaPrenotazione", PrenotazioneAmministratoreController.getCancellaPrenotazione);
+router.get("/AreaPersonaleAmministratore/prenotazioniAttive/:id/modificaPrenotazione", PrenotazioneAmministratoreController.getModificaPrenotazione);
+router.post("/AreaPersonaleAmministratore/prenotazioniAttive/:id/modificaPrenotazione",PrenotazioneAmministratoreController.postModificaPrenotazione);
+/*
+
+
 
 //rimborso
 router.get("/rimborso", PrenotazioniAmministratoreController.getElencoPrenotAmm);
