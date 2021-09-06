@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <%- include('../partials/head.ejs') %>
+  <style>
+    body{
+      padding: 0px;
+    }
+  </style>
+  <title>Moovy</title>
+</head>
+<body>
+    <%- include('../partials/navbarAdd.ejs') %>
+
+    <div class="container-sm "" style="padding: 1%;">
+       <br>      
+       <h4>Info corsa</h4>  
+       <br>
+       
+        <div class="card border-success  card-body text-lg-center" >
+            <div class="row">
+                <div class="col-3">
+                   <h6>ID prenotazione</h6>       
+                   <p><%= prenotazione[0].id_prenotazione %></p>          
+                </div>
+                <div class="col-3">
+                        <h6>Tipo veicolo</h6>
+                        <p><%= prenotazione[0].tipo_veicolo %></p>                             
+                </div>
+                <div class="col-3">
+                    <h6>Stato Prenotazione</h6>
+                        <p><%= prenotazione[0].stato_prenotazione%></p>     
+                </div>
+                <div class="col-3">
+                    <h6>Prezzo totale</h6>
+                        <p><%= prenotazione[0].importo_totale %></p>    
+                </div>
+            </div>
+        </div>
+
+                
+    <br>
+        <h4>Dati ritiro/rilascio</h4>  
+        <br>
+         <div class="card border-success  card-body text-lg-center" >
+             <div class="row">
+                 <div class="col-3">
+                    <h6>Luogo ritiro</h6>       
+                    <p><%= prenotazione[0].luogo_ritiro %></p>          
+                 </div>
+                 <div class="col-3">
+                         <h6>Luogo riconsegna</h6>
+                         <p><%= prenotazione[0].luogo_riconsegna%></p>                             
+                 </div>
+                 <div class="col-3">
+                     <h6>Data ritiro</h6>
+                         <p><%= prenotazione[0].data_ritiro %></p>     
+                 </div>
+                 <div class="col-3">
+                     <h6>Data riconsegna</h6>
+                         <p><%= prenotazione[0].data_riconsegna %></p>    
+                 </div>
+             </div> 
+             <hr>
+             <div class="row">
+                <div class="col-3">
+                    <h6>Riferimento autista</h6>
+                        <p><%= prenotazione[0].ref_autista %></p>    
+                </div>
+                 <div class="col-3">
+                     <h6>ID Veicolo</h6>
+                         <p><%= prenotazione[0].ref_veicolo %></p>     
+                 </div>
+                 <div class="col-3">
+                    <h6>Mancia</h6>       
+                    <p><%= prenotazione[0].mancia %></p>          
+                 </div>
+                 <div class="col-3">
+                     <h6>Stato autista</h6>
+                         <p><%= prenotazione[0].stato_autista %></p>    
+                 </div>
+             </div>  
+            </div>
+             <hr>
+            <div class="container my-5 text-center">
+                <a href="/utente/autista/corse/<%= prenotazione[0].id_prenotazione %>/info/rifiuta" class="btn btn-danger" role="button">Rifiuta</a>
+                <a href="/utente/autista/corse/<%= prenotazione[0].id_prenotazione %>/info/accetta" class="btn btn-success" role="button">Accetta</a>
+            </div>
+        
+        </div>
+     <br>
+<!--footer-->   
+<%- include('../partials/footer.ejs') %>
+</body>
+</html>
