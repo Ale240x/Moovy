@@ -182,6 +182,23 @@ model.modificaPrenotazione = async (dbPool, id_prenotazione, data_riconsegna, lu
     }
 };
 
+model.setPrezzoFinale = async (dbPool, id_prenotazione, prezzo_finale) => {
+
+    try{
+        let query = util.promisify(dbPool.query).bind(dbPool);
+        await query(`
+                UPDATE prenotazioni
+                SET prezzo_finale = ?
+                WHERE id_prenotazione = ? `,
+                [prezzo_finale, id_prenotazione]
+            );
+            
+    }
+    catch(error){
+        throw error;
+    }
+};
+
 model.getPrenotazione = async (dbPool, ref_prenotazione) => { 
 
     try{
