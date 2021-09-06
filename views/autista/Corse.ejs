@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <%- include('../partials/head.ejs') %>
+  <style>
+    body{
+      padding: 0px;
+    }
+  </style>
+  <title>Moovy</title>
+</head>
+<body>
+  <%- include('../partials/navbarAdd.ejs') %>
+
+    <div class="container mx-auto" style="height: 512px;" >
+      <br>
+
+    <% if(!corse || corse.length == 0) {  %>  
+
+      <div class="text-center" style="height: 400px;"><h2><br><br><br><br><br>Non sono state trovate corse!</h1></div>
+
+    <% }  else { %>
+
+      <div class="container">
+          <h2>Gestione Corse</h2>
+          <p>Elenco di tutte le corse accettate, ma non ancora effetuate, e di quelle da accettare o rifiutare</p>
+          
+            <table class="table table-bordered table-bordered-success table-hover">
+                <thead>
+                  <tr>
+                    <th>ID Prenotazione</th>
+                    <th>Luogo Ritiro</th>
+                    <th>Stato</th>                    
+                  </tr>
+                </thead>
+                <tbody>
+                  <% corse.forEach( (corsa)=>{ %>
+                  <tr>
+                    <td><% if (corsa.stato_autista == 'Da confermare') { %> <a href="/utente/autista/corse/<%=corsa.id_prenotazione %>/info" ><% } %> <%= corsa.id_prenotazione %></a> </td>
+                    <td><%= corsa.luogo_ritiro %></td>
+                    <td><%= corsa.stato_autista %></td>
+                  </tr>
+                  <% }) %>
+                </tbody>
+              </table>
+    <% } %>   
+      </div>
+  </div>
+
+
+    
+    <%- include('../partials/footer.ejs') %>
+</body>
+</html>

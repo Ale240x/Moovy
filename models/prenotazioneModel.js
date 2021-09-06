@@ -77,12 +77,12 @@ model.getCorse = async (dbPool, ref_autista) => {
 
     try{
         let query = util.promisify(dbPool.query).bind(dbPool);
-        results =  await query(`
+        return (await query(`
                 SELECT *
                 FROM prenotazioni
                 WHERE (ref_autista = ? AND stato_prenotazione = ?) OR stato_autista = ?
                 `, [ref_autista, 'Pagato', 'Da confermare']
-                );
+                ));
         
     }
     catch(error){
@@ -96,7 +96,7 @@ model.accettaCorsa = async (dbPool, id_prenotazione,  ref_autista) => { //autist
         let query = util.promisify(dbPool.query).bind(dbPool);
         await query(`
                 UPDATE prenotazioni
-                SET ref_autista = ?, stato_prenotazione = ? 
+                SET ref_autista = ?, stato_autista = ? 
                 WHERE id_prenotazione = ?`,
                 [ref_autista, 'Confermato', id_prenotazione]
             );

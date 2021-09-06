@@ -19,10 +19,12 @@ controller.getDisconnetti = (req, res) => {
 
 //Gestione Corse
 controller.getCorse = async (req,res)=>{
-    var dbConnection=req.dbPool;
+    var dbPool=req.dbPool;
     try{ 
         var utente = req.session.utente;
-        let corse = await prenotazioneModel.getCorse(dbConnection,utente[0].id_account);
+        var corse = await prenotazioneModel.getCorse(dbPool,utente[0].id_account);
+
+        //console.log(corse);
 
         res.render('autista/Corse.ejs',{
             corse : corse,
@@ -34,52 +36,62 @@ controller.getCorse = async (req,res)=>{
     }
 }
 
-controller.postCorse=(req,res)=>{
-    var dbConnection=req.dbPool;
+controller.getInfoCorsa= async(req,res)=>{
 
-    try{
-        let corsa = req.body.corsa;
-        res.render('/autista/InfoCorsa.ejs',{
-            'corsa':corsa
+    var dbPool=req.dbPool;
+    try{ 
+        var id = req.params.id;
+        var prenotazione = await prenotazioneModel.getPrenotazione(dbPool,id);
+        
+        //console.log(corsa);
+
+        res.render('autista/InfoCorsa.ejs',{
+            prenotazione: prenotazione,
         });
+
     }catch(error){
+
         throw error;
     }
 
-}
-
-controller.getInfoCorsa=(req,res)=>{
-
-    res.render('/autista/InfoCorsa.ejs');
+    
 }
 
 controller.getAccettaCorsa = async(req,res)=>{
-    var dbConnection=req.dbPool;
-    var corsa=req.params.corsa;
+    var dbPool = req.dbPool;
+    var id_prenotazione = req.params.id;
     try{
+       // var prenotazione= await prenotazioneModel.getPrenotazione(dbPool,id_prenotazione);
+        var utente= req.session.utente[0].id_account;
+        let stato='Confermato'
+        await prenotazioneModel.accettaCorsa(dbPool,id_prenotazione,utente);
+        //confermaCorsaCliente(req.transporter,id_prenotazione,prenotazione[0].email)
         
-        let id_prenotazione= idprenotazione.corsa;
-        let prenotazione= await prenotazioneModel.getPrenotazione(dbConnection,id_prenotazione);
-        let utente= req.session.utente.id;
-        let stato='Confermata'
-        await prenotazioneModel.accettaCorsa(dbConnection,id_prenotazione,utente);
-        await prenotazioneModel.setStatoAutista(dbConnection,id_prenotazione,stato);// da aggiungere al model=> HO AGGIUNTO IO
-        confermaCorsaCliente(req.transporter,id_prenotazione,prenotazione.email)
-        res.render('/autista/AreaPersonaleAutista')
+
+        req.session.alert = {
+            
+            'style' : 'alert-success',
+            'message' : 'la corsa è stata accettata!'
+    
+        };
+        res.redirect('/utente/autista/');
+
     }catch(error){
+
         req.session.alert = {
             
             'style' : 'alert-warning',
-            'message' : error.message
+            'message' : error.message,
     
         };
+        res.redirect('/utente/autista/');
     }
 
 }
 
 controller.getRifiutaCorsa= (req,res)=>{
-      
-    res.redender('/autista/AreaPersonaleAutista');
+   
+    res.redirect('/utente/autista/');
 }
 //Ritiro Veicolo
 

@@ -21,10 +21,10 @@ router.get("/disconnetti", AutistaController.getDisconnetti);
 
 //Gestione Corse
 router.get("/corse", AutistaController.getCorse);
-router.post("/corse", AutistaController.postCorse);
-router.get("/corse/info", AutistaController.getInfoCorsa);
-router.get("/corse/info/accetta", AutistaController.getAccettaCorsa);
-router.get("/corse/info/rifiuta", AutistaController.getRifiutaCorsa);
+//router.post("/corse", AutistaController.postCorse);
+router.get("/corse/:id/info", AutistaController.getInfoCorsa);
+router.get("/corse/:id/info/accetta", AutistaController.getAccettaCorsa);
+router.get("/corse/id/info/rifiuta", AutistaController.getRifiutaCorsa);
 
 //RitiraVeicolo
 router.get("/veicoliPrenotati", AutistaController.getVeicoliPrenotatiAut);
