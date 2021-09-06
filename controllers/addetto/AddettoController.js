@@ -5,33 +5,42 @@ const util = require("util");
 
 var controller = {};
 
+//Regione Area Personale
+controller.getAreaPersonaleAdd = (req, res) => {
+    res.render('addetto/areaPersonaleAdd.ejs');
+};
+
 //Regione Disconnetti
 controller.getDisconnetti = (req, res) => {
     req.session.destroy();
     res.clearCookie("SID");
-    res.redirect("/home");
+    res.redirect("/");
 };
 
+//logout page??
 controller.getLogout = (req, res) => {  
     res.render('general/Logout.ejs');   
 };
 
-//Regione Area Personale
-controller.getAreaPersonaleAdd = (req, res) => {
-    res.render('/addetto/AreaPersonaleAdd.ejs');
-};
+
 
 //Regione Ritiro Veicolo
 controller.getVeicoliPrenotatiAdd = async(req, res) => {
    
     var dbPool = req.dbPool;
-    var id_addetto = req.session.utente.id_account;
+    
     try{
-        
-        let parcheggioAdd = await accountModel.getParcheggioAdd(dbPool, id_addetto);
-        let veicoliDaRitirareAdd = await prenotazioneModel.getVeicoliDaRitirareAdd(dbPool, parcheggioAdd);
+        var utente = req.session.utente;
 
-        res.render('Addetto/VeicoliPrenotatiAddetto.ejs', {'veicoli' : veicoliDaRitirareAdd});
+        let parcheggioAdd = await accountModel.getParcheggioAdd(dbPool, utente[0].id_account);
+       // console.log(parcheggioAdd[0].indirizzo);
+        let veicoli  = await prenotazioneModel.getVeicoliDaRitirareAdd(dbPool, parcheggioAdd[0].indirizzo);
+       // console.log(veicoli);
+
+        res.render("Addetto/VeicoliPrenotatiAddetto.ejs",{
+            veicoli : veicoli
+        
+        });
 
     }
     catch(error){
@@ -42,25 +51,50 @@ controller.getVeicoliPrenotatiAdd = async(req, res) => {
             'message' : error.message
     
         }
+        res.redirect('/utente/addetto/'); 
     };
 };
 
-controller.postInfoRitiro = (req, res) =>{
-    var veicolo = req.body.veicolo; 
-    res.render('general/InfoRitiro.ejs', {'veicolo' : veicolo});
+
+controller.getInfoVeicoloDaRitirare = async(req,res)=>{
+        var dbPool= req.dbPool;
+        var id= req.params.id;
+        try {
+            var veicolo = await prenotazioneModel.getVeicolo(dbPool,id);
+            res.render("addetto/InfoRitiro.ejs",{
+                veicolo: veicolo,           
+            });
+
+        }catch (error){
+            throw error;
+        }
 };
 
 controller.postRitiroVeicolo = async (req, res) => { 
     var dbPool = req.dbPool;
-    var codice = req.body.codice;
-    var idPrenotazione = req.params.id_prenotazione;
-    var veicolo = req.body.veicolo;
 
     try{
-        if (veicolo.id_veicolo == codice){
-            await prenotazioneModel.setStatoPrenotazione(dbPool,idPrenotazione, "Ritirato");
+        var codice = req.body.codiceVeicolo;
+        var id_veicolo= req.params.id;
+        
+       // console.log(codice);
+       // console.log(id_veicolo);
+        var prenotazione = await prenotazioneModel.getPrenotazioneDelVeicolo(dbPool,id_veicolo);
+        var stato = "Ritirato";
+
+       // console.log(prenotazione);
+
+        if (id_veicolo == codice){
+
+            await prenotazioneModel.setStatoPrenotazione(dbPool, prenotazione[0].id_prenotazione ,stato);
         } 
-    
+
+        req.session.alert = {
+            'style' : 'alert-success',
+            'message' : 'Veicolo ritirato con successo!'
+        };
+
+        res.redirect('/utente/addetto/');
        
     }
     catch(error){
@@ -70,9 +104,13 @@ controller.postRitiroVeicolo = async (req, res) => {
             'message' : error.message
     
         }
+        res.redirect('/utente/addetto/');
     }
-    res.redirect("addetto/AreaPersonaleAdd");
+   
 };
+
+
+
 
 //Regione Riconsegna Veicolo
 controller.getVeicoliRitiratiAdd = async (req, res) =>{
@@ -208,3 +246,5 @@ controller.postRiconsegnaEffettuata = async(req,res) =>{
         throw error;
     }
 };*/
+
+module.exports =controller;

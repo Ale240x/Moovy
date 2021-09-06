@@ -128,7 +128,7 @@ controller.postAutenticazione = async (req, res) => {
           
           };
           //res.render('addetto/areaPersonaleAdd.ejs');
-          res.redirect('/utente/addetto/AreaPersonaleAddetto'); 
+          res.redirect('/utente/addetto/'); 
       }
       
   
@@ -138,8 +138,9 @@ controller.postAutenticazione = async (req, res) => {
             'style' : 'alert-danger',
             'message' : error.message
         }
-        
-       
+        console.log(error);
+        console.log(error.message);
+        res.redirect('/autenticazione');
   
     }
   };

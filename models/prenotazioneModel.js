@@ -84,10 +84,6 @@ model.getCorse = async (dbPool, ref_autista) => {
                 `, [ref_autista, 'Pagato', 'Da confermare']
                 );
         
-        if(results.length == 0){
-            throw {'message' : 'Non hai accettato nessuna corsa'};
-        }
-        return results;
     }
     catch(error){
         throw error;
@@ -413,44 +409,37 @@ model.getVeicoliDaRitirareC = async (dbPool, ref_cliente) => { //prenotazioni at
 };
 
 model.getVeicoliDaRitirareAut = async (dbPool, ref_autista) => { //prenotazioni attive cliente
-
+    //AND p.data_ritiro <= SYSDATETIME()
     try{
         let query = util.promisify(dbPool.query).bind(dbPool);
         results =  await query(`
                 SELECT p.*, id_veicolo, v.nome_veicolo, v.posizione
                 FROM prenotazioni AS p, veicoli AS v
                 WHERE p.ref_veicolo = v.id_veicolo AND
-                p.ref_autista = ? AND p.stato_prenotazione = ? AND p.data_ritiro <= SYSDATETIME()
+                p.ref_autista = ? AND p.stato_prenotazione = ? 
                 `, [ref_autista, 'Pagato']
                 );
 
-        if(results.length == 0){
-            throw {'message' : 'Non esistono veicoli da ritirare'};
-        }
-        return results;
+        
     }
     catch(error){
         throw error;
     }
 };
 
-model.getVeicoliDaRitirareAdd = async (dbPool, luogo_ritiro) => { //prenotazioni attive cliente
-
+model.getVeicoliDaRitirareAdd = async (dbPool, luogo_ritiro) => { //
+//AND p.data_ritiro <= SYSDATETIME()
     try{
         let query = util.promisify(dbPool.query).bind(dbPool);
 
-        results =  await query(`
+        return (results =  await query(`
                 SELECT p.*, id_veicolo, v.nome_veicolo, v.posizione
                 FROM prenotazioni AS p, veicoli AS v
                 WHERE p.ref_veicolo = v.id_veicolo AND
-                p.luogo_ritiro = ? AND p.stato_prenotazione = ? AND p.data_ritiro <= SYSDATETIME() 
+                p.luogo_ritiro = ? AND p.stato_prenotazione = ?  
                 `, [luogo_ritiro, 'Pagato']
-                );
+        ));
 
-        if(results.length == 0){
-            throw {'message' : 'Non esistono veicoli da ritirare'};
-        }
-        return results;
     }
     catch(error){
         throw error;

@@ -30,11 +30,15 @@ router.use("/autista", AutistaRouter);
 
 router.get("", (req,res) =>{
 
+    //console.log(req.session.utente[0].ruolo);
+
     if(req.session.utente[0].ruolo == 'Cliente'){
+    
         res.redirect("/utente/cliente");
     }
     else if(req.session.utente[0].ruolo=='Amministratore'){
         res.redirect("/utente/amministratore");
+
     }else if(req.session.utente[0].ruolo=='Autista'){
         res.redirect("/utente/autista");
     }else 

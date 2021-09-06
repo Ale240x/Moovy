@@ -222,7 +222,7 @@ controller.getInfoVeicoloDaRitirare = async(req,res)=>{
         var id= req.params.id;
         try {
             var veicolo = await prenotazioneModel.getVeicolo(dbPool,id);
-            res.render("general/InfoRitiro.ejs",{
+            res.render("cliente/InfoRitiro.ejs",{
                 veicolo: veicolo,           
             });
 

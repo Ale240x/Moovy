@@ -21,8 +21,8 @@ router.use("", (req,res,next) =>{
 
 //Regione SchermataInizialeCliente
 router.get("/", ClienteController.getSchermataIniziale);
-//router.get("/logout", ClienteController.getLogout);
-router.get("/disconnetti", ClienteController.getDisconnetti);
+router.get("/logout", ClienteController.getLogout);
+router.get("/disconnetti", OspiteController.getDisconnetti);
 
 //Regione AreaPersonale
 router.get("/AreaPersonaleCliente", ClienteController.getAreaPersonaleCliente);
@@ -50,8 +50,14 @@ router.get("/AreaPersonaleCliente/ElencoPrenotazioni/:id", PrenotazioniClienteCo
 router.post("/AreaPersonaleCliente/ElencoPrenotazioni/:id", PrenotazioniClienteController.postModificaPrenotazione);
 router.get("/AreaPersonaleCliente/ElencoPrenotazioni/:id/eliminaPrenotazione", PrenotazioniClienteController.getEliminaPrenotazione);
 
+// Ricerca veicolo
+router.get("/TipoVeicoli", ClienteController.getRicercaTipoVeicoli);
+router.get("/TipoVeicoli/FormA", ClienteController.getFormA);
+router.post("/TipoVeicoli/FormA/RisultatiRicerca", ClienteController.postFormA);
+router.get("/TipoVeicoli/FormA/RisultatiRicerca/:id/InfoVeicolo", ClienteController.getInfoVeicolo);
+router.get("/TipoVeicoli/FormA/RisultatiRicerca/:id/InfoVeicolo/Riepilogo", ClienteController.getRiepilogo);
+
 //Regione prenotazione
-//router.get("/TipoVeicoli", PrenotazioniClienteController.getRicercaTipoVeicoli);
 router.get("/Riepilogo/Mancia", PrenotazioniClienteController.getMancia);
 router.post("/Riepilogo", PrenotazioniClienteController.postPrenotaVeicolo);
 router.get("/Riepilogo/FormPatente",PrenotazioniClienteController.getPatente);

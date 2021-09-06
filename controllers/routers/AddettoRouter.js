@@ -2,28 +2,29 @@ const express = require('express');
 
 const AddettoController = require("../addetto/AddettoController");
 
+
 var router = express.Router();
 
 router.use("", (req,res,next) =>{
     var utente = req.session.utente;
 
-    if(utente.ruolo == 'addetto'){
+    if(utente[0].ruolo == 'Addetto'){
         next();  
     }
     else{
-        res.redirect("/addetto");
+        res.redirect("/");
     }
 });
 
 //area personale
-//router.get("/", AddettoController.getAreaPersonaleAdd);
-//router.get("/disconnetti", AddettoController.getDisconnetti);
-
+router.get("/", AddettoController.getAreaPersonaleAdd);
+router.get("/disconnetti", AddettoController.getDisconnetti);
 
 //RitiraVeicolo
-/*router.get("/veicoliPrenotati", AddettoController.getVeicoliPrenotatiAdd);
-router.get("/veicoliPrenotati/:id/infoRitiro", AddettoController.getInfoRitiro);
-router.post("/veicoliPrenotati/:id/infoRitiro", AddettoController.postRitiroVeicolo);
+router.get("/veicoliPrenotati", AddettoController.getVeicoliPrenotatiAdd);
+router.get("/veicoliPrenotati/:id/InfoRitiro", AddettoController.getInfoVeicoloDaRitirare);
+router.post("/veicoliPrenotati/:id/InfoRitiro", AddettoController.postRitiroVeicolo);
+/*
 
 //Riconsenga Veicolo
 router.get("/veicoliRitirati", AddettoController.getVeicoliRitiratiAdd);
