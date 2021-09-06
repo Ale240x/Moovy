@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <%- include('../partials/head.ejs') %>
+    </style>
+    <title>Moovy</title>
+</head>
+<body>
+    <%- include('../partials/navbarClie.ejs') %>
+   
+    <div class="container mx-auto" style="height: 512px;" >
+        <br>
+        <div class="container">
+          <h2>Prenotazioni effettuate</h2>
+          <p>Ecco la lista di tutte le prenotazioni effettuate, seleziona quella che vuoi eliminare</p>           
+            <div>
+              <%
+
+            if((!prenotazioni) || (prenotazioni.length==0)) { 
+              
+                __append('<div class="section col-12 text-center">Non è stata trovata alcuna prenotazione!</div>');
+               
+            } 
+
+            else{
+              
+       
+                prenotazioni.forEach( (prenotazione) => { 
+                   
+                        __append('<div class="section">')
+                        __append(include("../partials/elencoprenotE", prenotazione));
+                        __append('</div>')
+                   
+                   
+                });
+
+            } 
+                            
+           %>
+            </div>
+          </div>
+          
+          
+    </div>
+<!--footer-->   
+<%- include('../partials/footer.ejs') %>
+</body>
+</html>

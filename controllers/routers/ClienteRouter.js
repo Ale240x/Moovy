@@ -48,7 +48,8 @@ router.post("/AreaPersonaleCliente/VeicoliRitirati/:id/luogoriconsegna", Prenota
 router.get("/AreaPersonaleCliente/ElencoPrenotazioni", PrenotazioniClienteController.getElencoPrenotazioni);
 router.get("/AreaPersonaleCliente/ElencoPrenotazioni/:id", PrenotazioniClienteController.getModificaPrenotazione);
 router.post("/AreaPersonaleCliente/ElencoPrenotazioni/:id", PrenotazioniClienteController.postModificaPrenotazione);
-router.get("/AreaPersonaleCliente/ElencoPrenotazioni/:id/eliminaPrenotazione", PrenotazioniClienteController.getEliminaPrenotazione);
+router.get("/AreaPersonaleCliente/ElencoPrenotazioniE", PrenotazioniClienteController.getElencoPrenotazioniE);
+router.get("/AreaPersonaleCliente/ElencoPrenotazioniE/:id", PrenotazioniClienteController.getEliminaPrenotazione);
 
 // Ricerca veicolo
 router.get("/TipoVeicoli", ClienteController.getRicercaTipoVeicoli);

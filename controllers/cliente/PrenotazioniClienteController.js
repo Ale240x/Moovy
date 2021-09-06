@@ -373,6 +373,26 @@ controller.getElencoPrenotazioni= async(req,res) => {
 
 };
 
+controller.getElencoPrenotazioniE= async(req,res) => {
+    var dbPool = req.dbPool;
+    var utente = req.session.utente[0];
+    try{
+      
+        let prenotazioni = await prenotazioneModel.getPrenotazioniAttiveC(dbPool, utente.id_account);
+        res.render('cliente/ElencoPrenotazioniE.ejs',{
+            'prenotazioni' : prenotazioni
+        });
+    }catch(error){
+        req.session.alert={
+            'style' : 'alert-warning',
+            'message' : error.message
+        }
+        
+
+    }    
+
+};
+
 controller.getModificaPrenotazione = async (req,res) => {
     try {
 
@@ -460,19 +480,37 @@ controller.postModificaPrenotazione = async (req,res) => {
 
 
 //Calcola se il rimborso è ottenibile e mostra messaggio direttamente nella schermata dell'elenco
-controller.getEliminaPrenotazione = (req,res) => {
+controller.getEliminaPrenotazione = async (req,res) => {
 
     var dbPool = req.dbPool;
-    var idPrenotazione = req.prenotazione.id_prenotazione;
+    var idPrenotazione = req.params.id;
    
 
     try{
 
-        datacorrente= new Date();
-        if (checkRimborso(idPrenotazione,datacorrente)){
-        await.prenotazioneModel.annullaPrenotazione(dbPool,prenotazione.id_prenotazione);
-        res.render('clienteB/AvvisoRimborso.ejs',{});
+    datacorrente= new Date();
+       let prenotazione = await prenotazioneModel.getPrenotazione(dbPool,idPrenotazione);
+        var data_riconsegna = prenotazione[0].data_riconsegna;
+        var flag;
+
+        x = new Date(datacorrente);
+        y= new Date(data_riconsegna);
+
+        //controllo rimborso
+        if(((y.getTime() - x.getTime())/3600000)>2){
+            flag=true;
     }
+    else{
+        flag=false;
+    }
+    await prenotazioneModel.annullaPrenotazione(dbPool,idPrenotazione);
+    if(flag==true){
+        await prenotazioneModel.setStatoPrenotazione(dbPool,idPrenotazione,'Rimborsato');
+    }
+  
+        res.render('cliente/AvvisoRimborso.ejs',{
+            'flag' : flag
+        });
     }catch(error){
         req.session.alert={
             'style' : 'alert-warning',
@@ -483,6 +521,9 @@ controller.getEliminaPrenotazione = (req,res) => {
         }    
 
 };
+
+
+
 
 
   //controllare 
