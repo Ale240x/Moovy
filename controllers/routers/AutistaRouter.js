@@ -1,5 +1,5 @@
 const express = require('express');
-
+const OspiteController = require("../OspiteController");
 const AutistaController = require("../autista/AutistaController");
 
 var router = express.Router();
@@ -7,11 +7,11 @@ var router = express.Router();
 router.use("", (req,res,next) =>{
     var utente = req.session.utente;
 
-    if(utente.ruolo == 'autista'){
+    if(utente[0].ruolo == 'Autista'){
         next();  
     }
     else{
-        res.redirect("/autista");
+        res.redirect("/");
     }
 });
 
@@ -28,8 +28,8 @@ router.get("/corse/info/rifiuta", AutistaController.getRifiutaCorsa);
 
 //RitiraVeicolo
 router.get("/veicoliPrenotati", AutistaController.getVeicoliPrenotatiAut);
-router.get("/veicoliPrenotati/:id/infoRitiro", AutistaController.getInfoRitiro);
-router.post("/veicoliPrenotati/:id/infoRitiro", AutistaController.postInfoRitiro);
+router.get("/veicoliPrenotati/:id/InfoRitiro", AutistaController.getInfoRitiro);
+router.post("/veicoliPrenotati/:id/InfoRitiro", AutistaController.postInfoRitiro);
 
 //Riconsenga Veicolo
 router.get("/veicoliRitirati", AutistaController.getVeicoliRitiratiAut);

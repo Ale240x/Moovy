@@ -84,10 +84,6 @@ model.getCorse = async (dbPool, ref_autista) => {
                 `, [ref_autista, 'Pagato', 'Da confermare']
                 );
         
-        if(results.length == 0){
-            throw {'message' : 'Non hai accettato nessuna corsa'};
-        }
-        return results;
     }
     catch(error){
         throw error;
@@ -112,16 +108,17 @@ model.accettaCorsa = async (dbPool, id_prenotazione,  ref_autista) => { //autist
 };
 
 model.setStatoPrenotazione = async (dbPool, id_prenotazione, stato_prenotazione) => {
-
+    
     try{
-        let query = util.promisify(dbPool.query).bind(dbPool);
+        let query = util.promisify(dbPool.query).bind(dbPool);        
+
         await query(`
                 UPDATE prenotazioni
                 SET stato_prenotazione = ?
                 WHERE id_prenotazione = ?`,
                 [stato_prenotazione, id_prenotazione]
             );
-            console.log('Stato prenotazione aggiornato in' + stato_prenotazione);
+            console.log('Stato prenotazione aggiornato in ' + stato_prenotazione);
     }
     catch(error){
         throw error;
@@ -208,6 +205,29 @@ model.getPrenotazione = async (dbPool, ref_prenotazione) => {
                 FROM prenotazioni
                 WHERE id_prenotazione = ? 
                 `, [ref_prenotazione]
+                );
+       
+
+        if(result.length == 0){
+            throw {'message' : 'Questa prenotazione non esiste'};
+        }
+        return result;
+    }
+    catch(error){
+        throw error;
+    }
+};
+
+model.getPrenotazioneDelVeicolo = async (dbPool, ref_veicolo) => { 
+
+    try{
+        let query = util.promisify(dbPool.query).bind(dbPool);
+        result =  await query(`
+                SELECT *
+                FROM 
+                    prenotazioni 
+                WHERE ref_veicolo = ? 
+                `, [ref_veicolo]
                 );
        
 
@@ -331,7 +351,7 @@ model.getVeicolo = async (dbPool, id_veicolo) =>{
     try{
         let query = util.promisify(dbPool.query).bind(dbPool);
         results =  (await query(`
-                SELECT id_veicolo, nome_veicolo, descrizione, tariffa, immagine
+                SELECT *
                 FROM veicoli
                 WHERE id_veicolo = ?
                 `, [id_veicolo]
@@ -371,21 +391,17 @@ model.getUltimePrenotazioni = async (dbPool) =>{
 };
 
 model.getVeicoliDaRitirareC = async (dbPool, ref_cliente) => { //prenotazioni attive cliente
-
-    try{
+//AND p.data_ritiro <= SYSDATETIME()  era dentro la query nel WHERE, mi da errore: "FUNCTION moovy.SYSDATETIME does not exist"
+    try{ 
         let query = util.promisify(dbPool.query).bind(dbPool);
-        results =  await query(`
+         return (await query(`
                 SELECT p.*, v.id_veicolo, v.nome_veicolo, v.posizione
                 FROM prenotazioni AS p, veicoli AS v
                 WHERE p.ref_veicolo = v.id_veicolo AND
-                p.ref_cliente = ? AND p.stato_prenotazione = ? AND p.data_ritiro <= SYSDATETIME()
+                p.ref_cliente = ? AND p.stato_prenotazione = ? 
                 `, [ref_cliente, 'Pagato']
-                );
-
-        if(results.length == 0){
-            throw {'message' : 'Non esistono veicoli da ritirare'};
-        }
-        return results;
+            ));
+ 
     }
     catch(error){
         throw error;
@@ -393,44 +409,37 @@ model.getVeicoliDaRitirareC = async (dbPool, ref_cliente) => { //prenotazioni at
 };
 
 model.getVeicoliDaRitirareAut = async (dbPool, ref_autista) => { //prenotazioni attive cliente
-
+    //AND p.data_ritiro <= SYSDATETIME()
     try{
         let query = util.promisify(dbPool.query).bind(dbPool);
         results =  await query(`
                 SELECT p.*, id_veicolo, v.nome_veicolo, v.posizione
                 FROM prenotazioni AS p, veicoli AS v
                 WHERE p.ref_veicolo = v.id_veicolo AND
-                p.ref_autista = ? AND p.stato_prenotazione = ? AND p.data_ritiro <= SYSDATETIME()
+                p.ref_autista = ? AND p.stato_prenotazione = ? 
                 `, [ref_autista, 'Pagato']
                 );
 
-        if(results.length == 0){
-            throw {'message' : 'Non esistono veicoli da ritirare'};
-        }
-        return results;
+        
     }
     catch(error){
         throw error;
     }
 };
 
-model.getVeicoliDaRitirareAdd = async (dbPool, luogo_ritiro) => { //prenotazioni attive cliente
-
+model.getVeicoliDaRitirareAdd = async (dbPool, luogo_ritiro) => { //
+//AND p.data_ritiro <= SYSDATETIME()
     try{
         let query = util.promisify(dbPool.query).bind(dbPool);
 
-        results =  await query(`
+        return (results =  await query(`
                 SELECT p.*, id_veicolo, v.nome_veicolo, v.posizione
                 FROM prenotazioni AS p, veicoli AS v
                 WHERE p.ref_veicolo = v.id_veicolo AND
-                p.luogo_ritiro = ? AND p.stato_prenotazione = ? AND p.data_ritiro <= SYSDATETIME() 
+                p.luogo_ritiro = ? AND p.stato_prenotazione = ?  
                 `, [luogo_ritiro, 'Pagato']
-                );
+        ));
 
-        if(results.length == 0){
-            throw {'message' : 'Non esistono veicoli da ritirare'};
-        }
-        return results;
     }
     catch(error){
         throw error;

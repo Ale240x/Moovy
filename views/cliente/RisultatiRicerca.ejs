@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('../partials/head.ejs') %>
+    <link rel='stylesheet' type='text/css' media='screen' href='/stylesheets/RicercaVeicolo.css'>
+
+    <title>Veicoli</title>
+    <style>
+        a:hover, a:link, a:active, a:visited{
+            color: black;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <%- include('../partials/navbarClie.ejs') %>
+
+    <!--tabella veicoli-->
+    <div class="container-fluid p-3" >
+
+        <%  if(!veicoli || veicoli.length==0) { %>
+
+                <div class="text-center" style="height: 400px;"><h2><br><br><br><br><br>Nessun veicolo corrisponde ai filtri selezionati</h1></div>
+         
+        <%  } else { %>
+            <% var i=0; %>
+            <% veicoli.forEach( (veicolo) => { %>
+                <ul style="list-style: none;">
+                <%/*%><% while(i<3){ %><%*/%>
+                    <li class="col-md pb-4 text-center">
+                        <a href="/utente/cliente/TipoVeicoli/FormA/RisultatiRicerca/<%= veicolo.id_veicolo %>/InfoVeicolo" role="button">
+                            <img src="<%= veicolo.immagine %>" height="156px">
+                        <br><%= veicolo.nome_veicolo %><br><%= veicolo.tariffa %> €
+                        </a>
+                    </li>  
+                <%/*%><% } %><%*/%>
+                </ul>
+            <% }) %>                                        
+        <% } %>
+        
+        <!--<ul class="row" style="list-style-type: none;">
+            <li class="col-md pb-4 text-center">
+                <img src="public/images/C3.jpg" alt="c3" class="img-thumbnail border-success" height="156px">
+                <%/*%><%= veicolo.nome_veicolo %><%*/%> <br> <%/*%><%= veicolo.tariffa %><%*/%>
+            </li>                                               
+            <li class="col-md pb-4 text-center">
+                <img src="public/images/Moto.jpg" class="img-thumbnail border-success" height="156px">
+            </li>
+            <li class="col-md pb-4 text-center">
+                <img src="public/images/Bici.jpg" class="img-thumbnail border-success" height="156px">
+            </li>
+            <li class="col-md pb-4 text-center">
+                <img src="public/images/Monopattino.jpg" class="img-thumbnail border-success" height="156px">
+            </li>
+            <li class="col-md pb-4 text-center">
+                <img src="public/images/Monopattino.jpg" class="img-thumbnail border-success" height="156px">
+            </li>
+        </ul>-->
+    </div>
+    <br>
+    <%- include('../partials/footer.ejs') %>
+
+</body>
+</html>

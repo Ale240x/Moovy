@@ -18,7 +18,7 @@ model.getAccount = async (dbPool, utenteId) => {
                                 account AS a,
                                 patenti AS p,
                                 carte_di_credito AS c
-                            WHERE a.id_account = p.ref_account AND a.id_account = c.ref_account 
+                            WHERE a.id_account = p.ref_account  
                             AND a.id_account = ?`,
                             [utenteId]));
 
@@ -363,7 +363,7 @@ model.getParcheggioAdd = async (dbPool, idAddetto) => {
         let query = util.promisify(dbPool.query).bind(dbPool);
 
         return (await query('SELECT indirizzo FROM parcheggi WHERE ref_addetto = ?',
-        [idAddetto]))[0];
+        [idAddetto]));
 
     } catch (error) {
         

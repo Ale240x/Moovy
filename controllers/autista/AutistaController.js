@@ -6,7 +6,7 @@ const prenotazioneModel = require('../../models/prenotazioneModel');
 var controller={};
 //Area Personale Autista
 controller.getAreaPersonaleAutista = ( req, res) => {
-    res.render('/autista/AreaPersonaleAutista.ejs');
+    res.render('autista/areaPersonaleAut.ejs');
 };
 
 //Disconnetti
@@ -14,19 +14,22 @@ controller.getAreaPersonaleAutista = ( req, res) => {
 controller.getDisconnetti = (req, res) => {
     req.session.destroy();
     res.clearCookie("SID");
-    res.redirect("/ospite");  ///??? OSPITE
+    res.redirect("/");  // OSPITE
 };
 
 //Gestione Corse
 controller.getCorse = async (req,res)=>{
     var dbConnection=req.dbPool;
     try{ 
-        let utente=req.session.utente.id;
-        let corse = await prenotazioneModel.getCorse(dbConnection,utente);
-    res.render('/autista/Corse.ejs',{
-        'corse': corse
-    });
+        var utente = req.session.utente;
+        let corse = await prenotazioneModel.getCorse(dbConnection,utente[0].id_account);
+
+        res.render('autista/Corse.ejs',{
+            corse : corse,
+        });
+
     }catch(error){
+
         throw error;
     }
 }
@@ -79,53 +82,86 @@ controller.getRifiutaCorsa= (req,res)=>{
     res.redender('/autista/AreaPersonaleAutista');
 }
 //Ritiro Veicolo
-controller.getVeicoliPrenotatiAut = async (req,res)=>{
-    var dbConnection=req.dbPool;
+
+controller.getVeicoliPrenotatiAut = async(req,res) =>{
+    
+    var dbPool = req.dbPool;
 
     try{
-        let utente= req.session.utente.id;
-        let veicoli= await prenotazioneModel.getVeicoliDaRitirareAut(dbConnection,autista);
-        res.render('/autista/VeicoliPrenotatiAut.ejs',{
-            'veicoli':veicoli
-        })
+        var utente = req.session.utente;
+
+        var veicoli= await prenotazioneModel.getVeicoliDaRitirareAut(dbPool, utente[0].id_account);
+
+        //console.log(veicoli[0].id_veicolo);
+        
+        res.render("autista/VeicoliPrenotatiAutista.ejs",{
+            veicoli : veicoli,
+        });
+
     }catch(error){
-        req.session.alert = {
+        req.session.alert={
             'style' : 'alert-warning',
             'message' : error.message
+        }  
+        res.redirect('/utente/autista/');   
+
+    }    
+};
+
+controller.getInfoRitiro = async(req,res)=>{
+        var dbPool= req.dbPool;
+        var id= req.params.id;
+        try {
+            var veicolo = await prenotazioneModel.getVeicolo(dbPool,id);
+            res.render("autista/InfoRitiro.ejs",{
+                veicolo: veicolo,           
+            });
+
+        }catch (error){
+            throw error;
         }
-
-        res.redirect('/utente/autista/veicoliPrenotati/')
-    }
-
 };
-/// in questo caso come passo al postiInfoRitiro id_veicolo?
-controller.getInfoRitiro=(req,res)=>{
-    var dbConnection=req.dbPool;
-    var veicolo= req.body;
-        res.render('/autista/InfoRitiro.ejs',{
-            'id_veicolo':id_veicolo.veicolo
-      
-    });
-};
-//??
-controller.postInfoRitiro= async (req,res)=>{
-    var dbConnection=req.dbPool;
-    var id_prenotazione=req.body;
+
+controller.postInfoRitiro= async (req, res) => { 
+    var dbPool = req.dbPool;
+
     try{
-        let codice=req.body;
-        let stato='Veicolo ritirato'
-        controllaCodice(codice,id.veicolo);
-        await prenotazioneModel.setStatoPrenotazione(dbPool,id_prenotazione,stato);
+        var codice = req.body.codiceVeicolo;
+        var id_veicolo= req.params.id;
+        
+       // console.log(codice);
+       // console.log(id_veicolo);
+        var prenotazione = await prenotazioneModel.getPrenotazioneDelVeicolo(dbPool,id_veicolo);
+        var stato = "Ritirato";
 
-    }catch (error){
+       // console.log(prenotazione);
+
+        if (id_veicolo == codice){
+
+            await prenotazioneModel.setStatoPrenotazione(dbPool, prenotazione[0].id_prenotazione ,stato);
+        } 
+
+        req.session.alert = {
+            'style' : 'alert-success',
+            'message' : 'Veicolo ritirato con successo!'
+        };
+
+        res.redirect('/utente/autista/');
+       
+    }
+    catch(error){
         req.session.alert = {
             
             'style' : 'alert-warning',
             'message' : error.message
+    
         }
-        res.redirect('/utente/autista/veicoliPrenotati/')
+        res.redirect('/utente/autista/');
     }
-}
+   
+};
+
+
 //Riconsegno Veicolo
 
 controller.getVeicoliRitiratiAut= async (req,res)=>{
