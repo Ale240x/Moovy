@@ -10,7 +10,8 @@
       <tbody>       
         <tr >
           <td><%= id_prenotazione %></td> 
-          <td><%= data_ritiro %></td> 
+          <% data_r = data_ritiro.toLocaleString().slice(0, 15); %>
+          <td><%= data_r %></td> 
           <td><%= stato_prenotazione %></td>
         </tr>
       </tbody>

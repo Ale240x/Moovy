@@ -95,7 +95,7 @@ controller.getVeicoliPrenotatiAut = async(req,res) =>{
         //console.log(veicoli[0].id_veicolo);
         
         res.render("autista/VeicoliPrenotatiAutista.ejs",{
-            veicoli : veicoli,
+            veicoli: veicoli,
         });
 
     }catch(error){

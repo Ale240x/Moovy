@@ -38,7 +38,7 @@ router.get("/AreaPersonaleCliente/veicoliPrenotati/:id/InfoRitiro", Prenotazioni
 router.post("/AreaPersonaleCliente/veicoliPrenotati/:id/InfoRitiro", PrenotazioniClienteController.postRitiroVeicolo);
 
 //Regione Riconsegna
-router.get("/AreaPersonaleCliente/VeicoliRitirati", PrenotazioniClienteController.getInfoVeicoloDaRitirare);
+router.get("/AreaPersonaleCliente/VeicoliRitirati", PrenotazioniClienteController.getElencoVeicoliDaRiconsegnareC); //o riconsegnare?
 //router.post("/AreaPersonaleCliente/VeicoliRitirati", PrenotazioniClienteController.postInfoVeicoloDaRitirare); //non esiste
 router.get("/AreaPersonaleCliente/VeicoliRitirati/:id/luogoriconsegna", PrenotazioniClienteController.getModificaLuogo);
 router.post("/AreaPersonaleCliente/VeicoliRitirati/:id/luogoriconsegna/sovrapprezzo", PrenotazioniClienteController.postModificaLuogo);
