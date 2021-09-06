@@ -46,8 +46,8 @@ router.post("/AreaPersonaleCliente/VeicoliRitirati/:id/luogoriconsegna", Prenota
 
 // Regione Modifica e elimina prenotazione
 router.get("/AreaPersonaleCliente/ElencoPrenotazioni", PrenotazioniClienteController.getElencoPrenotazioni);
-router.get("/AreaPersonaleCliente/ElencoPrenotazioni/:id/modificaPrenotazione", PrenotazioniClienteController.getModificaPrenotazione);
-router.post("/AreaPersonaleCliente/ElencoPrenotazioni/:id/modificaPrenotazione", PrenotazioniClienteController.postModificaPrenotazione);
+router.get("/AreaPersonaleCliente/ElencoPrenotazioni/:id", PrenotazioniClienteController.getModificaPrenotazione);
+router.post("/AreaPersonaleCliente/ElencoPrenotazioni/:id", PrenotazioniClienteController.postModificaPrenotazione);
 router.get("/AreaPersonaleCliente/ElencoPrenotazioni/:id/eliminaPrenotazione", PrenotazioniClienteController.getEliminaPrenotazione);
 
 //Regione prenotazione

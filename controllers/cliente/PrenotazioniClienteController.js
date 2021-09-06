@@ -330,13 +330,13 @@ controller.postRiconsegnaEffettuata = async(req,res) =>{
 
 controller.getElencoPrenotazioni= async(req,res) => {
     var dbPool = req.dbPool;
-    var utente = req.session.utente;
+    var utente = req.session.utente[0];
     try{
 
         let prenotazioni = await prenotazioneModel.getPrenotazioniAttiveC(dbPool, utente.id_account);
-
+       
         res.render('cliente/ElencoPrenotazioni.ejs',{
-            'prenotazioni' : prenotazioni,
+            'prenotazioni' : prenotazioni
         });
     }catch(error){
         req.session.alert={
@@ -349,29 +349,85 @@ controller.getElencoPrenotazioni= async(req,res) => {
 
 };
 
-controller.getModificaPrenotazione = (req,res) => {
-    res.render("cliente/DatiPrenotazione.ejs");   
+controller.getModificaPrenotazione = async (req,res) => {
+    try {
+
+        var dbPool= req.dbPool;
+        var id_prenotazione = req.params.id;
+
+        let prenotazioneZ = await prenotazioneModel.getPrenotazione(dbPool, id_prenotazione);
+        let veicoloC = await prenotazioneModel.getVeicolo(dbPool, prenotazioneZ[0].ref_veicolo);
+      
+        
+        res.render("cliente/DatiPrenotazione.ejs",{
+            'prenotazione' : prenotazioneZ[0],
+            'veicolo': veicoloC[0]
+        });   
+    } catch (error) {
+        
+        req.session.alert = {
+            
+            'style' : 'alert-warning',
+            'message' : error.message
+    
+        }
+        
+    }
+  
 };
 
 controller.postModificaPrenotazione = async (req,res) => {
     var dbPool = req.dbPool;
-    var idPrenotazione = req.body.id_prenotazione;
     var nuovadata= req.body.data_riconsegna;
     var nuovoluogo = req.body.luogo_riconsegna;   
+    var idPrenotazione = req.params.id;
 
     try{
+        let prenotazione = await prenotazioneModel.getPrenotazione(dbPool,idPrenotazione);
+        let today= new Date();
+        x = new Date(nuovadata);
+        if(x.getTime()<today.getTime()){
+            req.session.alert = {
+                'style' : 'alert-success',
+                'message' : 'Non puoi inserire una data precedente ad oggi!'
+            };
 
-        await prenotazioneModel.getModificaPrenotazione(dbPool, idPrenotazione, nuovadata,nuovoluogo);
-        pagaSovrapprezzi(utente.id_account,idPrenotazione);
+        }
+        else{
+            await prenotazioneModel.modificaPrenotazione(dbPool, idPrenotazione, nuovadata,nuovoluogo);
+   
+            x = new Date(nuovadata);
+            y= new Date(prenotazione[0].data_riconsegna);
+           
+    
+            var oreSovrapprezzo = (x.getTime() - y.getTime())/3600000;
+            var prezzoOrario = await prenotazioneModel.getPrezzoVeicolo(dbPool, prenotazione[0].ref_veicolo);
+    
+            
+            var sovrapprezzo = oreSovrapprezzo*prezzoOrario[0].tariffa;
+            var prezzo_totale = sovrapprezzo + prenotazione[0].prezzo_finale
+         
+            await prenotazioneModel.setPrezzoFinale(dbPool,idPrenotazione,prezzo_totale);
+    
+          
+           req.session.alert = {
+            'style' : 'alert-success',
+            'message' : 'Dati prenotazione modificati con successo e sovrapprezzi pagati'
+        };
+            
+        }
+ 
+  
 
-        res.render('cliente/DatiPrenotazione_B',{
-            'veicoli' : veicoli,
-        });
+    res.redirect('/utente/cliente/AreaPersonaleCliente');
+
+      
     }catch(error){
         req.session.alert={
             'style' : 'alert-warning',
             'message' : error.message
         }
+        res.redirect('/utente/cliente/AreaPersonaleCliente');
         
 
         }    
