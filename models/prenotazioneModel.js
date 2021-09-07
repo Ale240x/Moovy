@@ -206,11 +206,7 @@ model.getPrenotazione = async (dbPool, ref_prenotazione) => {
                 WHERE id_prenotazione = ? 
                 `, [ref_prenotazione]
                 );
-       
 
-        if(result.length == 0){
-            throw {'message' : 'Questa prenotazione non esiste'};
-        }
         return result;
     }
     catch(error){
@@ -252,9 +248,6 @@ model.getPrenotazioniAttiveC = async (dbPool, ref_cliente) => { //prenotazioni a
                 `, [ref_cliente, 'Pagato', 'Veicolo ritirato']
                 );
 
-        if(results.length == 0){
-            throw {'message' : 'Non esistono prenotazioni attive'};
-        }
         return results;
     }
     catch(error){
@@ -456,10 +449,6 @@ model.getVeicoliDaRiconsegnareC = async (dbPool, ref_cliente) => { //prenotazion
                 p.ref_cliente = ? AND p.stato_prenotazione = ?
                 `, [ref_cliente, 'Veicolo ritirato']
                 );
-
-        if(results.length == 0){
-            throw {'message' : 'Non esistono veicoli da Riconsegnare'};
-        }
         return results;
     }
     catch(error){
@@ -554,7 +543,7 @@ model.riconsegnaVeicolo = async (dbPool, id_prenotazione, stato_prenotazione, id
         await query(`
         UPDATE prenotazioni
         SET prezzo_finale = ?, stato_prenotazione = ?
-        WHERE id_prenotazine = ? `,
+        WHERE id_prenotazione = ? `,
         [prezzo_finale, stato_prenotazione, id_prenotazione]
         );
 
