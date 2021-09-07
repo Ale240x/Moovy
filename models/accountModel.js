@@ -279,6 +279,24 @@ model.registrazioneImpiegato = async (dbPool, ruolo, nome, cognome, email, data_
     }
 };
 
+//aggiungi patente
+model.aggiungiPatenteC = async(dbPool, ref_account, codice_patente, scadenza_patente, tipo_a, tipo_b, tipo_am, tipo_a1, tipo_a2) =>{
+
+    try{
+        let query = util.promisify(dbPool.query).bind(dbPool);
+        await query(`
+                UPDATE patenti
+                SET scadenza_patente = ?, tipo_a = ?, tipo_b = ?, 
+                tipo_am = ?, tipo_a1 = ?, tipo_a2 = ?
+                WHERE codice_patente = ? AND ref_account = ?
+                `, [scadenza_patente, tipo_a, tipo_b, tipo_am, tipo_a1, tipo_a2, codice_patente, ref_account]);
+            
+    }
+    catch(error){
+        throw error;
+    }
+};
+
 //modifica dati Cliente
 model.modificaDatiCliente = async (dbPool,utenteId, nome, cognome,data_di_nascita, num_telefono,email,ruolo,  numero_carta, nome_intestatario, cognome_intestatario ,cvv , scadenza_carta,codice_patente, scadenza_patente, tipo_a, tipo_b, tipo_am, tipo_a1, tipo_a2) => {
 

@@ -31,7 +31,7 @@ model.aggiungiPrenotazione = async (dbPool, ref_cliente, ref_autista, tipo_veico
 
         var stato_prenotazione = 'Non Pagato';
 
-        if(ref_autista == 1){ //il cliente ha richiesto un autista, altrimenti sarebbe null (poi verrà inserito come null perchè dovrà essere aggiornato quando un autista accetta la corsa)
+        if(ref_autista == 1){ //il cliente ha richiesto un autista, altrimenti sarebbe 'null' (poi verrà inserito come null perchè dovrà essere aggiornato quando un autista accetta la corsa)
             var stato_autista = 'Da confermare';
         }
         if(mancia > 0){
@@ -308,7 +308,7 @@ model.cercaVeicolo = async (dbPool, sel) => {
                 sql = sql +' AND v.modello_moto = \'' + sel.modello_moto + '\'';
             }
                 
-            if(sel.luogo_ritiro){ //se non c'è l'autista, in caso di moto luogo_ritiro esisterà sempre
+            if(sel.luogo_ritiro != ''){ //se non c'è l'autista, in caso di moto luogo_ritiro esisterà sempre
                 sql = sql +' AND (v.ref_parcheggio = \'' + sel.luogo_ritiro + '\' OR v.posizione = \'' + sel.luogo_ritiro +'\')';
             }
             

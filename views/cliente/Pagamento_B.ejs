@@ -7,7 +7,7 @@
         padding: 0px;
       }
     </style>
-     <title>Moovy</title>
+     <title>Pagamento</title>
 </head>
 <body>
     <%- include('../partials/navbarClie.ejs') %>
@@ -33,7 +33,7 @@
 
                         if((!carte) || (carte.length==0)) { 
                           
-                            __append('<div class="section col-12 text-center">Non sono state trovati metodi di pagamento</div>');
+                            __append('<div class="section col-12 text-center">Non sono stati trovati metodi di pagamento</div>');
                            
                         } 
                         
@@ -43,7 +43,7 @@
                             carte.forEach( (carta) => {  
                                
                                     __append('<div class="section">')
-                                    __append(include("../_partials/elencarte", carte));
+                                    __append(include("../partials/elencocarte.ejs", carte));
                                     __append('</div>')
                                
                             });

@@ -10,7 +10,7 @@ router.use ("/utente", UtenteRouter);
 //router.use("/Riepilogo", ClienteRouter);
 
 router.use("", (req,res,next) =>{
-    var user = req.session.utente; //utente non definito
+    var user = req.session.utente;
     
     if(!user){
         next();  

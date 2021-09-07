@@ -59,9 +59,11 @@ router.get("/TipoVeicoli/FormA/RisultatiRicerca/:id/InfoVeicolo", PrenotazioniCl
 router.get("/TipoVeicoli/FormA/RisultatiRicerca/:id/InfoVeicolo/Riepilogo", PrenotazioniClienteController.getRiepilogo);
 
 //Regione prenotazione
+router.post("/Riepilogo", PrenotazioniClienteController.postRiepilogo);
 router.get("/Riepilogo/Mancia", PrenotazioniClienteController.getMancia);
-router.post("/Riepilogo", PrenotazioniClienteController.postPrenotaVeicolo);
-router.get("/Riepilogo/FormPatente",PrenotazioniClienteController.getPatente); //forse non serve, c'è già on postPrenotaVeicolo
+router.post("/Riepilogo/Mancia", PrenotazioniClienteController.postMancia);
+//router.post("/Riepilogo", PrenotazioniClienteController.postPrenotaVeicolo);
+router.get("/Riepilogo/FormPatente",PrenotazioniClienteController.getPatente);
 router.post("/Riepilogo/FormPatente",PrenotazioniClienteController.postAggiungiPatente);
 router.get("/Riepilogo/Pagamento",PrenotazioniClienteController.getPagamento);
 router.get("/Riepilogo/Pagamento/NuovoMetodo",PrenotazioniClienteController.getNuovoMetodoPagamento);
