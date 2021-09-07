@@ -40,7 +40,7 @@
          <div class="card border-success  card-body text-lg-center">
              <div class="row" id="prenotazione"  >
                  <div class="col-3">
-                    <h4>Luogo ritiro</h4>       
+                    <h4>Luogo ritiro</h4>      
                     <p> <%= prenotazione.luogo_ritiro %></p>          
                  </div>
                  <div class="col-3">
@@ -49,11 +49,13 @@
                  </div>
                  <div class="col-3" id="prenotazione">
                      <h4>Data ritiro</h4>
-                         <p> <%= prenotazione.data_ritiro %></p>     
+                        <% data_ritiro = prenotazione.data_ritiro.toLocaleString().slice(0, 15); %> 
+                         <p> <%= data_ritiro %></p>     
                  </div>
                  <div class="col-3">
                      <h4>Data riconsegna</h4>
-                         <p> <%= prenotazione.data_riconsegna %></p>    
+                        <% data_riconsegna = prenotazione.data_riconsegna.toLocaleString().slice(0, 15); %>
+                         <p> <%= data_riconsegna %></p>    
                  </div>
              </div> 
              <hr>

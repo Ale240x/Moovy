@@ -31,7 +31,7 @@ model.aggiungiPrenotazione = async (dbPool, ref_cliente, ref_autista, tipo_veico
 
         var stato_prenotazione = 'Non Pagato';
 
-        if(ref_autista == 1){ //il cliente ha richiesto un autista, altrimenti sarebbe null (poi verrà inserito come null perchè dovrà essere aggiornato quando un autista accetta la corsa)
+        if(ref_autista == 1){ //il cliente ha richiesto un autista, altrimenti sarebbe 'null' (poi verrà inserito come null perchè dovrà essere aggiornato quando un autista accetta la corsa)
             var stato_autista = 'Da confermare';
         }
         if(mancia > 0){
@@ -206,11 +206,7 @@ model.getPrenotazione = async (dbPool, ref_prenotazione) => {
                 WHERE id_prenotazione = ? 
                 `, [ref_prenotazione]
                 );
-       
 
-        if(result.length == 0){
-            throw {'message' : 'Questa prenotazione non esiste'};
-        }
         return result;
     }
     catch(error){
@@ -252,9 +248,6 @@ model.getPrenotazioniAttiveC = async (dbPool, ref_cliente) => { //prenotazioni a
                 `, [ref_cliente, 'Pagato', 'Veicolo ritirato']
                 );
 
-        if(results.length == 0){
-            throw {'message' : 'Non esistono prenotazioni attive'};
-        }
         return results;
     }
     catch(error){
@@ -308,7 +301,7 @@ model.cercaVeicolo = async (dbPool, sel) => {
                 sql = sql +' AND v.modello_moto = \'' + sel.modello_moto + '\'';
             }
                 
-            if(sel.luogo_ritiro){ //se non c'è l'autista, in caso di moto luogo_ritiro esisterà sempre
+            if(sel.luogo_ritiro != ''){ //se non c'è l'autista, in caso di moto luogo_ritiro esisterà sempre
                 sql = sql +' AND (v.ref_parcheggio = \'' + sel.luogo_ritiro + '\' OR v.posizione = \'' + sel.luogo_ritiro +'\')';
             }
             
@@ -336,7 +329,6 @@ model.cercaVeicolo = async (dbPool, sel) => {
             [sel.luogo_ritiro, sel.tipo_veicolo, sel.data_ritiro, sel.data_riconsegna])
             );
 
-            console.log('Query: '+ query.sql); //test
             return veicoli;
         }   
     }
@@ -457,10 +449,6 @@ model.getVeicoliDaRiconsegnareC = async (dbPool, ref_cliente) => { //prenotazion
                 p.ref_cliente = ? AND p.stato_prenotazione = ?
                 `, [ref_cliente, 'Veicolo ritirato']
                 );
-
-        if(results.length == 0){
-            throw {'message' : 'Non esistono veicoli da Riconsegnare'};
-        }
         return results;
     }
     catch(error){
@@ -555,7 +543,7 @@ model.riconsegnaVeicolo = async (dbPool, id_prenotazione, stato_prenotazione, id
         await query(`
         UPDATE prenotazioni
         SET prezzo_finale = ?, stato_prenotazione = ?
-        WHERE id_prenotazine = ? `,
+        WHERE id_prenotazione = ? `,
         [prezzo_finale, stato_prenotazione, id_prenotazione]
         );
 

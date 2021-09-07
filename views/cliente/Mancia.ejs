@@ -7,7 +7,7 @@
  </head>
 <body>
     <%- include('../partials/navbarClie.ejs') %>
-    <form action="" method="">
+    <form action="" method="POST">
         <div class="container my-5 text-center" style="max-width: 580px;">
 
             <legend style="text-align: center; font-size:150%">Mancia</legend>
@@ -23,7 +23,7 @@
                     <input type="text" id="mancia" name="mancia" class="form-control form-control-md" placeholder="Importo" disabled>
                     <button type="conferma" class="btn btn-success" onclick="calcolaPrezzo()">Conferma</button>
                     <br>
-                    <p id="importo"></p>
+                    <p id="importo" name="prezzo_stimato"></p>
             </div>
             <button type="submit" class="btn btn-success">Procedi</button>
             </div>

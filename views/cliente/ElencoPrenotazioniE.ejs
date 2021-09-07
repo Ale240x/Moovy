@@ -9,40 +9,44 @@
     <%- include('../partials/navbarClie.ejs') %>
    
     <div class="container mx-auto" style="height: 512px;" >
-        <br>
-        <div class="container">
-          <h2>Prenotazioni effettuate</h2>
-          <p>Ecco la lista di tutte le prenotazioni effettuate, seleziona quella che vuoi eliminare</p>           
-            <div>
-              <%
-
-            if((!prenotazioni) || (prenotazioni.length==0)) { 
-              
-                __append('<div class="section col-12 text-center">Non è stata trovata alcuna prenotazione!</div>');
-               
-            } 
-
-            else{
-              
-       
-                prenotazioni.forEach( (prenotazione) => { 
-                   
-                        __append('<div class="section">')
-                        __append(include("../partials/elencoprenotE", prenotazione));
-                        __append('</div>')
-                   
-                   
-                });
-
-            } 
-                            
-           %>
-            </div>
-          </div>
+      <br>
+    
+    <% if(!prenotazioni|| prenotazioni.length == 0) {  %>  
+    
+      <div class="text-center" style="height: 400px;"><h2><br><br><br><br><br>Nessuna prenotazione da eliminare!</h1></div>
+    
+    <% }  else { %>
+    
+      <div class="container">
+        <h2>Prenotazioni effettuate</h2>
+        <p>Ecco la lista di tutte le prenotazioni effettuate, seleziona quella che vuoi eliminare</p>           
           
-          
+            <table class="table table-bordered table-bordered-success table-hover">
+                <thead>
+                  <tr>
+                    <th>ID Prenotazione</th>
+                    <th>Luogo ritiro</th>
+                    <th>Stato</th>                     
+                  </tr>
+                </thead>
+                <tbody>
+                  <% prenotazioni.forEach( (prenotazione)=>{ %>
+                  <tr>
+                    <td><a href="/utente/cliente/AreaPersonaleCliente/ElencoPrenotazioniE/<%= prenotazione.id_prenotazione %>"><%= prenotazione.id_prenotazione %></a></td>
+                    <td><%= prenotazione.luogo_ritiro %></td>
+                    <td><%= prenotazione.stato_prenotazione %></td>
+                  </tr>
+                  <% }) %>
+                </tbody>
+              </table>
+    <% } %>   
+        
     </div>
+    </div>
+
 <!--footer-->   
 <%- include('../partials/footer.ejs') %>
 </body>
 </html>
+
+

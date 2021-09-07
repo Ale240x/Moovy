@@ -169,7 +169,7 @@ CREATE TABLE `veicoli` (
   `tipo_veicolo` enum('Automobile','Moto','Bicicletta','Monopattino') COLLATE utf8mb4_unicode_ci NOT NULL,
   `modello_auto` enum('Suv','Utilitaria','Berlina') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `modello_moto` enum('Ciclomotore - 50cc','Scooter - 125cc','Turistica - 600cc','Adventure - 1200cc') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `patente_richiesta` enum('tipo_a','tipo_b','tipo_am','tipo_a1','tipo_a2') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `patente_richiesta` enum('tipo_a','tipo_b','tipo_am','tipo_a1','tipo_a2', 'no') COLLATE utf8mb4_unicode_ci DEFAULT 'no',
   `stato_veicolo` enum('Ritirato','Riconsegnato') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `ref_parcheggio` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `posizione` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -184,10 +184,10 @@ CREATE TABLE `veicoli` (
 
 INSERT INTO `veicoli` (`id_veicolo`, `nome_veicolo`, `tipo_veicolo`, `modello_auto`, `modello_moto`, `patente_richiesta`, `stato_veicolo`, `ref_parcheggio`, `posizione`, `tariffa`, `descrizione`, `immagine`) VALUES
 (536264, 'Dacia Duster', 'Automobile', 'Suv', NULL, 'tipo_b', NULL, 'Parcheggio Basile', '', 6, 'Suv 4x4-Cambio Manuale-Carburante: Benzina', '/images/carosello1.jpeg'),
-(198730, 'Xiaomi', 'Monopattino', NULL, NULL, NULL, NULL, 'Parcheggio Calatafimi', '', 2, 'Monopattino elettrico', '/images/xiaomi.jpg'),
-(395737, 'Obi', 'Monopattino', NULL, NULL, NULL, NULL, 'Parcheggio Calatafimi', '', 2, 'Monopattino elettrico', '/images/obi.jpg'),
-(663481, 'Rockrider nera', 'Bicicletta', NULL, NULL, NULL, NULL, NULL, 'Parcheggio Oreto', 2, 'Mountain Bike', '/images/rockrider.jpg'),
-(652964, 'Rockrider gialla', 'Bicicletta', NULL, NULL, NULL, NULL, NULL, 'Parcheggio Oreto', 2, 'Mountain Bike', '/images/rockrider.jpg'),
+(198730, 'Xiaomi', 'Monopattino', NULL, NULL, 'no', NULL, 'Parcheggio Calatafimi', '', 2, 'Monopattino elettrico', '/images/xiaomi.jpg'),
+(395737, 'Obi', 'Monopattino', NULL, NULL, 'no', NULL, 'Parcheggio Calatafimi', '', 2, 'Monopattino elettrico', '/images/obi.jpg'),
+(663481, 'Rockrider nera', 'Bicicletta', NULL, NULL, 'no', NULL, 'Parcheggio Oreto', '', 2, 'Mountain Bike', '/images/rockrider.jpg'),
+(652964, 'Rockrider gialla', 'Bicicletta', NULL, NULL, 'no', NULL, 'Parcheggio Oreto', '', 2, 'Mountain Bike', '/images/Bici.jpg'),
 (288634, 'Ducati Multistrada V4', 'Moto', NULL, 'Adventure - 1200cc', 'tipo_a', NULL, 'Parcheggio Roma', '', 5, 'Moto Adventure da 1200cc-Patente richiesta: A-Carburante: Benzina', '/images/Ducati-Multistrada.jpg'),
 (172946, 'Citroen C3', 'Automobile', 'Utilitaria', NULL, 'tipo_b', NULL, 'Parcheggio Oreto', '', 4, 'Utilitaria 5 porte-Cambio Manuale-Carburante: Benzina', '/images/C3.jpg'),
 (302750, 'Yamaha Tracer 900', 'Moto', NULL, 'Turistica - 600cc', 'tipo_a2', NULL, 'Parcheggio Roma', '', 6, 'Moto Turistica da 600cc-Patente richiesta: A2-Carburante: Benzina', '/images/Yamaha-Tracer-900.jpg'),

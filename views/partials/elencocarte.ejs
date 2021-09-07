@@ -4,9 +4,10 @@
         <div class="form-outline">
             <label class="form-label ">Inserisci metodo pagamento</label>
             <div class="input-group mb-3">
-                <select class="custom-select" id="inputGroupSelect01">
+                <select class="custom-select" id="ref_carta" name="ref_carta">
                   <option selected>Seleziona carta</option>
-                  <option ><%= carta.numero_carta%></option>                  
+                  <% ultime_cifre = carta.numero_carta.slice(-4); %>
+                  <option value="<%= carta.numero_carta%>">Carta che termina con ****<%= ultime_cifre %></option>                  
                 </select>
               </div>
             </div>                  

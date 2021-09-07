@@ -278,25 +278,22 @@ controller.getRicercaTipoVeicoli = (req, res) => {
 controller.getFormA = (req, res) => {
     var url = req.url.split('=');
     var tipo_veicolo = url[1];
-    res.render('general/FormRicercaA.ejs', { 'tipo_veicolo' : tipo_veicolo });
+    req.session.prenotazione = {'id': undefined};
+    prenotazione = req.session.prenotazione;
+    prenotazione.tipo_veicolo = tipo_veicolo;
+    res.render('general/FormRicercaA.ejs', { 'tipo_veicolo' : prenotazione.tipo_veicolo });
 };
 
 
 controller.postFormA = async (req,res) =>{
     var dbPool = req.dbPool;
-    var sel = req.body;
-    
-    sel.data_ritiro = req.body.data_ritiro.replace('T', ' ') + ':00';
-    sel.data_riconsegna = req.body.data_riconsegna.replace('T', ' ') + ':00';
-    
-    luogo_ritiro = req.body.luogo_ritiro.split(',');
-    sel.luogo_ritiro = luogo_ritiro[0];
+    req.body.data_ritiro = req.body.data_ritiro.replace('T', ' ') + ':00';
+    req.body.data_riconsegna = req.body.data_riconsegna.replace('T', ' ') + ':00';
+    req.body.luogo_ritiro = req.body.luogo_ritiro.split(',')[0];
+    req.body.luogo_riconsegna = req.body.luogo_riconsegna.split(',')[0];
 
-    /*console.log('Luogo ritiro: '+ sel.luogo_ritiro); //test
-    console.log('Autista: '+ sel.autista); //test
-    console.log('Categoria: '+ sel.modello_auto); //test
-    console.log('Luogo partenza: ' + sel.luogo_partenza); //test
-    console.log('Data ritiro: '+ sel.data_ritiro); //test*/
+    req.session.prenotazione = req.body;
+    var sel = req.session.prenotazione;
     
     try {
 
@@ -307,19 +304,7 @@ controller.postFormA = async (req,res) =>{
         
         res.render('general/RisultatiRicerca.ejs', 
         { 
-            veicoli: veicoli,
-            /*sel: {
-                tipo_veicolo: sel.tipo_veicolo,
-                autista: sel.autista,
-                luogo_partenza: sel.luogo_partenza,
-                luogo_arrivo: sel.luogo_arrivo,
-                luogo_ritiro: sel.luogo_ritiro,
-                luogo_riconsegna: sel.luogo_riconsegna,
-                data_ritiro: sel.luogo_ritiro,
-                luogo_riconsegna: sel.luogo_riconsegna,
-                modello_auto: sel.modello_auto,
-                modello_moto: sel.modello_moto
-            }*/
+            veicoli: veicoli
         });
         
 
@@ -338,10 +323,14 @@ controller.postFormA = async (req,res) =>{
 controller.getInfoVeicolo = async(req,res) =>{
     var dbPool = req.dbPool;
     var id_veicolo = req.params.id;
+    req.session.prenotazione.ref_veicolo = id_veicolo;
     console.log('id_veicolo: '+id_veicolo); //test  
     
     try{
         var veicolo = await prenotazioneModel.getVeicolo(dbPool, id_veicolo);
+        
+        req.session.prenotazione.patente_richiesta = veicolo[0].patente_richiesta;
+        console.log(req.session.prenotazione);//test
         
         res.render('general/InfoVeicolo.ejs', {
             veicolo: veicolo
@@ -361,7 +350,8 @@ controller.getInfoVeicolo = async(req,res) =>{
 
 //Mostra schermata riepilogo con veicolo selezionato e i filtri 
 controller.getRiepilogo = async(req,res) =>{
-    res.render('general/RiepilogoPrenotazione.ejs');
+    id_veicolo = req.params.id;
+    res.render('general/RiepilogoPrenotazione.ejs'), { id_veicolo: id_veicolo };
 };
 
 //Regione Recupera Password
