@@ -2,6 +2,7 @@ const { render } = require('ejs');
 const { redirect } = require('ejs');
 const accountModel = require('../models/accountModel');
 const prenotazioneModel = require('../models/prenotazioneModel');
+const util = require("util");
 
 var controller = {};
 
@@ -27,30 +28,41 @@ controller.getRegistrazioneCliente = (req, res) => {
 controller.postRegistrazioneCliente = async (req, res) => {  
 
     var dbPool = req.dbPool;
-
+    var data = new Date(req.body.data_di_nascita);
+    var scadenza_patente = new Date(req.body.scadenza_patente);
+    console.log(req.body);
     try{
            await accountModel.registrazioneCliente( 
            dbPool,
            req.body.nome,
            req.body.cognome,
            req.body.email,
-           req.body.dataNascita,
-           req.body.numeroTelefono,
+           data,
+           req.body.num_telefono,
            req.body.password, 
-           req.body.codicePatente,
-           req.body.dataScadenza,
-           req.body.a,
-           req.body.b,
-           req.body.am,
-           req.body.a1,
-           req.body.a2, 
-           req.body.numeroCarta,
-           req.body.nomeIntestatario, // Da mettere?
-           req.body.cognomeIntestatario,// Da mettere?
-           req.body.scadenzaCarta,
+           req.body.codice_patente,
+           scadenza_patente,
+           req.body.tipo_a,
+           req.body.tipo_b,
+           req.body.tipo_am,
+           req.body.tipo_a1,
+           req.body.tipo_a2, 
+           req.body.numero_carta,
+           req.body.nome_intestatario, 
+           req.body.cognome_intestatario,
+           req.body.scadenza_carta,
            req.body.cvv,         
            );
+        req.session.alert = {
+  
+            'style' : 'alert-info',
+            'message' : 'Sei registrato! ',
+        
+        };
+        
+        console.log("sono registrata!");
 
+        res.render('general/Home.ejs');
 
       } catch(error){
         
@@ -58,12 +70,14 @@ controller.postRegistrazioneCliente = async (req, res) => {
           'style' : 'alert-danger',
           'message' : error.message
       };
+      console.log(req.body.password);
+
+      console.log(error.message);
       
       if(error.code == "ER_DUP_ENTRY"){ //se c'è duplicazione email
           alert.message = "email già in uso";
       }
-
-      res.render('general/Home.ejs', { 'alert' : alert }); //mostra la home
+      res.redirect('/');
 
     }
 };
@@ -83,7 +97,7 @@ controller.postAutenticazione = async (req, res) => {
         //var referer = req.body.referer;
 
         req.session.utente = await accountModel.login(req.dbPool, attempt.email, attempt.password); 
-        //console.log(req.session.utente[0].ruolo);
+        console.log(req.session.utente);
         //res.redirect(referer);
 
         if(req.session.utente[0].ruolo == "Cliente"){ // Cliente 
@@ -145,24 +159,37 @@ controller.postAutenticazione = async (req, res) => {
     }
   };
 
-  controller.getRecuperaPass =(req,res)=>{
+controller.getRecuperaPass =(req,res)=>{
 
     res.render('general/RecuperaPass.ejs')
 };
 
-controller.postRecuperaPass =(req,res)=>{
+controller.postRecuperaPass = async (req,res)=>{
+
 var dbPool = req.dbPool;
+
 try{
 
-    let email= req.body;
+    var email= req.body.email;
+
     console.log(email);
-    let codice = Math.floor(Math.random() * 10000);
-    //DOVE DEVO SALVARE questo codice per poi confrontare con codice immesso dall'utente?? localstorage? 
-    recuperoPasswordEmail(req.transporter,email, codice);
+
+    var codice = Math.floor(Math.random() * 1000000);
+
+    console.log(codice);
+
+    let query = util.promisify(dbPool.query).bind(dbPool);
+    var utente = (await query(
+        'SELECT * FROM account WHERE email = ?', 
+        [email]));
+    console.log(utente);
+    var id_account= utente[0].id_account;
+    console.log(id_account);
+   // recuperoPasswordEmail(req.transporter,email, codice);
     
     res.render('general/CodiceP.ejs',{
-        'codice':codice,
-        'email':email
+        codice: codice,
+        
     });
 
 }catch(error){
@@ -175,33 +202,68 @@ try{
 
 
 controller.postCodice =(req,res)=>{
-var dbPool = req.dbPool;
-try{
-    let codiceInserito= req.body;
-    if (codiceInserito == codice){
-        res.render('general/NuovaPass.ejs')
-    }else{
+
+    var dbPool = req.dbPool;
+  //  var id = req.params.id;
+
+    try{
+        var codiceInserito= req.body.codice;
+        console.log(codiceInserito);
+        var codice= req.body.codiceP;
+        console.log(codice);
         
-        res.redirect('general/CodiceP.ejs');
+        //console.log(id);
+       
+        if (codiceInserito == codice){
+
+            res.render('general/NuovaPass.ejs');
+
+        }else{
+
+            req.session.alert = {
+  
+                'style' : 'alert-warning',
+                'message' : 'codice inserito non è valido!',
+            
+            };
+        
+            res.render('/recuperaPass/codice');
+            }
+
+    }catch(error){
+        req.session.alert = {
+  
+            'style' : 'alert-warning',
+            'message' : error.message,
+        
+        };
+        res.redirect('/recuperaPass/codice');
     }
 
-}catch(error){
-
-}
-res.render('general/NuovaPass.ejs')
 
 };
 
 
 controller.postNuovaPass = async (req,res)=>{
+
     var dbPool = req.dbPool;
+
     try{
-        let NuovaPassword = req.body.nuovaPass;
-        req.session.utente
-        await accountModel.recuperoPassword(dbPool, req.session.utente);
+
+        var nuovaPassword = req.body.nuovaPass;
+        var utente = req.session.utente;
+        await accountModel.recuperoPassword(dbPool, utente[0].id_account, nuovaPassword);
         
     }catch(error){
-        throw error;
+
+        req.session.alert = {
+  
+            'style' : 'alert-warning',
+            'message' : error.message,
+        
+        };
+        res. redirect('back')
+
     }
 
 
@@ -323,14 +385,22 @@ async function recuperoPasswordEmail(transporter, email, codice ){
         `;
 
         let mailOpt ={
-            'from': '',
+            'from': 'moovyprogetto@gmail.com',
             'to':email,
             'subject':'Reset Password - Moovy',
             'html': mailSubject
+           // 'text':'Prova prova email'
 
         };
 
-        transporter.sendmail(mailOpt);
+        transporter.sendMail(mailOpt, function(error, info){
+            if (error) {
+              console.log(error);
+            } else {
+              console.log('Email sent: ' + info.response);
+            }
+          });
+          ;
 
     }catch(error){
         throw error;

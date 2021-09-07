@@ -28,8 +28,9 @@
           <label for="codice" class="form-label">Inserisci codice</label>
           <input type="text" name="codice" class="form-control form-control-md" placeholder="Codice" id="codice" required>
        </div>
+       <input type="hidden" name="codiceP" class="form-control form-control-md" value="<%= codice %>" id="codiceP" >
         <div style="font-size: small;">
-            Inserire il codice inviato alla tua email.
+            Inserire il codice inviato 
         </div>
         </div>
         <button type="submit"  class="btn btn-success">Conferma</button>

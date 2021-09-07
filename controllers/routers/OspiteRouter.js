@@ -39,7 +39,6 @@ router.get("/TipoVeicoli/FormA/RisultatiRicerca/:id/InfoVeicolo", OspiteControll
 router.get("/TipoVeicoli/FormA/RisultatiRicerca/:id/InfoVeicolo/Riepilogo", OspiteController.getRiepilogo);
 
 //Regione recupera password? e controllo codice nuova pass
-// Da aggiungere AL CONTROLLER OSPITE/UTENTE NON SO!
 router.get("/recuperaPass", OspiteController.getRecuperaPass);
 router.post("/recuperaPass",OspiteController.postRecuperaPass);
 router.post("/recuperaPass/codice", OspiteController.postCodice);

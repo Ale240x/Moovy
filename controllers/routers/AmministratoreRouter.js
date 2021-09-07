@@ -37,7 +37,7 @@ router.post("/AreaPersonaleAmministratore/datiImpiegati/:id/modificaDatiImpiegat
 router.get("/AreaPersonaleAmministratore/datiAccounts",AmministratoreController.getFormFiltraggio);
 router.post("/AreaPersonaleAmministratore/datiAccounts",AmministratoreController.postFormFiltraggio);
 router.get("/AreaPersonaleAmministratore/datiAccounts/:id/eliminaAccount",AmministratoreController.getDatiAccount);
-router.post("/AreaPersonaleAmministratore/datiAccounts/:id/eliminaAccount",AmministratoreController.postDatiAccount);
+//router.post("/AreaPersonaleAmministratore/datiAccounts/:id/eliminaAccount",AmministratoreController.postDatiAccount);
 
 //gestione prenotazione
 router.get("/AreaPersonaleAmministratore/prenotazioniAttive",PrenotazioneAmministratoreController.getElencoPrenotazioniAttive );

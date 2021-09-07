@@ -30,7 +30,7 @@ router.use("/autista", AutistaRouter);
 
 router.get("", (req,res) =>{
 
-    //console.log(req.session.utente[0].ruolo);
+    console.log(req.session.utente[0].ruolo);
 
     if(req.session.utente[0].ruolo == 'Cliente'){
     

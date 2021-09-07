@@ -27,57 +27,63 @@ controller.getAreaPersonaleAmministratore = ( req, res) => {
 
 ////Registrazione Impiegati
 controller.getRegistrazioneImpiegati =(req,res)=> {
-    res.render('amministratore/RegistrazioneImpiegati.ejs');
+    res.render('amministratore/RegistrazioneImp.ejs');
 
 };
-/// SI DEVE IMPLEMENTARE CON WHILE? NEL SEQUENCE è RAPPRESENTATO CON UN LOOP
+
 controller.postRegistrazioneImpiegati = async(req,res)=> {
+
     var dbPool = req.dbPool;
+    var data = new Date(req.body.data_di_nascita);
+    var scadenza_patente = new Date(req.body.scadenza_patente);
+
+    console.log(req.body);
 
     try{
-        let emailnuovo =req.body.email;
-        let query=util.promisify(dbPool.query).bind(dbPool);
-
-        let mail = (await await query(`
-                    SELECT id_account
-                    FROM account
-                    WHERE email=emailnuovo
-                    `));
-        if (mail == 0){ 
-            await accountModel.aggiungiAccount(
-                dbPoolConncection,
-                req.body.nome,
-                req.body.cognome,
-                req.body.email,
-                req.body.datadinascita,
-                req.body.ruolo,
-                req.body.numerodicellulare,
-                req.body.codicepatente,
-                req.body.datarilasciopatente,
-                req.body.scadenzapatente,
-                req.body.tipipatente,
-                req.body.password,
-                1
-                );
-            }else{
-                let alert={
-                    'style':'alert-danger',
-                    'message': error.message
-                };
-                alert.message="email già esistente";
-
-                res.render('amministratore/RegistrazioneImpiegati.ejs', {'alert':alert});
-                
-            }
+           await accountModel.registrazioneImpiegato( 
+           dbPool,
+           req.body.ruolo,
+           req.body.nome,
+           req.body.cognome,
+           req.body.email,
+           data,
+           req.body.num_telefono,
+           req.body.password, 
+           req.body.codice_patente,
+           scadenza_patente,
+           req.body.tipo_a,
+           req.body.tipo_b,
+           req.body.tipo_am,
+           req.body.tipo_a1,
+           req.body.tipo_a2         
+           );
+        req.session.alert = {
+  
+            'style' : 'alert-info',
+            'message' : 'Sei registrato! ',
         
-        res.redirect(307,"amministratore/AreaPersonaleAmministratore");
-    }catch(error){
+        };
+        
+        console.log("Impiegato è stato registrato!");
 
-        let alert={
-            'style': 'alert-danger',
-            'message': error.message
-            };
-        }
+        res.redirect('/utente/amministratore/AreaPersonaleAmministratore');
+
+      } catch(error){
+        
+      let alert = {
+          'style' : 'alert-danger',
+          'message' : error.message
+      };
+      console.log(req.body.password);
+
+      console.log(error.message);
+      
+      if(error.code == "ER_DUP_ENTRY"){ //se c'è duplicazione email
+          alert.message = "email già in uso";
+      }
+      res.redirect('/utente/amministratore/AreaPersonaleAmministratore/');
+
+    }
         
     
 };
@@ -239,15 +245,15 @@ controller.postFormFiltraggio = async(req,res)=>{
 };
 
 
-controller.getDatiAccount = (req, res) => { 
+/*controller.getDatiAccount = (req, res) => { 
     let id= req.params.id; 
    // console.log("sono su get " + id);
     res.render('amministratore/Elimina.ejs',{
         id : id,
     });   
 }; 
-
-controller.postDatiAccount = async (req, res) => {  
+*/
+controller.getDatiAccount = async (req, res) => {  
         var dbPool= req.dbPool;
         try{
             

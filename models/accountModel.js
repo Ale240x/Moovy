@@ -6,6 +6,8 @@ const crittografo = require('../utilities/crittografo');
 var model = {};
 
 //entity utente
+
+////AGGIUSTARE LA QUERY
 model.getAccount = async (dbPool, utenteId) => {
     
     try {
@@ -15,11 +17,9 @@ model.getAccount = async (dbPool, utenteId) => {
         return (await query(`SELECT  
                                 *
                             FROM 
-                                account AS a,
-                                patenti AS p,
-                                carte_di_credito AS c
-                            WHERE a.id_account = p.ref_account  
-                            AND a.id_account = ?`,
+                                account 
+                            WHERE   
+                             id_account = ?`,
                             [utenteId]));
 
     } catch(error) {
@@ -147,10 +147,10 @@ model.recuperoPassword = async (dbPool, utenteId, nuovaPassword) => {
     try{
         let query = util.promisify(dbPool.query).bind(dbPool);
 
-        let newClearPassword = crittografo.cryptPass(nuovaPassword);
-    
+       // let newClearPassword = crittografo.cryptPass(nuovaPassword);
+        
         await query('UPDATE account SET password = ? WHERE id_account = ?', 
-        [newClearPassword, utenteId][0]
+        [nuovaPassword, utenteId]
         );
     } catch (error) {
         
@@ -159,16 +159,16 @@ model.recuperoPassword = async (dbPool, utenteId, nuovaPassword) => {
 }
 
 //registrazione cliente
-model.registrazioneCliente = async (dbPool, nome, cognome, email, data_di_nascita, num_telefono, clearPassword, codice_patente, scadenza_patente, tipo_a, tipo_b, tipo_am, tipo_a1, tipo_a2,  numero_carta, scadenza_carta, cvv) => {
+model.registrazioneCliente = async (dbPool, nome, cognome, email, data_di_nascita, num_telefono, Password, codice_patente, scadenza_patente, tipo_a, tipo_b, tipo_am, tipo_a1, tipo_a2,  numero_carta,nome_intestatario, cognome_intestatario, scadenza_carta, cvv) => {
     try {
 
         let query = util.promisify(dbPool.query).bind(dbPool);
 
         //mettere check mail non registrata
-        if(!(email == (await query('SELECT email FROM account WHERE email = ?', [email]))
+       /* if(!(email == (await query('SELECT a.email FROM account AS a WHERE a.email = ?', [email]))
 
         ))throw {'message' : 'Email già registrata.'}; 
-
+        
         if(
             !(
                 checkDati.letteraMaiuscola(nome) &&
@@ -181,43 +181,47 @@ model.registrazioneCliente = async (dbPool, nome, cognome, email, data_di_nascit
                 checkDati.isInt(cvv)
 
             )){ throw {'message' : 'Dati inseriti non validi'}; 
-        }
+        }*/
 
-        let cryptPass = crittografo.cryptPass(clearPassword);
+        //let cryptPass = crittografo.cryptPass(clearPassword);
 
         let ruolo = "Cliente";
-        
+        console.log("sono nel account model")
         await query(
             `INSERT INTO account
-            (ruolo, nome, cognome, data_di_nascita, num_telefono, password, email) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`, 
+            (ruolo, nome, cognome,data_di_nascita, num_telefono, Password, email) 
+            VALUES (?, ?, ?, ?, ?, ?,?)`, 
             [
-                ruolo,
+                'Cliente',
                 nome,
                 cognome,
                 data_di_nascita,
                 num_telefono,
-                cryptPass,
+                Password,
                 email
             ]
         );
+        let id = (await query(
+            'SELECT id_account FROM account WHERE email = ?', 
+            [email]));
+            console.log(id[0].id_account);
         
-       //dati patente
+      // dati patente
         await query(
-            `INSERT INTO patente
-            (codice_patente, scadenza_patente, tipo_a, tipo_b, tipo_am, tipo_a1, tipo_a2, ref_account,)            
-            VALUES (?, ?, ?)`, 
-            [codice_patente, scadenza_patente, tipo_a, tipo_b, tipo_am, tipo_a1, tipo_a2, account.id]
+            `INSERT INTO patenti
+            (codice_patente, scadenza_patente, tipo_a, tipo_b, tipo_am, tipo_a1, tipo_a2, ref_account)            
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)`, 
+            [codice_patente, scadenza_patente, tipo_a, tipo_b, tipo_am, tipo_a1, tipo_a2, id[0].id_account]
         );
-
+            
         //dati carta 
         await query(
-            `INSERT INTO carta_di_credito
+            `INSERT INTO carte_di_credito
             (numero_carta, ref_account, nome_intestatario, cognome_intestatario, scadenza_carta, cvv)            
-            VALUES (?, ?, ?)`, 
-            [numero_carta, account.id, nome, cognome, scadenza_carta, cvv]
+            VALUES (?, ?, ?, ?, ?, ?)`, 
+            [numero_carta, id[0].id_account, nome_intestatario, cognome_intestatario, scadenza_carta, cvv]
         );
-
+            
     } catch (error) {
         
         throw error;
@@ -226,13 +230,13 @@ model.registrazioneCliente = async (dbPool, nome, cognome, email, data_di_nascit
 
 //registrazione impiegati
 
-model.registrazioneImpiegato = async (dbPool, ruolo, nome, cognome, email, data_di_nascita, num_telefono, clearPassword, codice_patente, scadenza_patente, tipo_a, tipo_b, tipo_am, tipo_a1, tipo_a2) => {
+model.registrazioneImpiegato = async (dbPool, ruolo, nome, cognome, email, data_di_nascita, num_telefono, Password, codice_patente, scadenza_patente, tipo_a, tipo_b, tipo_am, tipo_a1, tipo_a2) => {
     try {
 
         let query = util.promisify(dbPool.query).bind(dbPool);
         
         //mettere check mail non registrata
-        if(!(email == (await query('SELECT email FROM account WHERE email = ?', [email]))
+       /* if(!(email == (await query('SELECT email FROM account WHERE email = ?', [email]))
 
         ))throw {'message' : 'Email già registrata.'}; 
 
@@ -249,28 +253,33 @@ model.registrazioneImpiegato = async (dbPool, ruolo, nome, cognome, email, data_
         }
 
         let cryptPass = crittografo.cryptPass(clearPassword);
+        */
         
         await query(
             `INSERT INTO account
-            (ruolo, nome, cognome, email, data_di_nascita, num_telefono, clearPassword) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`, 
+            (ruolo, nome, cognome, email, data_di_nascita  num_telefono, Password) 
+            VALUES (?, ?, ?, ?, ?, ?, ?)`, 
             [
                 ruolo, 
                 nome,
                 cognome,
+                email,
                 data_di_nascita,
                 num_telefono,
-                cryptPass,
-                email
+                //cryptPass,
+                Password
             ]
         );
+        let id = (await query(
+            'SELECT id_account FROM account WHERE email = ?', 
+            [email]));
         
        //dati patente
         await query(
-            `INSERT INTO patente
+            `INSERT INTO patenti
             (codice_patente, scadenza_patente, tipo_a, tipo_b, tipo_am, tipo_a1, tipo_a2, ref_account)            
             VALUES (?, ?, ?, ?, ?, ?, ?, ?)`, 
-            [codice_patente, scadenza_patente, tipo_a, tipo_b, tipo_am, tipo_a1, tipo_a2, account.id]
+            [codice_patente, scadenza_patente, tipo_a, tipo_b, tipo_am, tipo_a1, tipo_a2, id[0].id_account]
         );
 
     } catch (error) {
@@ -362,7 +371,7 @@ model.getParcheggioAdd = async (dbPool, idAddetto) => {
 
         let query = util.promisify(dbPool.query).bind(dbPool);
 
-        return (await query('SELECT indirizzo FROM parcheggi WHERE ref_addetto = ?',
+        return (await query('SELECT * FROM parcheggi WHERE ref_addetto = ?',
         [idAddetto]));
 
     } catch (error) {

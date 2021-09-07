@@ -61,11 +61,14 @@ controller.getAccettaCorsa = async(req,res)=>{
     var dbPool = req.dbPool;
     var id_prenotazione = req.params.id;
     try{
-       // var prenotazione= await prenotazioneModel.getPrenotazione(dbPool,id_prenotazione);
+        var prenotazione= await prenotazioneModel.getPrenotazione(dbPool,id_prenotazione);
         var utente= req.session.utente[0].id_account;
-        let stato='Confermato'
+
         await prenotazioneModel.accettaCorsa(dbPool,id_prenotazione,utente);
-        //confermaCorsaCliente(req.transporter,id_prenotazione,prenotazione[0].email)
+
+        var cliente = await accountModel.getAccount(dbPool, prenotazione[0].ref_cliente)
+
+        confermaCorsaCliente(req.transporter,id_prenotazione,cliente[0].email,cliente[0].nome, cliente[0].cognome);
         
 
         req.session.alert = {
@@ -104,7 +107,8 @@ controller.getVeicoliPrenotatiAut = async(req,res) =>{
 
         var veicoli= await prenotazioneModel.getVeicoliDaRitirareAut(dbPool, utente[0].id_account);
 
-        //console.log(veicoli[0].id_veicolo);
+        //console.log(utente[0].id_account);
+        //console.log(veicoli);
         
         res.render("autista/VeicoliPrenotatiAutista.ejs",{
             veicoli : veicoli,
@@ -144,7 +148,7 @@ controller.postInfoRitiro= async (req, res) => {
        // console.log(codice);
        // console.log(id_veicolo);
         var prenotazione = await prenotazioneModel.getPrenotazioneDelVeicolo(dbPool,id_veicolo);
-        var stato = "Ritirato";
+        var stato = "Veicolo Ritirato";
 
        // console.log(prenotazione);
 
@@ -246,21 +250,10 @@ async function calcolaSovrapprezzo(){
 
 }
 
-async function controllaCodice(codice,id_veicolo){
 
 
-    try{
-        if(codice!=id_veicolo){
-            res.render('/autista/InfoRitiro.ejs')
-        }
-    }catch(error){
-        throw error;
-    }
 
-};
-
-
-async function confermaCorsaCliente(transporter,prenotazione,email){
+async function confermaCorsaCliente(transporter,id_prenotazione,email,clientenome, clientecognome){
 
     try {
         
@@ -268,8 +261,8 @@ async function confermaCorsaCliente(transporter,prenotazione,email){
             `
             La corsa è confermata.
             <br/>
-            Gentile ${cliente.nome} ${cliente.cognome},
-            è stato richiesto l'autista per la prenotazione con id: ${prenotazione.id_prenotazione}.
+            Gentile ${clientenome} ${clientecognome},
+            è stato richiesto l'autista per la prenotazione con id: ${id_prenotazione}.
             <br/>
             La prenotazione è confermata con l'autista.
             <br/>
@@ -282,13 +275,20 @@ async function confermaCorsaCliente(transporter,prenotazione,email){
             `;
 
         let mailOpt = {
-            'from' : 'MAIL MOOVY',
-            'to' : cliente.email,
+            'from' : 'moovyprogetto@gmail.com',
+            'to' : email,
             'subject' : 'la prenotazione è confermata',
             'html' : mailSubject
             };
 
-        transporter.sendMail(mailOpt);
+            transporter.sendMail(mailOpt, function(error, info){
+                if (error) {
+                  console.log(error);
+                } else {
+                  console.log('Email sent: ' + info.response);
+                }
+              });
+              ;
 
     } catch (error) {
         

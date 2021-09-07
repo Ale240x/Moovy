@@ -412,13 +412,13 @@ model.getVeicoliDaRitirareAut = async (dbPool, ref_autista) => { //prenotazioni 
     //AND p.data_ritiro <= SYSDATETIME()
     try{
         let query = util.promisify(dbPool.query).bind(dbPool);
-        results =  await query(`
+        return( await query(`
                 SELECT p.*, id_veicolo, v.nome_veicolo, v.posizione
                 FROM prenotazioni AS p, veicoli AS v
                 WHERE p.ref_veicolo = v.id_veicolo AND
                 p.ref_autista = ? AND p.stato_prenotazione = ? 
                 `, [ref_autista, 'Pagato']
-                );
+                ));
 
         
     }

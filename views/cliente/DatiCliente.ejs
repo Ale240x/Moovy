@@ -68,12 +68,6 @@
         </div>
         <div class="mb-3">
             <div class="form-outline">
-                <label class="form-label" for="dataRilascio">Data di rilascio patente</label>
-                <input type="text" id="dataRilascio" name="dataRilascio" value="" placeholder="dd-mm-yyyy" class="form-control form-control-md"  />
-            </div> 
-        </div>  
-        <div class="mb-3">
-            <div class="form-outline">
                 <label class="form-label" for="scadenza_patente">Scadenza patente</label>
                 <% scadenza_p = utente[0].scadenza_patente.slice(0, 10); %>
                 <input type="date" id="scadenza_patente" name="scadenza_patente" placeholder="dd-mm-yyyy" value="<%= scadenza_p %>" class="form-control form-control-md"  />

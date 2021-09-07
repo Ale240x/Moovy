@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <%- include('../partials/head.ejs') %>
+
+    <title>Registrazione</title>
+</head>
+
+<body>
+  <%- include('../partials/navbarAmm.ejs') %>
+
+     <!--Form registrazione-->
+    <div class="container mx-auto">
+       <br>
+        <div class="row">
+            <div class="card card-body" style="width: 516px;">
+                <br>                
+                <h1>Registrazione Impiegato</h1>
+                <br>
+              <form action="/utente/amministratore/AreaPersonaleAmministratore/registrazioneImpiegati" method="POST">
+                <br>
+  
+                <div class="row">
+                  <div class="col-md-6 mb-4">
+  
+                    <div class="form-outline">
+                      <label class="form-label" for="nome">Nome *</label>
+                      <input name="nome" type="text" id="nome" class="form-control form-control-md" placeholder="Nome" pattern="^([A-Z][a-z]*)( [A-Za-z]+)*" required/>                   
+                    </div>
+  
+                  </div>
+                  <div class="col-md-6 mb-4">
+  
+                    <div class="form-outline">
+                      <label class="form-label" for="cognome">Cognome *</label>
+                      <input name="cognome"type="text" id="cognome" class="form-control form-control-md" placeholder="Cognome" pattern="^([A-Z][a-z]*)( [A-Za-z]+)*" required />
+                    </div>
+  
+                  </div>
+                </div>
+  
+                <div class="row">
+                  <div class="col-md-6 mb-4">
+  
+                    <div class="form-outline">
+                      <label class="form-label" for="ruolo">Ruolo *</label>
+                      <input name="ruolo" type="text" id="ruolo" class="form-control form-control-md" placeholder="Autista/ Addetto" required/>                   
+                    </div>
+  
+                  </div>
+                  <div class="col-md-6 mb-4 ">
+  
+                    <div class="form-outline">
+                      <label class="form-label" for="data_di_nascita">Data di nascita *</label>
+                      <input name="data_di_nascita" type="text" id="data_di_nascita" class="form-control form-control-md" autocomplete="off"  placeholder="dd-mm-yyyy" class="form-control search-slt shadow-none" required/>
+                    </div>
+  
+                  </div>
+                  <div class="col-md-6 mb-4 ">      
+                    <div class="form-outline">
+                      <label class="form-label" for="num_telefono">Numero di telefono *</label>
+                      <input name="num_telefono" type="tel" id="num_telefono" class="form-control form-control-md" placeholder="Numero di telefono" required />                          
+                    </div>      
+                  </div>
+                  <div class="col-md-6 mb-4 ">
+  
+                    <div class="form-outline">
+                      <label class="form-label" for="email">Email *</label>
+                      <input name="email" type="email" id="email" class="form-control form-control-md" placeholder="Email" required />
+                    </div>
+  
+                  </div>
+                </div>             
+  
+  
+                <div class="row">                  
+                  
+
+                  <div class="col-md-6 mb-4 ">
+                    <label class="form-label" for="patente">Tipo patente*</label>   
+                    <br>   
+                    <button class="btn dropdown-toggle mr-4 btn-success" type="button" data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false">Patenti</button>
+
+                     <div class="dropdown-menu">
+                     <a class="dropdown-item"> 
+                     <div class="custom-control custom-checkbox">
+                     <input name="tipo_am" type="checkbox" class="custom-control-input" id="tipo_am" value="1">
+                      <label class="custom-control-label" for="tipo_am">AM</label>
+                     </div>
+                    </a>
+                  <a class="dropdown-item" href="#">
+                  <div class="custom-control custom-checkbox">
+                    <input name="tipo_a" type="checkbox" class="custom-control-input" id="tipo_a" value="1">
+                  <label class="custom-control-label"for="tipo_a">A</label>
+                  </div>
+                  </a>
+                <a class="dropdown-item" href="#">
+                <div class="custom-control custom-checkbox">
+                    <input name="tipo_a1" type="checkbox" class="custom-control-input" id="tipo_a1" value="1">
+                    <label class="custom-control-label" for="tipo:_a1">A1</label>
+                 </div>
+                 </a>
+                 <a class="dropdown-item" href="#">
+                  <div class="custom-control custom-checkbox">
+                 <input name="tipo_a2" type="checkbox" class="custom-control-input" id="tipo_a2" value="1">
+                  <label class="custom-control-label" for="tipo_a2">A2</label>
+                  </div>
+                 </a>
+
+                <a class="dropdown-item" href="#">
+                 <div class="custom-control custom-checkbox">
+                <input name="tipo_b" type="checkbox" class="custom-control-input" id="tipo_b" value="1">
+                 <label class="custom-control-label" for="tipo_b">B</label>
+                 </div>
+                </a>
+                  </div>
+                  </div>
+                  <div class="col-md-6 mb-4 pb-2">      
+                    <div class="form-outline">
+                      <label class="form-label" for="codice_patente">Codice patente*</label>
+                      <input name="codice_patente" type="text" id="codice_patente" class="form-control form-control-md" placeholder="Codice Patente" required />                          
+                    </div>              
+                </div>
+                <div class="col-md-6 mb-4 pb-2">      
+                  <div class="form-outline">
+                    <label class="form-label" for="scandenza_patente">Scadenza patente*</label>
+                    <input name="scadenza_patente" type="text" id="scadenza_patente" class="form-control form-control-md" placeholder="Scadenza Patente" required />                          
+                  </div>              
+              </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-6 mb-4 ">
+  
+                    <div class="form-outline">
+                      <label for="password">Password *</label>
+                       <input name="password" id="password" type="password" class="form-control" title="Almeno 8 caratteri, una lettera maiuscola e un numero" placeholder="Inserisci password" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,}$" size="32" maxlength="40" required/>
+                    </div>  
+                  </div>
+                  <div class="col-md-6 mb-4 ">
+  
+                    <div class="form-outline">
+                      <label for="password_conferma" class="form-label">Reinserisci password *</label>
+                      <input name="password_conferma" type="password" class="form-control" id="password_conferma" pattern="(?=^.{8,}$)(?=.*\d)(?=.*[!@#$%\.,^&*]+)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$" title="Le password devono coincidere"  placeholder="Conferma password" required>
+
+                   </div>    
+                  </div>                 
+              </div>
+                <br>
+                <br>
+                <div class="d-flex justify-content-center">
+                  <button type="submit" class="btn btn-lg  btn-success  align-content-lg-center">Conferma</button>
+                </div>
+              <br>
+              </form>
+            </div>
+          </div>
+          
+    </div>
+
+    <%- include('../partials/footer.ejs') %>
+
+<script>
+     $(document).ready ( () =>{
+
+    $('#password_conferma').on('input', () =>{
+        password = $('#password').val()
+        confirmPassword = $('#password_conferma').val()
+        document.getElementById('password_conferma').setCustomValidity(password != confirmPassword ? "Le password non coincidono" : "")
+    })
+    $('#password').on('input', () =>{
+        password = $('#password').val()
+        confirmPassword = $('#password_conferma').val()
+        document.getElementById('password_conferma').setCustomValidity(password != confirmPassword ? "Le password non coincidono" : "")
+    })
+  })
+</script>
+</body>
+</html>

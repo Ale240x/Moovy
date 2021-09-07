@@ -19,15 +19,15 @@
       <% }  else { %>
 
         <div class="container">
-            <h2>Veicoli Prenotati</h2>
-            <p>Ecco la lista di tutti i veicoli prenotati</p>
+            <h2>Veicoli Da Ritirare</h2>
+            <p>Ecco la lista di tutti i veicoli da ritirare</p>
             
               <table class="table table-bordered table-bordered-success table-hover">
                   <thead>
                     <tr>
                       <th>ID Veicolo</th>
                       <th>Tipo Veicolo</th>
-                      <th>Stato</th>                      
+                      <th>Luogo Ritiro</th>                      
                     </tr>
                   </thead>
                   <tbody>
@@ -35,7 +35,7 @@
                     <tr>
                       <td><a href="/utente/autista/veicoliPrenotati/<%= veicolo.id_veicolo %>/InfoRitiro" ><%= veicolo.id_veicolo %></a></td>
                       <td><%= veicolo.tipo_veicolo %></td>
-                      <td><%= veicolo.stato_veicolo %></td>
+                      <td><%= veicolo.luogo_ritiro %></td>
                     </tr>
                     <% }) %>
                   </tbody>

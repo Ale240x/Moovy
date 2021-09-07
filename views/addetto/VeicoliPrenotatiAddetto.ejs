@@ -27,7 +27,7 @@
                     <tr>
                       <th>ID Veicolo</th>
                       <th>Tipo Veicolo</th>
-                      <th>Stato</th>                      
+                      <th>ID Prenotazione</th>                      
                     </tr>
                   </thead>
                   <tbody>
@@ -35,7 +35,7 @@
                     <tr>
                       <td><a href="/utente/addetto/veicoliPrenotati/<%= veicolo.id_veicolo %>/InfoRitiro" ><%= veicolo.id_veicolo %></a></td>
                       <td><%= veicolo.tipo_veicolo %></td>
-                      <td><%= veicolo.stato_veicolo %></td>
+                      <td><%= veicolo.id_prenotazione %></td>
                     </tr>
                     <% }) %>
                   </tbody>
