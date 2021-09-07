@@ -14,8 +14,8 @@
                 <img src="<%= veicolo[0].immagine %>" class="img-fluid float-left" width="500px"> 
             </div>
             <div class="col-md p-3">
-                <form action="/utente/cliente/TipoVeicoli/FormA/RisultatiRicerca/<%= veicolo[0].id_veicolo %>/InfoVeicolo/Riepilogo" method="GET">
-                    <p style="display: none;" id="id_v"><%= veicolo[0].id_veicolo %></p>
+                <form action="/utente/cliente/Riepilogo" method="GET">
+                    <p style="display: none;" id="id_v" name="id_veicolo"><%= veicolo[0].id_veicolo %></p>
                     <h3 id="nome_veicolo"><%= veicolo[0].nome_veicolo %></h3>
                     <br>
                     <% let descr = veicolo[0].descrizione.split('-'); %>

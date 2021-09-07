@@ -114,7 +114,7 @@ controller.getInfoVeicolo = async(req,res) =>{
 
 //Mostra schermata riepilogo con veicolo selezionato e i filtri 
 controller.getRiepilogo = async(req,res) =>{
-    id_veicolo = req.params.id;
+    id_veicolo = req.query.id_veicolo;
     res.render('cliente/RiepilogoPrenotazione.ejs', { id_veicolo: id_veicolo });
 };
 
@@ -134,21 +134,22 @@ function checkPatente(utente, patente_richiesta){
 
 controller.postRiepilogo = async (req, res) =>{
     var dbPool = req.dbPool;
-    info = req.body;
+    var info = req.body;
     utente = req.session.utente;
     req.session.prenotazione.prezzo_stimato = info.prezzo_stimato.slice(' ')[0];
     if(!info.mancia){
         info.mancia = 0;
     }
     var pre = req.session.prenotazione;
-
+    console.log("arrivato in postRiepilogo");
     if(info.luogo_partenza){ //se è stato richiesto un autista
         res.redirect('/Riepilogo/Mancia');
     }
     else if((pre.tipo_veicolo == 'Automobile' || pre.tipo_veicolo == 'Moto') && !info.mancia){
-        
+        console.log("arrivato nel secondo if");
         if(!checkPatente(utente, pre.patente_richiesta)){
-            res.redirect('/Riepilogo/FormPatente');
+            console.log("deve fare redirect a /Riepilogo/FormPatente");
+            res.redirect('utente/cliente/Riepilogo/FormPatente'); // è questo il redirect che non funziona
         }
         else{
             try {
@@ -188,6 +189,9 @@ controller.postRiepilogo = async (req, res) =>{
             }   
         }
     } 
+};
+controller.getPagamento = (req, res) => {  
+    res.render('cliente/Pagamento.ejs');  
 };
 
 controller.getMancia = (req,res) => {
@@ -298,9 +302,7 @@ controller.postAggiungiPatente = async (req,res) =>{
 
 
 
-controller.getPagamento = (req, res) => {  
-    res.redirect("/Riepilogo/Pagamento");  
-};
+
 
 
 
