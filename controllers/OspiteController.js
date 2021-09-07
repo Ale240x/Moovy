@@ -299,7 +299,8 @@ controller.getInfoVeicolo = async(req,res) =>{
 
 //Mostra schermata riepilogo con veicolo selezionato e i filtri 
 controller.getRiepilogo = async(req,res) =>{
-    res.render('general/RiepilogoPrenotazione.ejs');
+    id_veicolo = req.params.id;
+    res.render('general/RiepilogoPrenotazione.ejs'), { id_veicolo: id_veicolo };
 };
 
 //Regione Recupera Password

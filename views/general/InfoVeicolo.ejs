@@ -14,15 +14,15 @@
                 <img src="<%= veicolo[0].immagine %>" class="img-fluid float-left" width="500px"> 
             </div>
             <div class="col-md p-3">
-                <form action="/TipoVeicoli/FormA/RisultatiRicerca/:id/InfoVeicolo/Riepilogo" method="GET">
-                    <p id="id_v" style="display: none;"><%= veicolo[0].id_veicolo %></p>
+                <form action="/TipoVeicoli/FormA/RisultatiRicerca/<%= veicolo[0].id_veicolo %>/InfoVeicolo/Riepilogo" method="GET">
+                    <p style="display: none;" id="id_v"><%= veicolo[0].id_veicolo %></p>
                     <h3 id="nome_veicolo"><%= veicolo[0].nome_veicolo %></h3>
                     <br>
                     <% let descr = veicolo[0].descrizione.split('-'); %>
                     <% for(row in descr){ %>
                         <h5><%= descr[row] %><br></h5>
                     <% } %>
-                    
+                    <h5 style="display: none;" id="patente_richiesta"><%= veicolo[0].patente_richiesta %></h5>
                     <h4 id="tariffa" align="right">Prezzo orario: <%= veicolo[0].tariffa %> €</h4>
                     <br>
                     <p align="right">
@@ -41,6 +41,7 @@
     <script>
         sessionStorage.setItem('ref_veicolo', document.getElementById('id_v').innerHTML);
         sessionStorage.setItem('nome_veicolo', document.getElementById('nome_veicolo').innerHTML);
+        sessionStorage.setItem('patente_richiesta', document.getElementById('patente_richiesta').innerHTML);
 
         if(sessionStorage.autista == 'null' || sessionStorage.autista == undefined){
             tariffa = Number(document.getElementById('tariffa').innerHTML.split(' ')[2]);

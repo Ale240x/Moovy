@@ -30,10 +30,9 @@ return importo;
 };
 
 //controlla se abbiamo la giusta patente
-function checkPatente(veicolo) {
+function checkPatente(patente_richiesta) {
 var utente = req.session.utente;
-var veicolo = req.body;
-var tipo = veicolo.patente_richiesta
+var tipo = patente_richiesta
 if(tipo=="a" && utente.a==true || tipo=="a1" && utente.a1==true ||tipo=="a2" && utente.a2==true ||tipo=="am" && utente.am==true || tipo=="b" && utente.b==true){
     return true;
     
@@ -41,9 +40,100 @@ if(tipo=="a" && utente.a==true || tipo=="a1" && utente.a1==true ||tipo=="a2" && 
 else return false; 
 };
 
-//Regione Ricerca Veicoli
+//Regione Ricerca Veicolo
 controller.getRicercaTipoVeicoli = (req, res) => {  
-    res.render('general/TipiVeicoli.ejs');  
+    res.render('cliente/TipiVeicoli.ejs');  
+};
+
+
+controller.getFormA = (req, res) => {
+    var url = req.url.split('=');
+    var tipo_veicolo = url[1];
+    res.render('cliente/FormRicercaA.ejs', { 'tipo_veicolo' : tipo_veicolo });
+};
+
+
+controller.postFormA = async (req,res) =>{
+    var dbPool = req.dbPool;
+    var sel = req.body;
+    
+    sel.data_ritiro = req.body.data_ritiro.replace('T', ' ') + ':00';
+    sel.data_riconsegna = req.body.data_riconsegna.replace('T', ' ') + ':00';
+    
+    luogo_ritiro = req.body.luogo_ritiro.split(',');
+    sel.luogo_ritiro = luogo_ritiro[0];
+
+    /*console.log('Luogo ritiro: '+ sel.luogo_ritiro); //test
+    console.log('Autista: '+ sel.autista); //test
+    console.log('Categoria: '+ sel.modello_auto); //test
+    console.log('Luogo partenza: ' + sel.luogo_partenza); //test
+    console.log('Data ritiro: '+ sel.data_ritiro); //test*/
+    
+    try {
+
+        var veicoli = await prenotazioneModel.cercaVeicolo( 
+                dbPool, 
+                sel
+            );
+        
+        res.render('cliente/RisultatiRicerca.ejs', 
+        { 
+            veicoli: veicoli,
+            /*sel: {
+                tipo_veicolo: sel.tipo_veicolo,
+                autista: sel.autista,
+                luogo_partenza: sel.luogo_partenza,
+                luogo_arrivo: sel.luogo_arrivo,
+                luogo_ritiro: sel.luogo_ritiro,
+                luogo_riconsegna: sel.luogo_riconsegna,
+                data_ritiro: sel.luogo_ritiro,
+                luogo_riconsegna: sel.luogo_riconsegna,
+                modello_auto: sel.modello_auto,
+                modello_moto: sel.modello_moto
+            }*/
+        });
+        
+
+    } catch (error) {
+
+        req.session.alert = {
+            
+            'style' : 'alert-warning',
+            'message' : error.message
+    
+        }      
+    
+    }
+};
+
+controller.getInfoVeicolo = async(req,res) =>{
+    var dbPool = req.dbPool;
+    var id_veicolo = req.params.id;
+    console.log('id_veicolo: '+id_veicolo); //test  
+    
+    try{
+        var veicolo = await prenotazioneModel.getVeicolo(dbPool, id_veicolo);
+        
+        res.render('cliente/InfoVeicolo.ejs', {
+            veicolo: veicolo
+        });
+        
+
+    } catch (error) {
+
+        req.session.alert = {
+            
+            'style' : 'alert-warning',
+            'message' : error.message
+    
+        }      
+    }   
+};
+
+//Mostra schermata riepilogo con veicolo selezionato e i filtri 
+controller.getRiepilogo = async(req,res) =>{
+    id_veicolo = req.params.id;
+    res.render('cliente/RiepilogoPrenotazione.ejs', { id_veicolo: id_veicolo });
 };
 
 controller.getMancia = (req,res) => {
@@ -55,7 +145,7 @@ controller.getMancia = (req,res) => {
     try{
 
     if (pre.stato_autista != null){
-        res.render('cliente/mancia.ejs',{
+        res.render('cliente/Mancia.ejs',{
             'pre' : pre,    
         });
 

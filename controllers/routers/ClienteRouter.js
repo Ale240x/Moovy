@@ -38,7 +38,7 @@ router.get("/AreaPersonaleCliente/veicoliPrenotati/:id/InfoRitiro", Prenotazioni
 router.post("/AreaPersonaleCliente/veicoliPrenotati/:id/InfoRitiro", PrenotazioniClienteController.postRitiroVeicolo);
 
 //Regione Riconsegna
-router.get("/AreaPersonaleCliente/VeicoliRitirati", PrenotazioniClienteController.getElencoVeicoliDaRiconsegnareC); //o riconsegnare?
+router.get("/AreaPersonaleCliente/VeicoliRitirati", PrenotazioniClienteController.getElencoVeicoliDaRiconsegnareC);
 //router.post("/AreaPersonaleCliente/VeicoliRitirati", PrenotazioniClienteController.postInfoVeicoloDaRitirare); //non esiste
 router.get("/AreaPersonaleCliente/VeicoliRitirati/:id/luogoriconsegna", PrenotazioniClienteController.getModificaLuogo);
 router.post("/AreaPersonaleCliente/VeicoliRitirati/:id/luogoriconsegna/sovrapprezzo", PrenotazioniClienteController.postModificaLuogo);
@@ -52,11 +52,11 @@ router.get("/AreaPersonaleCliente/ElencoPrenotazioniE", PrenotazioniClienteContr
 router.get("/AreaPersonaleCliente/ElencoPrenotazioniE/:id", PrenotazioniClienteController.getEliminaPrenotazione);
 
 // Ricerca veicolo
-router.get("/TipoVeicoli", ClienteController.getRicercaTipoVeicoli);
-router.get("/TipoVeicoli/FormA", ClienteController.getFormA);
-router.post("/TipoVeicoli/FormA/RisultatiRicerca", ClienteController.postFormA);
-router.get("/TipoVeicoli/FormA/RisultatiRicerca/:id/InfoVeicolo", ClienteController.getInfoVeicolo);
-router.get("/TipoVeicoli/FormA/RisultatiRicerca/:id/InfoVeicolo/Riepilogo", ClienteController.getRiepilogo);
+router.get("/TipoVeicoli", PrenotazioniClienteController.getRicercaTipoVeicoli);
+router.get("/TipoVeicoli/FormA", PrenotazioniClienteController.getFormA);
+router.post("/TipoVeicoli/FormA/RisultatiRicerca", PrenotazioniClienteController.postFormA);
+router.get("/TipoVeicoli/FormA/RisultatiRicerca/:id/InfoVeicolo", PrenotazioniClienteController.getInfoVeicolo);
+router.get("/TipoVeicoli/FormA/RisultatiRicerca/:id/InfoVeicolo/Riepilogo", PrenotazioniClienteController.getRiepilogo);
 
 //Regione prenotazione
 router.get("/Riepilogo/Mancia", PrenotazioniClienteController.getMancia);

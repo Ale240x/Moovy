@@ -11,7 +11,7 @@ const smtpMiddleware = require("./middlewares/smtp");
 const cookieParser = require('cookie-parser');
 //const logger = require('morgan');
 
-//require('ejs');
+require('ejs');
 
 const RadiceRouter = require("./Controllers/routers/RadiceRouter");
 
@@ -43,7 +43,6 @@ app.use((req, res, next) =>{
 });
 
 app.use("/", RadiceRouter);
-//app.use('/users', usersRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
