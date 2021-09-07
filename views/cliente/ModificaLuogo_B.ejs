@@ -12,7 +12,15 @@
      <!-- to use Mapbox GL Geocoder in IE 11. -->
      <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.min.js"></script>
      <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.min.js"></script>
+     <!--script turf for distances-->
+     <script src="https://unpkg.com/@turf/turf"></script>
 
+     <!-- Import jQuery -->
+     <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
+ 
+     <style>
+         #mappa { height: 500px; width: 80%; }
+     </style>
     <style>
       body{
         padding: 0px;
@@ -30,13 +38,14 @@
             <div class="card card-body" style="width: 516px;">               
               <h1>Luogo riconsegna</h1>                
               <p>Conferma o modifica il luogo di riconsegna</p>
-              <form action="/AreaPersonaleCliente/VeicoliRitirati/:id/luogoriconsegna/sovrapprezzo" method="POST">
+              <h3> <%= prenotazione.luogo_riconsegna %></h3>   
+              <form action="/utente/cliente/AreaPersonaleCliente/VeicoliRitirati/<%= id_veicolo %>/luogoriconsegna" method="POST">
                 <br>
   
                 <div class="row">
                   <div class="col">
                     <div id="geocoder" class="form-outline">
-                        <label class="form-label" for="luogoRiconsegna">Luogo di riconsegna</label>     
+                        <label class="form-label" for="luogoRiconsegna" id="luogoRiconsegna" >Luogo di riconsegna</label>     
                     </div>  
                   </div>   
                 </div> 
