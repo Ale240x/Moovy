@@ -232,34 +232,16 @@ controller.postModificaLuogo = async(req,res) =>{
      
         if(nuovoluogo != prenotazioneV[0].luogo_riconsegna){
         await prenotazioneModel.modificaLuogoRiconsegna(dbPool,prenotazioneV[0].id_prenotazione, nuovoluogo);
-    
        }
-      var x = new Date();
-      var y= new Date(prenotazioneV[0].data_riconsegna);
 
-       //controllo sovrapprezzi
-       if(((x.getTime() - y.getTime())/3600000)>0){
-        var oreSovrapprezzo = (x.getTime() - y.getTime())/3600000;
-        var prezzoOrario = await prenotazioneModel.getPrezzoVeicolo(dbPool, idVeicolo);
-        var sovrapprezzo = oreSovrapprezzo*prezzoOrario[0].tariffa;
-        var prezzo_totale = sovrapprezzo + prenotazioneV[0].prezzo_finale;
-        sovrapprezzo = sovrapprezzo.toFixed();
-        await prenotazioneModel.riconsegnaVeicolo(dbPool,prenotazioneV[0].id_prenotazione ,'Veicolo Riconsegnato',idVeicolo,prenotazioneV[0].luogo_riconsegna,prezzo_totale);
-        req.session.alert = {
-            'style' : 'alert-success',
-            'message' : 'Riconsegna in ritardo, sovrapprezzo addebitato al cliente'
-        };
-        res.redirect('/utente/autista/');   
-   }
-   else{
        var prezzo_totale = prenotazioneV[0].prezzo_finale;
        await prenotazioneModel.riconsegnaVeicolo(dbPool,prenotazioneV[0].id_prenotazione ,'Veicolo Riconsegnato',idVeicolo,prenotazioneV[0].luogo_riconsegna,prezzo_totale);
     req.session.alert = {
         'style' : 'alert-success',
-        'message' : 'Riconsegna effettuata in orario, nessun sovrapprezzo!'
+        'message' : 'Riconsegna effettuata!'
     };
     res.redirect('/utente/autista/');     
-   }
+   
        
     }catch(error){
         req.session.alert={
