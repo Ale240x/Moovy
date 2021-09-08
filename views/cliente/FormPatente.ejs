@@ -9,23 +9,17 @@
     <%- include('../partials/navbarClie.ejs') %>
 
 <!--AGGIUNGERE MOSTRA ERRORI-->
-    <form action="/Riepilogo" method="POST">
+    <form action="utente/cliente/Riepilogo/FormPatente" method="POST">
         <div class="container my-5 text-center" style="max-width: 580px;">
             <legend style="text-align:center; font-size:150%;">Inserisci patente</legend>
         <div class=" mb-3 my-3" style="max-width: 580px;">
-            <label for="name" class="form-label">Codice patente</label>
-            <input type="name" class="form-control form-control-md" placeholder="Codice patente">
-        </div>
-        <div class="mb-3">
-            <div class="form-outline">
-                <label class="form-label" for="dataRilascio">Data di rilascio patente</label>
-                <input type="date" id="data" class="form-control form-control-md"  />
-            </div> 
+            <label for="codice_patente" class="form-label">Codice patente</label>
+            <input type="text" id="codice_patente" name="codice_patente" class="form-control form-control-md" placeholder="Codice patente">
         </div>  
         <div class="mb-3">
             <div class="form-outline">
-                <label class="form-label" for="dataRilascio">Scadenza patente</label>
-                <input type="date" id="data" class="form-control form-control-md"  />
+                <label class="form-label" for="scadenza_patente">Scadenza patente</label>
+                <input type="date" id="scadenza_patente" name="scadenza_patente" class="form-control form-control-md"  />
               </div> 
         </div>
         <div class="mb-3;  btn-group text-center" style="width:100%">
@@ -33,40 +27,40 @@
                aria-haspopup="true" aria-expanded="false">Tipi</button>                       
             <div class="dropdown-menu " >
                 <a class="dropdown-item ">
-                    <div class="custom-control custom-checkbox ">
+                    <div class="custom-control custom-checkbox dropdown-item">
                         <input type="checkbox" class="custom-control-input" id="checkbox1" name="tipo_am" value="1">
                         <label class="custom-control-label" for="checkbox1">AM</label>
                     </div>
                 </a>
-                <a class="dropdown-item" href="#">
+                <a class="dropdown-item">
                     <div class="custom-control custom-checkbox">
                         <input type="checkbox" class="custom-control-input" id="checkbox2" name="tipo_a" value="1">
                         <label class="custom-control-label"for="checkbox2">A</label>
                     </div>
                 </a>
-                <a class="dropdown-item" href="#">
+                <a class="dropdown-item">
                     <div class="custom-control custom-checkbox">
                         <input type="checkbox" class="custom-control-input" id="checkbox3" name="tipo_a1" value="1">
                         <label class="custom-control-label" for="checkbox3">A1</label>
                     </div>
                 </a>
-                <a class="dropdown-item" href="#">
+                <a class="dropdown-item">
                     <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" id="checkbox3" name="tipo_a2" value="1">                
-                        <label class="custom-control-label" for="checkbox3">A2</label>
+                        <input type="checkbox" class="custom-control-input" id="checkbox4" name="tipo_a2" value="1">                
+                        <label class="custom-control-label" for="checkbox4">A2</label>
                     </div>
                 </a>
-                <a class="dropdown-item" href="#">
+                <a class="dropdown-item">
                     <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" id="checkbox4" name="tipo_b" value="1">
-                        <label class="custom-control-label" for="checkbox4">B</label>
+                        <input type="checkbox" class="custom-control-input" id="checkbox5" name="tipo_b" value="1">
+                        <label class="custom-control-label" for="checkbox5">B</label>
                     </div>
                 </a>
             </div>
         </div>
         <div class="container my-5 text-center">
             <button type="button" class="btn btn-success"style="">Indietro</button>
-            <button type="button" class="btn btn-success"style="">Conferma</button>
+            <button type="submit" class="btn btn-success"style="">Conferma</button>
         </div>
     </form>
     <%- include('../partials/footer.ejs') %>

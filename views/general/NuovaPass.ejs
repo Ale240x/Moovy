@@ -31,6 +31,7 @@
                   La tua password deve contenere almeno 8 caratteri, di cui almeno un carattere maiuscolo, un carattere minuscolo, un carattere speciale e un numero.
                 </div>
         <div class="mb-4; my-3">
+                <input type="text"style="display: none;" id="id_account" name="id_account" value="<%= id_account %>">
                 <label for="confermaPassword" class="form-label">Conferma Password</label>
                 <input type="password" id="confermaPassword" name="confermaPassword" class="form-control" pattern="(?=^.{8,}$)(?=.*\d)(?=.*[!@#$%\.,^&*]+)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$" title="Le password devono coincidere" aria-describedby="passwordHelpBlock" required>
                 <div id="passwordHelpBlock" class="form-text" style="font-size:small";>

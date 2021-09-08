@@ -189,6 +189,7 @@ try{
     
     res.render('general/CodiceP.ejs',{
         codice: codice,
+        id_account: id_account
         
     });
 
@@ -204,9 +205,10 @@ try{
 controller.postCodice =(req,res)=>{
 
     var dbPool = req.dbPool;
+    var id_account = req.body.id_account;
   //  var id = req.params.id;
+   
 
-    try{
         var codiceInserito= req.body.codice;
         console.log(codiceInserito);
         var codice= req.body.codiceP;
@@ -216,7 +218,7 @@ controller.postCodice =(req,res)=>{
        
         if (codiceInserito == codice){
 
-            res.render('general/NuovaPass.ejs');
+            res.render('general/NuovaPass.ejs', {id_account: id_account});
 
         }else{
 
@@ -228,17 +230,9 @@ controller.postCodice =(req,res)=>{
             };
         
             res.render('/recuperaPass/codice');
-            }
+        }
 
-    }catch(error){
-        req.session.alert = {
-  
-            'style' : 'alert-warning',
-            'message' : error.message,
-        
-        };
-        res.redirect('/recuperaPass/codice');
-    }
+    
 
 
 };
@@ -247,13 +241,21 @@ controller.postCodice =(req,res)=>{
 controller.postNuovaPass = async (req,res)=>{
 
     var dbPool = req.dbPool;
+    var id_account = req.body.id_account;
 
     try{
 
-        var nuovaPassword = req.body.nuovaPass;
-        var utente = req.session.utente;
-        await accountModel.recuperoPassword(dbPool, utente[0].id_account, nuovaPassword);
+        var nuovaPassword = req.body.nuovaPassword;
         
+        var utente = req.session.utente;
+        await accountModel.recuperoPassword(dbPool, id_account, nuovaPassword);
+        req.session.alert = {
+  
+            'style' : 'alert-info',
+            'message' : 'Password aggiornata correttamente!',
+        
+        };
+        res.redirect('/');
     }catch(error){
 
         req.session.alert = {
@@ -262,7 +264,7 @@ controller.postNuovaPass = async (req,res)=>{
             'message' : error.message,
         
         };
-        res. redirect('back')
+        res. redirect('back');
 
     }
 
