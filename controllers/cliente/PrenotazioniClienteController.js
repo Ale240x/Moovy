@@ -120,11 +120,11 @@ controller.getRiepilogo = async(req,res) =>{
 
 //Regione Prenotazione
 function checkPatente(utente, patente_richiesta){
-    if(patente_richiesta == 'tipo_b' && utente.tipo_b == 1 
-    || patente_richiesta == 'tipo_a' && utente.tipo_a == 1
-    || patente_richiesta == 'tipo_am' && utente.tipo_am == 1
-    || patente_richiesta == 'tipo_a1' && utente.tipo_a1 == 1
-    || patente_richiesta == 'tipo_a2' && utente.tipo_a2 == 1){
+    if(patente_richiesta == 'tipo_b' && utente[0].tipo_b == 1 
+    || patente_richiesta == 'tipo_a' && utente[0].tipo_a == 1
+    || patente_richiesta == 'tipo_am' && utente[0].tipo_am == 1
+    || patente_richiesta == 'tipo_a1' && utente[0].tipo_a1 == 1
+    || patente_richiesta == 'tipo_a2' && utente[0].tipo_a2 == 1){
         return true;
     }
     else {
@@ -136,7 +136,9 @@ controller.postRiepilogo = async (req, res) =>{
     var dbPool = req.dbPool;
     var info = req.body;
     utente = req.session.utente;
-    req.session.prenotazione.prezzo_stimato = info.prezzo_stimato.slice(' ')[0];
+
+    req.session.prenotazione.prezzo_stimato = info.prezzo_stimato.split(' ')[0];
+    
     if(!info.mancia){
         info.mancia = 0;
     }
@@ -153,7 +155,8 @@ controller.postRiepilogo = async (req, res) =>{
         }
         else{
             try {
-                prenotazioneId = await prenotazioneModel.aggiungiPrenotazione( dbPool, utente.id_account, pre.ref_autista, pre.tipo_veicolo, pre.ref_veicolo, pre.mancia, pre.data_ritiro, pre.data_riconsegna, pre.luogo_ritiro, pre.luogo_riconsegna, pre.prezzo_stimato);
+                console.log('check patente è andato a buon fine');
+                prenotazioneId = await prenotazioneModel.aggiungiPrenotazione( dbPool, utente[0].id_account, pre.autista, pre.tipo_veicolo, pre.ref_veicolo, pre.mancia, pre.data_ritiro, pre.data_riconsegna, pre.luogo_ritiro, pre.luogo_riconsegna, pre.prezzo_stimato);
                         req.session.prenotazione.id = prenotazioneId;
                         res.render('cliente/Pagamento.ejs',{
                             'prenotazioneId' : prenotazioneId ,
@@ -167,13 +170,14 @@ controller.postRiepilogo = async (req, res) =>{
                     'message' : error.message
             
                 }   
+                throw error;
             }
         }
     
     }
     else{
         try {
-            prenotazioneId = await prenotazioneModel.aggiungiPrenotazione( dbPool, utente.id_account, pre.ref_autista, pre.tipo_veicolo, pre.ref_veicolo, pre.mancia, pre.data_ritiro, pre.data_riconsegna, pre.luogo_ritiro, pre.luogo_riconsegna, pre.prezzo_stimato);
+            prenotazioneId = await prenotazioneModel.aggiungiPrenotazione( dbPool, utente[0].id_account, pre.autista, pre.tipo_veicolo, pre.ref_veicolo, pre.mancia, pre.data_ritiro, pre.data_riconsegna, pre.luogo_ritiro, pre.luogo_riconsegna, pre.prezzo_stimato);
                     req.session.prenotazione.id = prenotazioneId;
                     res.render('cliente/Pagamento.ejs',{
                         'prenotazioneId' : prenotazioneId ,
@@ -200,9 +204,9 @@ controller.getMancia = (req,res) => {
 
 controller.postMancia = async(req, res) =>{
     var dbPool = req.dbPool;
-    info = req.body;
+    var info = req.body;
     utente = req.session.utente;
-    req.session.prenotazione.prezzo_stimato = info.prezzo_stimato.slice(' ')[0];
+    req.session.prenotazione.prezzo_stimato = info.prezzo_stimato.split(' ')[0];
     prezzo_stimato = req.session.prenotazione.prezzo_stimato;
 
     if(info.mancia && Number(info.mancia) > 0){
@@ -213,13 +217,13 @@ controller.postMancia = async(req, res) =>{
     var pre = req.session.prenotazione;
 
     try {
-        prenotazioneId = await prenotazioneModel.aggiungiPrenotazione( dbPool, utente.id_account, pre.ref_autista, pre.tipo_veicolo, pre.ref_veicolo, pre.mancia, pre.data_ritiro, pre.data_riconsegna, pre.luogo_ritiro, pre.luogo_riconsegna, pre.prezzo_stimato);
-                req.session.prenotazione.id = prenotazioneId;
-                res.render('cliente/Pagamento.ejs',{
-                    'prenotazioneId' : prenotazioneId ,
-                    'prezzo_stimato' : pre.prezzo_totale,
-                    'utente' : utente
-                });
+        prenotazioneId = await prenotazioneModel.aggiungiPrenotazione( dbPool, utente[0].id_account, pre.autista, pre.tipo_veicolo, pre.ref_veicolo, pre.mancia, pre.data_ritiro, pre.data_riconsegna, pre.luogo_ritiro, pre.luogo_riconsegna, pre.prezzo_stimato);
+                        req.session.prenotazione.id = prenotazioneId;
+                        res.render('cliente/Pagamento.ejs',{
+                            'prenotazioneId' : prenotazioneId ,
+                            'prezzo_stimato' : pre.prezzo_stimato,
+                            'utente' : utente
+                        });
 
     } catch(error) {
         req.session.alert = {
@@ -242,9 +246,9 @@ controller.postAggiungiPatente = async (req,res) =>{
 
     try{
 
-        await accountModel.aggiungiPatenteC(dbPool,utente.id_account,req.body.codice_patente,req.body.scadenza_patente, req.body.tipo_a, req.tipo_b, req.tipo_am, req.tipo_a1, req.tipo_a2);
+        await accountModel.aggiungiPatenteC(dbPool, utente[0].id_account, req.body.codice_patente, req.body.scadenza_patente, req.body.tipo_a, req.body.tipo_b, req.body.tipo_am, req.body.tipo_a1, req.body.tipo_a2);
 
-        prenotazioneId = await prenotazioneModel.aggiungiPrenotazione( dbPool, utente.id_account, pre.ref_autista, pre.tipo_veicolo, pre.ref_veicolo, pre.mancia, pre.data_ritiro, pre.data_riconsegna, pre.luogo_ritiro, pre.luogo_riconsegna, pre.prezzo_stimato);
+        prenotazioneId = await prenotazioneModel.aggiungiPrenotazione( dbPool, utente[0].id_account, pre.ref_autista, pre.tipo_veicolo, pre.ref_veicolo, pre.mancia, pre.data_ritiro, pre.data_riconsegna, pre.luogo_ritiro, pre.luogo_riconsegna, pre.prezzo_stimato);
                 req.session.prenotazione.id = prenotazioneId;
                 res.render('cliente/Pagamento.ejs',{
                     'prenotazioneId' : prenotazioneId ,
@@ -260,58 +264,13 @@ controller.postAggiungiPatente = async (req,res) =>{
             'message' : error.message
     
         }
+        throw error;
     }
 };
-
-/*controller.postPrenotaVeicolo = async (req,res) => {
-
-    var dbPool = req.dbPool;
-    var mancia = req.body.mancia;
-    var pre = req.body.pre;
-    var veicolo = req.body.veicolo;
-    var prezzo_stimato= calcolaPrezzo(pre,veicolo);
-    var utente = req.session.utente;
-
-    try{
-       if( checkPatente(veicolo)){
-       prenotazioneId = await prenotazioneModel.aggiungiPrenotazione( dbPool, utente.id_cliente, pre.ref_autista, pre.tipo_veicolo, pre.ref_veicolo, mancia, pre.data_ritiro, pre.data_riconsegna, pre.luogo_ritiro, pre.luogo_riconsegna, prezzo_stimato);
-       res.render('cliente/Pagamento.ejs',{
-           'prenotazioneId' : prenotazioneId ,
-           'prezzo_stimato' : prezzo_stimato,
-           'utente' : utente
-       });
-
-       }else{
-        res.render('cliente/FormPatente.ejs',{
-           
-        });
-
-       }
- 
-} catch (error) {
-        
-    req.session.alert = {
-        
-        'style' : 'alert-warning',
-        'message' : error.message
-
-    }
-   
-}
-};*/
-
-
-
-
-
-
-
 
 controller.getNuovoMetodoPagamento = (req,res) => {
     res.render("cliente/NuovoMetodo.ejs");   
 };
-
-
 
 controller.postNuovoMetodoPagamento = async (req,res) =>{
     var dbPool = req.dbPool;

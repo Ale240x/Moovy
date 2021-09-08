@@ -7,23 +7,28 @@
  </head>
 <body>
     <%- include('../partials/navbarClie.ejs') %>
-    <form action="" method="POST">
+    <form action="/utente/cliente/Riepilogo/Mancia" method="POST">
         <div class="container my-5 text-center" style="max-width: 580px;">
 
             <legend style="text-align: center; font-size:150%">Mancia</legend>
             <div class="form-check my-4">
-                <input class="form-check-input" type="checkbox" onclick="$('#mancia').prop('disabled', false);" id="checkMancia">
+                <input class="form-check-input" type="checkbox" onclick="$('#mancia').prop('disabled', false);"
+                ondblclick="$('#mancia').prop('disabled', true);" id="checkMancia">
                 <label class="form-check-label" for="checkMancia">
                 Aggiungi la mancia per l'autista
                 </label>
             </div>
-            <div class="container mb-3 my-5 text-center" style="max-width: 580px;"id="demo" style="display:none">
-              
+            <div class="card card-body border-success container mb-3 my-5 text-center" style="max-width: 580px;"id="demo" style="display:none">
+                <div id="append">
                     <label for="mancia" class="form-label">Inserisci Importo</label>
                     <input type="text" id="mancia" name="mancia" class="form-control form-control-md" placeholder="Importo" disabled>
-                    <button type="conferma" class="btn btn-success" onclick="calcolaPrezzo()">Conferma</button>
                     <br>
-                    <p id="importo" name="prezzo_stimato"></p>
+                    <button id="conferma" class="btn btn-success">Conferma</button>
+                    <br>
+                </div>
+                    <br>
+                    <p id="importo"></p>
+                    <input style="display: none;" type="number" id="prezzo_stimato" name="prezzo_stimato" readonly>
             </div>
             <button type="submit" class="btn btn-success">Procedi</button>
             </div>
@@ -34,13 +39,24 @@
       <%- include('../partials/footer.ejs') %>
 
       <script>
-          function calcolaPrezzo(){
+
+        $('#conferma').click(function (e){
               var mancia = $('#mancia').val();
+              prezzo_s = (Math.round(Number(sessionStorage.prezzo_stimato)*100)/100);
               if(mancia > 0){
-                  sessionStorage.prezzo_stimato += mancia; //controllare se questo funziona
+                prezzo_t = prezzo_s + Number(mancia);
+                sessionStorage.setItem('prezzo_stimato', prezzo_t);
               }
+              else{
+                sessionStorage.setItem('prezzo_stimato', prezzo_s);
+              }
+              
+              $('#append').append('<br><p>Importo totale:</p>');
               $('#importo').html(sessionStorage.prezzo_stimato);
-          }
+              $('#prezzo_stimato').attr('value', sessionStorage.prezzo_stimato);
+              e.preventDefault();
+              e.stopPropagation();
+          })  
       </script>
 </body>
 </html>

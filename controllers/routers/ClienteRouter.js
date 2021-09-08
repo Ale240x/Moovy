@@ -62,9 +62,8 @@ router.get("/Riepilogo", PrenotazioniClienteController.getRiepilogo);
 router.post("/Riepilogo", PrenotazioniClienteController.postRiepilogo);
 router.get("/Riepilogo/Mancia", PrenotazioniClienteController.getMancia);
 router.post("/Riepilogo/Mancia", PrenotazioniClienteController.postMancia);
-//router.post("/Riepilogo", PrenotazioniClienteController.postPrenotaVeicolo);
-router.get("/Riepilogo/FormPatente",PrenotazioniClienteController.getPatente);
-router.post("/Riepilogo/FormPatente",PrenotazioniClienteController.postAggiungiPatente);
+router.get("/Riepilogo/FormPatente", PrenotazioniClienteController.getPatente);
+router.post("/Riepilogo/FormPatente", PrenotazioniClienteController.postAggiungiPatente);
 
 router.get("/Riepilogo/Pagamento",PrenotazioniClienteController.getPagamento);
 router.get("/Riepilogo/Pagamento/NuovoMetodo",PrenotazioniClienteController.getNuovoMetodoPagamento);

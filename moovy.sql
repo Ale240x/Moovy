@@ -72,7 +72,8 @@ CREATE TABLE `carte_di_credito` (
 --
 
 INSERT INTO `carte_di_credito` (`numero_carta`, `ref_account`, `nome_intestatario`, `cognome_intestatario`, `scadenza_carta`, `cvv`) VALUES
-('8600123456791231', 4, 'Luisa', 'Gialli', '07/24', 123);
+('8600123456791231', 4, 'Luisa', 'Gialli', '07/24', 123),
+('carta prova', 1, 'Admin', 'Admin', '02/30', 000);
 
 -- --------------------------------------------------------
 
@@ -118,7 +119,8 @@ CREATE TABLE `patenti` (
 --
 
 INSERT INTO `patenti` (`codice_patente`, `scadenza_patente`, `tipo_a`, `tipo_b`, `tipo_am`, `tipo_a1`, `tipo_a2`, `ref_account`) VALUES
-('023944', '2023-03-01', 1, 1, 1, 1, 1, 4);
+('023944', '2023-03-01', 1, 1, 1, 1, 1, 4),
+('014643', '2025-01-01', 0, 1, 1, 0, 0, 6);
 
 -- --------------------------------------------------------
 
@@ -133,7 +135,7 @@ CREATE TABLE `prenotazioni` (
   `tipo_veicolo` enum('Automobile','Moto','Bicicletta','Monopattino') COLLATE utf8mb4_unicode_ci NOT NULL,
   `ref_veicolo` int(11) NOT NULL,
   `mancia` float DEFAULT NULL,
-  `ref_carta` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `ref_carta` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `stato_prenotazione` enum('Pagato','Non pagato','Veicolo Ritirato','Veicolo Riconsegnato','Annullato','Rimborsato') COLLATE utf8mb4_unicode_ci NOT NULL,
   `stato_autista` enum('Da confermare','Confermato') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `data_ritiro` datetime NOT NULL,
@@ -280,13 +282,13 @@ ALTER TABLE `prenotazioni`
 -- Limiti per la tabella `carte_di_credito`
 --
 ALTER TABLE `carte_di_credito`
-  ADD CONSTRAINT `ref_account1` FOREIGN KEY (`ref_account`) REFERENCES `account` (`id_account`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `ref_account1` FOREIGN KEY (`ref_account`) REFERENCES `account` (`id_account`) ON DELETE CASCADE;
 
 --
 -- Limiti per la tabella `parcheggi`
 --
 ALTER TABLE `parcheggi`
-  ADD CONSTRAINT `ref_addetto` FOREIGN KEY (`ref_addetto`) REFERENCES `account` (`id_account`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `ref_addetto` FOREIGN KEY (`ref_addetto`) REFERENCES `account` (`id_account`);
 
 --
 -- Limiti per la tabella `patenti`
@@ -298,9 +300,9 @@ ALTER TABLE `patenti`
 -- Limiti per la tabella `prenotazioni`
 --
 ALTER TABLE `prenotazioni`
-  ADD CONSTRAINT `ref_autista` FOREIGN KEY (`ref_autista`) REFERENCES `account` (`id_account`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `ref_carta` FOREIGN KEY (`ref_carta`) REFERENCES `carte_di_credito` (`numero_carta`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `ref_cliente` FOREIGN KEY (`ref_cliente`) REFERENCES `account` (`id_account`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `ref_autista` FOREIGN KEY (`ref_autista`) REFERENCES `account` (`id_account`),
+  ADD CONSTRAINT `ref_carta` FOREIGN KEY (`ref_carta`) REFERENCES `carte_di_credito` (`numero_carta`),
+  ADD CONSTRAINT `ref_cliente` FOREIGN KEY (`ref_cliente`) REFERENCES `account` (`id_account`),
   ADD CONSTRAINT `ref_veicolo` FOREIGN KEY (`ref_veicolo`) REFERENCES `veicoli` (`id_veicolo`);
 
 --
