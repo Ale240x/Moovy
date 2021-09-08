@@ -143,13 +143,13 @@ controller.postRiepilogo = async (req, res) =>{
     var pre = req.session.prenotazione;
 
     if(info.luogo_partenza){ //se è stato richiesto un autista
-        res.redirect('/Riepilogo/Mancia');
+        res.redirect('/utente/cliente/Riepilogo/Mancia');
     }
     else if((pre.tipo_veicolo == 'Automobile' || pre.tipo_veicolo == 'Moto') && !info.mancia){
         
         if(!checkPatente(utente, pre.patente_richiesta)){
-            res.render('cliente/FormPatente.ejs');
-            //res.redirect('utente/cliente/Riepilogo/FormPatente'); // è questo il redirect che non funziona
+            //res.render('cliente/FormPatente.ejs');
+            res.redirect('/utente/cliente/Riepilogo/FormPatente'); // è questo il redirect che non funziona
         }
         else{
             try {

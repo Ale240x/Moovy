@@ -97,7 +97,7 @@ controller.postAutenticazione = async (req, res) => {
         //var referer = req.body.referer;
 
         req.session.utente = await accountModel.login(req.dbPool, attempt.email, attempt.password); 
-        console.log(req.session.utente);
+        //console.log('utente: ' +req.session.utente);
         //res.redirect(referer);
 
         if(req.session.utente[0].ruolo == "Cliente"){ // Cliente 

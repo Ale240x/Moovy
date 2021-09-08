@@ -14,13 +14,32 @@ model.getAccount = async (dbPool, utenteId) => {
         //console.log("sono sul getAccount " + utenteId)
         let query = util.promisify(dbPool.query).bind(dbPool);
 
-        return (await query(`SELECT  
-                                *
-                            FROM 
-                                account 
-                            WHERE   
-                             id_account = ?`,
+        ruolo = (await query(`SELECT ruolo
+                            FROM account 
+                            WHERE id_account = ?`,
                             [utenteId]));
+        
+        if(ruolo[0].ruolo == 'Cliente'){
+            
+            return (await query(`SELECT a.*, c.*, p.*
+                                FROM account AS a, carte_di_credito AS c, patenti AS p
+                                WHERE a.id_account = c.ref_account AND c.ref_account = p.ref_account
+                                AND a.id_account = ?`,
+                                [utenteId]));
+        }
+        else if(ruolo == 'Autista' || ruolo == 'Addetto'){
+            return (await query(`SELECT a.*, p.*
+                                FROM account AS a, patenti AS p
+                                WHERE a.id_account = p.ref_account
+                                AND a.id_account = ?`,
+                                [utenteId]));
+        }
+        else{
+            return (await query(`SELECT *
+                                FROM account 
+                                WHERE id_account = ?`,
+                                [utenteId]));
+        }
 
     } catch(error) {
 
@@ -131,7 +150,9 @@ model.login = async (dbPool, email, clearPassword) => {
         }
         else{
            // console.log("Autenticato con successo!")
-            return (await model.getAccount(dbPool, utenteId[0].id_account)); 
+            utente =(await model.getAccount(dbPool, utenteId[0].id_account)); 
+            //console.log('utente: '+utente);
+            return utente;
         }
         
     } catch (error) {
