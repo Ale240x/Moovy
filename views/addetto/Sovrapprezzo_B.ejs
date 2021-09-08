@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <%- include('../partials/head.ejs') %>
+    <style>
+      body{
+        padding: 0px;
+      }
+    </style>
+    <title>Moovy</title>
+</head>
+<body>
+    
+    <%- include('../partials/navbarAdd.ejs') %>
+
+
+    <div class="container"  style="padding: 5%;">
+        <h3>Il veicolo è stato riconsegnato con successo! </h3>
+        <div class="card border-success  card-body text-lg-center" style="padding: 3%;" >
+            <form class="row" action="/utente/cliente/AreaPersonaleCliente/VeicoliRitirati/<%= idVeicolo %>/luogoriconsegna" method="GET">
+                <div class="row">
+                    <div class="col">
+                    <h4>Sovrapprezzi da pagare:</h4>  
+                    <p>Verrano applicati sul metodo di pagamento scelto dal cliente</p>
+                </div>
+                    <div  class="col">   
+                                
+                            <h5  id="sovrapprezzo" value=" <%= sovrapprezzo %>"> <%= sovrapprezzo %> euro</h5>   
+                    </div>
+                
+                </div>
+              </form>      
+           
+        </div>
+        <br>
+        <div class="container my-5 text-center">
+            <a class="btn btn-lg btn-success" href="/utente/autista" type="submit">Prosegui</a>
+        </div>
+        
+    </div>
+    <%- include('../partials/footer.ejs') %>
+   
+</body>
+</html>

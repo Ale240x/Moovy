@@ -110,16 +110,14 @@ controller.postRitiroVeicolo = async (req, res) => {
 };
 
 
-
-
-//Regione Riconsegna Veicolo
 controller.getVeicoliRitiratiAdd = async (req, res) =>{
 
     var dbPool = req.dbPool;
+    var utente=req.session.utente;
 
     try{
-        let veicoliDaRiconsegnareAdd = await prenotazioneModel.getVeicoliDaRiconsegnareAdd(dbPool);
-        res.render('addetto/VeicoliRitiratiAdd.ejs', {'veicoli' : veicoliDaRiconsegnareAdd});
+        let veicoli = await prenotazioneModel.getVeicoliDaRiconsegnareAdd(dbPool,utente[0].id_account);
+        res.render('addetto/VeicoliRitiratiAdd.ejs', {veicoli : veicoli});
     }
     catch(error){
 
@@ -129,109 +127,94 @@ controller.getVeicoliRitiratiAdd = async (req, res) =>{
             'message' : error.message
     
         }
+        res.redirect('/utente/addetto/veicoliRitirati')
     }
 };
 
 
 
-controller.getModificaLuogo = (req, res) =>{
-    var luogo_riconsegna = req.body.prenotazione.luogo_riconsegna; 
-    res.render('ModificaLuogo.ejs', {'luogo_riconsegna' : luogo_riconsegna});
+controller.getModificaLuogo = async (req, res) =>{
+
+    var id_veicolo= req.params.id;
+    var dbPool = req.dbPool;
+
+    try {
+        var prenotazione = await prenotazioneModel.getPrenotazioneDelVeicolo(dbPool,id_veicolo);
+        res.render('addetto/ModificaLuogo_B.ejs', {
+            prenotazione : prenotazione[0],
+            id_veicolo : id_veicolo
+        });
+        
+
+    }catch (error){
+        throw error;
+    }
+
+  
     
 };
 
 
 controller.postModificaLuogo = async(req,res) =>{
+
     var dbPool = req.dbPool;
-    var nuovoluogo = req.body.luogo_riconsegna;
-    var prenotazione= req.body.prenotazione;
+    var nuovoluogo = req.body.luogo_riconsegna;   
+    var idVeicolo = req.params.id;
 
     try{
-        if(nuovoluogo != prenotazione.luogo_riconsegna){
+        
+        var prenotazioneV = await prenotazioneModel.getPrenotazioneDelVeicolo(dbPool,idVeicolo);
+     
+        if(nuovoluogo != prenotazioneV[0].luogo_riconsegna){
+        await prenotazioneModel.modificaLuogoRiconsegna(dbPool,prenotazioneV[0].id_prenotazione, nuovoluogo);
+    
+       }
+      var x = new Date();
+      var y= new Date(prenotazioneV[0].data_riconsegna);
 
-        await prenotazioneModel.modificaLuogoRiconsegna(dbPool,prenotazione.id_prenotazione, nuovoluogo);
-        let datacorrente= new Date().getTime;
-        let oreSovrapprezzo = (datacorrente - prenotazione.data_riconsegna.getTime)/3600000;
-        var sovrapprezzo = oreSovrapprezzo*getPrezzoVeicolo(prenotazione.ref_veicolo);
-        var prezzo_totale = sovrapprezzo + prenotazione.prezzo_finale;
+       //controllo sovrapprezzi
+       if(((x.getTime() - y.getTime())/3600000)>0){
+        var oreSovrapprezzo = (x.getTime() - y.getTime())/3600000;
+        var prezzoOrario = await prenotazioneModel.getPrezzoVeicolo(dbPool, idVeicolo);
+        var sovrapprezzo = oreSovrapprezzo*prezzoOrario[0].tariffa;
+        var prezzo_totale = sovrapprezzo + prenotazioneV[0].prezzo_finale;
 
-        res.render("cliente/Sovrapprezzo.ejs",{
-            'prezzo_totale' :  prezzo_totale,
-            'prenotazione' : prenotazione,
-            'nuovo_luogo' : nuovo_luogo,
+
+
+        sovrapprezzo = sovrapprezzo.toFixed();
+        await prenotazioneModel.riconsegnaVeicolo(dbPool,prenotazioneV[0].id_prenotazione ,'Veicolo Riconsegnato',idVeicolo,prenotazioneV[0].luogo_riconsegna,prezzo_totale);
+        res.render("addetto/Sovrapprezzo_B.ejs",{
+
+            sovrapprezzo : sovrapprezzo,
+            idVeicolo : idVeicolo
         });
-        }
+          
+   }
+   else{
+       var prezzo_totale = prenotazioneV[0].prezzo_finale;
+       await prenotazioneModel.riconsegnaVeicolo(dbPool,prenotazioneV[0].id_prenotazione ,'Veicolo Riconsegnato',idVeicolo,prenotazioneV[0].luogo_riconsegna,prezzo_totale);
+    req.session.alert = {
+        'style' : 'alert-success',
+        'message' : 'Riconsegna effettuata in orario, nessun sovrapprezzo!'
+    };
+    res.redirect('/utente/addetto');
+   }
+     
         
     }catch(error){
-        req.sessione.alert={
-            'style' : 'aler-warning',
-            'message' : error.message
-        }
-       
-    }
-
-};
-
-controller.getSovrapprezzo = async (req, res) => {  //sbagliato
-    var dbPool = req.dbPool;
-    var ora_ric_stimata = req.session.prenotazione.data_riconsegna.getTime();
-    var ora_riconsegna = new Date().getTime();
-    let diffOre = (ora_riconsegna - ora_ric_stimata)/3600000;
-
-    var p = req.params;
-    //si deve fare una query getPrezzoVeicolo(dbPool, id_veicolo) ??
-    if(ora_ric_stimata < ora_riconsegna){
-
-        try{
-            var tariffa = await prenotazioneModel.getPrezzoVeicolo(dbPool, p.ref_veicolo);
-        }
-        catch(error){
-    
-            req.session.alert = {
-                
-                'style' : 'alert-warning',
-                'message' : error.message
-        
-            }
-        }
-        var sovrapprezzo = calcolaSovrapprezzo(tariffa, diffOre, prezzo_finale); //come ottengo il prezzo finale?
-        res.render('Sovrapprezzo.ejs', {'sovrapprezzo' : sovrapprezzo});
-    }
-
-    try{
-        await prenotazioneModel.riconsegnaVeicolo(dbPool, p.id_prenotazione, p.stato_prenotazione, p.ref_veicolo, p.luogo_riconsegna, p.prezzo_finale);
-    }
-    catch(error){
-
-        req.session.alert = {
-            
+        req.session.alert={
             'style' : 'alert-warning',
             'message' : error.message
-    
         }
-    }
+        res.redirect('/utente/addetto');  
+        
+
+    }  
+
 };
 
-controller.postRiconsegnaEffettuata = async(req,res) =>{
-    var dbPool = req.dbPool;
-    var prenotazione= req.body.prenotazione;
-    var prezzo_totale = req.body.prezzo_totale;
-    var nuovoluogo = req.body.luogo_riconsegna;
-  
 
-    try{
 
-        await prenotazioneModel.riconsegnaVeicolo,(dbPool,prenotazione.id_prenotazione, "Veicolo Riconsegnato", prenotazione.ref_veicolo,nuovoluogo,prezzo_totale); //Da rivederee
-   
-    }catch(error){
-        req.sessione.alert={
-            'style' : 'aler-warning',
-            'message' : error.message
-        }
-       
-    }
-
-};
 
 
 

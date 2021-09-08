@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+          <%- include('../partials/head.ejs') %>
+          
+</head>
+<body>
+  <%- include('../partials/navbarAut.ejs') %>
+      
+
+    <div class="container mx-auto" style="height: 512px;" >
+        <br>
+
+      <% if(!veicoli|| veicoli.length == 0) {  %>  
+
+        <div class="text-center" style="height: 400px;"><h2><br><br><br><br><br>Nessun veicolo da riconsegnare!</h1></div>
+
+      <% }  else { %>
+
+        <div class="container">
+            <h2>Veicoli ritirati</h2>
+            <p>Ecco la lista di tutti i veicoli ritirati e da riconsegnare</p>
+            
+              <table class="table table-bordered table-bordered-success table-hover">
+                  <thead>
+                    <tr>
+                      <th>ID Veicolo</th>
+                      <th>Tipo Veicolo</th>
+                      <th>ID Parcheggio</th>                      
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% veicoli.forEach( (veicolo)=>{ %>
+                    <tr>
+                      <td><a href="/utente/addetto/veicoliRitirati/<%= veicolo.id_veicolo %>/luogoRiconsegna" ><%= veicolo.id_veicolo %></a></td>
+                      <td><%= veicolo.tipo_veicolo %></td>
+                      <td><%= veicolo.ref_parcheggio %></td>
+                    </tr>
+                    <% }) %>
+                  </tbody>
+                </table>
+      <% } %>   
+          
+    </div>
+    </div>
+<!--footer-->   
+<%- include('../partials/footer.ejs') %>
+</body>
+</html>

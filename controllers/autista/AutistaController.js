@@ -181,12 +181,12 @@ controller.postInfoRitiro= async (req, res) => {
 //Riconsegno Veicolo
 
 controller.getVeicoliRitiratiAut= async (req,res)=>{
-    var dbConncection=req.dbPool;
-    var utente=req.session.utente.id;
+    var dbPool=req.dbPool;
+    var utente=req.session.utente;
     try{
-        let veicoliRitirati=await prenotazioneModel.getVeicoliDaRiconsegnareAut(dbPool,utente);
-        res.render('/autista/VeicoliRitiratiAut.ejs',{
-            'veicoliRitirati': veicoliRitirati
+        let veicoli = await prenotazioneModel.getVeicoliDaRiconsegnareAut(dbPool,utente[0].id_account);
+        res.render('autista/VeicoliRitiratiAut.ejs',{
+            veicoli: veicoli
         });
     }catch (error){
         req.session.alert = {
@@ -194,62 +194,83 @@ controller.getVeicoliRitiratiAut= async (req,res)=>{
             'style' : 'alert-warning',
             'message' : error.message
         }
-        res.redirect('/utente/autista/veicoliRitirati/')
+        res.redirect('/utente/autista/veicoliRitirati')
     }
-}
+};
 
-controller.postVeicoliRitiratiAut=(req,res)=>{
-    var dbConnection=req.dbPool;
+
+
+controller.getModificaLuogo = async (req, res) =>{
+
+    var id_veicolo= req.params.id;
+    var dbPool = req.dbPool;
 
     try {
-        let veicolo= req.body;
-        res.render('/autista/ModificaLuogo.ejs',{
-            'veicolo':veicolo
-        })
+        var prenotazione = await prenotazioneModel.getPrenotazioneDelVeicolo(dbPool,id_veicolo);
+        res.render('autista/ModificaLuogo_B.ejs', {
+            prenotazione : prenotazione[0],
+            id_veicolo : id_veicolo
+        });
+        
 
-    }catch(error){
+    }catch (error){
         throw error;
     }
-}
 
-controller.getModificaLuogo = (req, res) =>{
-    var luogo_riconsegna = req.body.luogo_riconsegna; //si fa con sessionStorage??
-    res.render('ModificaLuogo.ejs', {'luogo_riconsegna' : luogo_riconsegna});
+  
     
 };
 
-controller.postModificaLuogo= async (req,res)=>{
-    var dbConnection=req.dbPool;
+controller.postModificaLuogo = async(req,res) =>{
+
+    var dbPool = req.dbPool;
+    var nuovoluogo = req.body.luogo_riconsegna;   
+    var idVeicolo = req.params.id;
 
     try{
-        let luogoRiconsegna = req.body;
-        //????let id_prenotazione = 
-        await prenotazioneModel.modificaLuogoRiconsegna(dbPool,id_prenotazione,luogoRiconsegna);
+        var prenotazioneV = await prenotazioneModel.getPrenotazioneDelVeicolo(dbPool,idVeicolo);
+     
+        if(nuovoluogo != prenotazioneV[0].luogo_riconsegna){
+        await prenotazioneModel.modificaLuogoRiconsegna(dbPool,prenotazioneV[0].id_prenotazione, nuovoluogo);
+    
+       }
+      var x = new Date();
+      var y= new Date(prenotazioneV[0].data_riconsegna);
 
-    }catch(error){
+       //controllo sovrapprezzi
+       if(((x.getTime() - y.getTime())/3600000)>0){
+        var oreSovrapprezzo = (x.getTime() - y.getTime())/3600000;
+        var prezzoOrario = await prenotazioneModel.getPrezzoVeicolo(dbPool, idVeicolo);
+        var sovrapprezzo = oreSovrapprezzo*prezzoOrario[0].tariffa;
+        var prezzo_totale = sovrapprezzo + prenotazioneV[0].prezzo_finale;
+        sovrapprezzo = sovrapprezzo.toFixed();
+        await prenotazioneModel.riconsegnaVeicolo(dbPool,prenotazioneV[0].id_prenotazione ,'Veicolo Riconsegnato',idVeicolo,prenotazioneV[0].luogo_riconsegna,prezzo_totale);
         req.session.alert = {
-                
+            'style' : 'alert-success',
+            'message' : 'Riconsegna in ritardo, sovrapprezzo addebitato al cliente'
+        };
+        res.redirect('/utente/autista/');   
+   }
+   else{
+       var prezzo_totale = prenotazioneV[0].prezzo_finale;
+       await prenotazioneModel.riconsegnaVeicolo(dbPool,prenotazioneV[0].id_prenotazione ,'Veicolo Riconsegnato',idVeicolo,prenotazioneV[0].luogo_riconsegna,prezzo_totale);
+    req.session.alert = {
+        'style' : 'alert-success',
+        'message' : 'Riconsegna effettuata in orario, nessun sovrapprezzo!'
+    };
+    res.redirect('/utente/autista/');     
+   }
+       
+    }catch(error){
+        req.session.alert={
             'style' : 'alert-warning',
             'message' : error.message
         }
-        res.redirect('/utente/autista/veicoliRitirati/')
-    }
+        res.redirect('/');  
+   
+    }  
 
-}
-
-
-///???
-controller.getSovrapprezzo=async(req,res)=>{
-    var dbConnection=req.dbPool;
-
-}
-
-///
-
-async function calcolaSovrapprezzo(){
-
-}
-
+};
 
 
 

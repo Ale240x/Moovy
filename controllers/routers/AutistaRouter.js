@@ -33,9 +33,7 @@ router.post("/veicoliPrenotati/:id/InfoRitiro", AutistaController.postInfoRitiro
 
 //Riconsenga Veicolo
 router.get("/veicoliRitirati", AutistaController.getVeicoliRitiratiAut);
-router.post("/veicoliRitirati", AutistaController.postVeicoliRitiratiAut);
 router.get("/veicoliRitirati/:id/luogoRiconsegna", AutistaController.getModificaLuogo);
-router.get("/veicoliRitirati/:id/luogoRiconsegna", AutistaController.postModificaLuogo);
-router.get("/veicoliRitirati/:id/luogoRiconsegna/sovrapprezzo", AutistaController.getSovrapprezzo);
+router.post("/veicoliRitirati/:id/luogoRiconsegna", AutistaController.postModificaLuogo);
 
 module.exports=router;
