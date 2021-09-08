@@ -24,12 +24,12 @@ router.get("/disconnetti", AddettoController.getDisconnetti);
 router.get("/veicoliPrenotati", AddettoController.getVeicoliPrenotatiAdd);
 router.get("/veicoliPrenotati/:id/InfoRitiro", AddettoController.getInfoVeicoloDaRitirare);
 router.post("/veicoliPrenotati/:id/InfoRitiro", AddettoController.postRitiroVeicolo);
-/*
 
-//Riconsenga Veicolo
+
+//Riconsegna veicolo
+
 router.get("/veicoliRitirati", AddettoController.getVeicoliRitiratiAdd);
 router.get("/veicoliRitirati/:id/luogoRiconsegna", AddettoController.getModificaLuogo);
-router.post("/veicoliRitirati/:id/luogoRiconsegna/sovrepprezzo", AddettoController.postModificaLuogo);
-router.post("/veicoliRitirati/:id/luogoRiconsegna", AddettoController.postRiconsegnaEffettuata);
-*/
+router.post("/veicoliRitirati/:id/luogoRiconsegna", AddettoController.postModificaLuogo);
+
 module.exports=router;

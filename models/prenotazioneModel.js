@@ -468,9 +468,6 @@ model.getVeicoliDaRiconsegnareAut = async (dbPool, ref_autista) => { //prenotazi
                 `, [ref_autista, 'Veicolo ritirato']
                 );
 
-        if(results.length == 0){
-            throw {'message' : 'Non esistono veicoli da Riconsegnare'};
-        }
         return results;
     }
     catch(error){
@@ -491,9 +488,7 @@ model.getVeicoliDaRiconsegnareAdd = async (dbPool) => { //prenotazioni attive cl
                 `, ['Veicolo ritirato']
                 );
 
-        if(results.length == 0){
-            throw {'message' : 'Non esistono veicoli da Riconsegnare'};
-        }
+   
         return results;
     }
     catch(error){

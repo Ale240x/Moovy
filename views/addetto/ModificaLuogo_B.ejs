@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <%- include('../partials/head.ejs') %>
+     <!-- link e script per la mappa mapbox-->
+     <link href="https://api.mapbox.com/mapbox-gl-js/v2.4.1/mapbox-gl.css" rel="stylesheet">
+     <script src="https://api.mapbox.com/mapbox-gl-js/v2.4.1/mapbox-gl.js"></script>
+     <!-- Geocoder -->
+     <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.2/mapbox-gl-geocoder.min.js"></script>
+     <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.2/mapbox-gl-geocoder.css" type="text/css">
+     <!-- Promise polyfill script is required -->
+     <!-- to use Mapbox GL Geocoder in IE 11. -->
+     <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.min.js"></script>
+     <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.min.js"></script>
+     <!--script turf for distances-->
+     <script src="https://unpkg.com/@turf/turf"></script>
+
+     <!-- Import jQuery -->
+     <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
+ 
+     <style>
+         #mappa { height: 500px; width: 80%; }
+     </style>
+    <style>
+      body{
+        padding: 0px;
+      }
+    </style>
+    <title>Riconsegna Veicolo</title>
+</head>
+
+<body>
+    <%- include('../partials/navbarAdd.ejs') %>
+    
+    <div class="container mx-auto">
+       <br>
+        <div class="row">
+            <div class="card card-body" style="width: 516px;">               
+              <h1>Luogo riconsegna</h1>                
+              <p>Conferma o modifica il luogo di riconsegna</p>
+              <h3> <%= prenotazione.luogo_riconsegna %></h3>   
+              <form action="/utente/addetto/veicoliRitirati/<%= id_veicolo %>/luogoRiconsegna" method="POST">
+                <br>
+  
+                <div class="row">
+                  <div class="col">
+                    <div id="geocoder" class="form-outline">
+                        <label class="form-label" for="luogoRiconsegna" id="luogoRiconsegna" >Luogo di riconsegna</label>     
+                    </div>  
+                  </div>   
+                </div> 
+                <br>           
+                <div id="mappa" class=" mx-auto"></div>
+                <br>
+                <div class="d-flex justify-content-center">
+                  <button type="submit" class="btn btn-lg  btn-success  align-content-lg-center" 
+                  id="submit">Conferma</button>
+                </div>
+              </form>
+            </div>
+          </div>
+    </div>
+  
+<%- include('../partials/footer.ejs') %>
+
+<script> //mappa
+        
+  mapboxgl.accessToken = 'pk.eyJ1IjoiYWxlMjQweCIsImEiOiJja3IwdTRqem0xdjM3MnpxYTJneHVuNXptIn0.mZ7elTikfESfGCOnYRUMsg';
+  var map = new mapboxgl.Map({
+  container: 'mappa',
+  style: 'mapbox://styles/ale240x/ckrbvpq3l0xna18q9nd2ol3l5',
+  center: [13.355607408018551, 38.11816843527191], // starting position [lng, lat]
+  zoom: 13
+  });
+
+  var marker1 = new mapboxgl.Marker().setLngLat([13.352136, 38.106084])
+  .setPopup(new mapboxgl.Popup({ offset: [0, -15], closeButton: false })
+  .setHTML('<h5>' + 'Parcheggio Basile' + '</h5>' +
+           '<p>' + 'Via Basile, 110' + '</p>'))
+  .addTo(map);
+
+  var marker2 = new mapboxgl.Marker().setLngLat([13.348418, 38.110394])
+  .setPopup(new mapboxgl.Popup({ offset: [0, -15], closeButton: false })
+  .setHTML('<h5>' + 'Parcheggio Calatafimi' + '</h5>' +
+           '<p>' + 'Corso Calatafimi, 9' + '</p>'))
+  .addTo(map);
+
+  var marker3 = new mapboxgl.Marker().setLngLat([13.366112, 38.108526])
+  .setPopup(new mapboxgl.Popup({ offset: [0, -15], closeButton: false })
+  .setHTML('<h5>' + 'Parcheggio Oreto' + '</h5>' +
+           '<p>' + 'Via Oreto, 20' + '</p>'))
+  .addTo(map);
+
+  var marker4 = new mapboxgl.Marker().setLngLat([13.364408, 38.114987])
+  .setPopup(new mapboxgl.Popup({ offset: [0, -15], closeButton: false })
+  .setHTML('<h5>' + 'Parcheggio Roma' + '</h5>' +
+           '<p>' + 'Via Roma, 97' + '</p>'))
+  .addTo(map);
+
+  var geolocate = new mapboxgl.GeolocateControl({
+      positionOptions: {
+      enableHighAccuracy: true
+      },
+      showAccuracyCircle: false
+  });
+  map.addControl(geolocate);
+
+  // Load custom data to supplement the search results.
+  var parkings = {
+      'features': [
+      {
+          'type': 'Feature',
+          'place_name': 'Parcheggio Basile, Via Basile 110, Palermo',
+          'address': 'Via Basile 110',
+          'properties': {
+              'title': 'Parcheggio Basile'
+          },
+          'geometry': {
+              'coordinates': [13.352136 , 38.106084],
+              'type': 'Point'
+          }
+      },
+      {
+          'type': 'Feature',
+          'place_name': 'Parcheggio Calatafimi, Corso Calatafimi 9, Palermo',
+          'address': 'Corso Calatafimi 9',
+          'properties': {
+              'title': 'Parcheggio Calatafimi'
+          },
+          'geometry': {
+          'coordinates': [13.348418, 38.110394],
+          'type': 'Point'
+          }
+      },
+      {
+          'type': 'Feature',
+          'place_name': 'Parcheggio Oreto, Via Oreto 20, Palermo',
+          'address': 'Via Oreto 20',
+          'properties': {
+              'title': 'Parcheggio Oreto'
+          },
+          'geometry': {
+          'coordinates': [13.366112, 38.108526],
+          'type': 'Point'
+          }
+      },
+      {
+          'type': 'Feature',
+          'place_name': 'Parcheggio Roma, Via Roma 97, Palermo',
+          'address': 'Via Roma 97',
+          'properties': {
+              'title': 'Parcheggio Roma'
+          },
+          'geometry': {
+          'coordinates': [13.364408, 38.114987],
+          'type': 'Point'
+          }
+      }],
+      'type': 'FeatureCollection'
+      };
+
+  function forwardGeocoder(query) { //per ricercare i parcheggi personalizzati
+      var matchingFeatures = [];
+      for (var i = 0; i < parkings.features.length; i++) {
+
+          var feature = parkings.features[i];
+          if (feature.properties.title.toLowerCase()
+          .search(query.toLowerCase()) !== -1 ||
+          feature.address.toLowerCase()
+          .search(query.toLowerCase()) !== -1) {
+
+              feature['center'] = feature.geometry.coordinates;
+              matchingFeatures.push(feature);
+          }
+      }
+      return matchingFeatures;
+  }
+
+  map.on('load', function() {
+      geolocate.trigger();
+      var {longitude, latitude} = map.getCenter();
+
+      var opt = {
+          accessToken: mapboxgl.accessToken,
+          mapboxgl: mapboxgl,
+          localGeocoder: forwardGeocoder,
+          localGeocoderOnly: false, //mostra anche i risultati standard della mappa
+          zoom: 14, // Set the zoom level for geocoding results
+          placeholder: "Inserisci un indirizzo",
+          bbox: [13.306134, 38.092523, 13.376527, 38.151488], // Set a bounding box
+          proximity: { longitude: longitude , latitude: latitude },
+          trackProximity: true
+      }
+      var geocoder = new MapboxGeocoder(opt); //luogo di riconsegna del veicolo
+
+      var luogoRiconsegna = document.getElementById('geocoder').appendChild(geocoder.onAdd(map));
+      luogoRiconsegna.id = "divGeo";
+
+      $('#divGeo > input').attr('id', 'luogoRiconsegna').attr('name', 'luogo_riconsegna')
+      .attr('value', '<%= prenotazione.luogo_riconsegna %>'); //non so se così funziona
+             
+  });         
+
+</script>
+</body>
+</html>
