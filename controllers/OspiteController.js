@@ -148,11 +148,13 @@ controller.postAutenticazione = async (req, res) => {
   
     } catch(error) { 
     
-        req.session.alert = {
+        let alert = {
             'style' : 'alert-danger',
-            'message' : error.message,
-        };
-        res.redirect('back');
+            'message' : error.message
+        }
+        console.log(error);
+        console.log(error.message);
+        res.redirect('/autenticazione');
   
     }
   };

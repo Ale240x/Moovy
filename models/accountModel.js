@@ -142,7 +142,7 @@ model.login = async (dbPool, email, clearPassword) => {
         
         //console.log(utenteId[0].id_account);
 
-        let autenticated = (realPassword.password == clearPassword);
+        let autenticated = (realPassword[0].password == clearPassword);
        // console.log("controllo effettuato!");
         if(!autenticated){
             //console.log("autenticazione fallita")
