@@ -139,16 +139,12 @@ controller.postModificaPrenotazione = async(req,res)=>{
 
 //Rimborso
 controller.getElencoPrenotAmm=async(req,res)=>{
-    var dbConnection=req.dbPool;
+    var dbPool=req.dbPool;
     try{ 
     
-        let prenotazioni=await prenotazioneModel.getUltimePrenotazioni(dbConnection);
-        res.render('/amministratore/ElencoPrenotAmm.ejs',{
-            'idprenotazione':prenotazioni.idprenotazione,
-            'nomecliente':prenotazioni.nomecliente,
-            'data':prenotazioni.data,
-            'stato':prenotazioni.stato,
-            'prezzototale':prenotazioni.prezzototale
+        let prenotazioni=await prenotazioneModel.getUltimePrenotazioni(dbPool);
+        res.render('amministratore/ElencoPrenotAmm_B.ejs',{
+            prenotazioni : prenotazioni
         
         });
     }catch(error){
@@ -157,41 +153,122 @@ controller.getElencoPrenotAmm=async(req,res)=>{
     }
 };
 
-controller.postElencoPrenotAmm=async(req,res)=>{
-    var dbConnection=req.dbPool;
 
+
+controller.getRimborso= async(req,res)=>{
+
+    var dbPool = req.dbPool;
+    var idPrenotazione=req.params.id;
     try{
-        let id=req.body.idprenotazione;
-        let prenotazione= await prenotazioneModel.getPrenotazione(dbConnection,id);
-        res.render('/amministratore/Rimborso.ejs', {
-            'prenotazione':prenotazione
-        })
+        var prenotazione = await prenotazioneModel.getPrenotazione(dbPool,idPrenotazione);
+        var utente = await accountModel.getAccount(dbPool,prenotazione[0].ref_cliente);
+        var carte = await accountModel.getMetodiPagamento(dbPool,utente[0].id_account);
+       
+        idp= prenotazione[0].id_prenotazione;
+
+        res.render('amministratore/Rimborso_B.ejs',{
+            idp: idp,
+            carte : carte
+    
+        });
+        
 
     }catch(error){
+        req.session.alert = {
+            
+            'style' : 'alert-warning',
+            'message' : error.message
+    
+        };
+    res.redirect('/utente/amministratore/AreaPersonaleAmministratore');
+    };
+};
+
+controller.postRimborso=async(req,res)=>{
+    var dbPool = req.dbPool;
+    var carta = req.body.scelta_carta;
+    var importo = req.body.rimborso;
+    var idPrenotazione = req.params.id;
+
+
+    try{
+        var prenotazione;
+        prenotazione= await prenotazioneModel.getPrenotazione(dbPool,idPrenotazione);
+        var utente = await accountModel.getAccount(dbPool,prenotazione[0].ref_cliente);
+
+        prezzo_finale=prenotazione[0].prezzo_finale-importo;
+ 
+        await prenotazioneModel.setStatoPrenotazione(dbPool,idPrenotazione,'Rimborsato');
+        await prenotazioneModel.setPrezzoFinale(dbPool,idPrenotazione,prezzo_finale);
+        //invia email per avvisare rimborso
+        //AvvisoRimborso(req.transporter,utente[0],carta,importo,idPrenotazione);
+        req.session.alert = {
+            
+            'style' : 'alert-success',
+            'message' : 'Rimborso effettuato con successo!'
+    
+        };
+
+    }catch(error){
+        req.session.alert = {
+            
+            'style' : 'alert-warning',
+            'message' : error.message
+    
+        };
+    res.redirect('/utente/amministratore/AreaPersonaleAmministratore');
+    };
+    res.redirect('/utente/amministratore/AreaPersonaleAmministratore');
+};
+
+
+async function AvvisoRimborso(transporter,  account, carta, importo, idPrenotazione){
+
+
+    try {
+        
+        let mailSubject = 
+            `
+            Avviso rimborso
+            <br/>
+            Gentile ${account.nome} ${account.cognome},
+            Volevamo comunicarle che è stato effettuato un rimborso
+            di ${importo} euro sul metodo di pagamento : ${carta},
+            relativo alla prenotazione con id ${idPrenotazione}.<br>
+            Ci scusiamo per eventuali disagi e la aspettiamo per un'altra corsa insieme.
+            <br/>
+            <br/>
+            Grazie per aver utilizzato Moovy.
+            <br/>
+            Saluti,
+            <br/>
+            - Il team di Moovy.
+            <hr>
+            <h4>Proteggiti da email di phising.</h4>
+            Non ti chiederemo mai la password in un'email.
+            `;
+
+        let mailOpt = {
+            'from' : 'moovyprogetto@gmail.com',
+            'to' : account.email,
+            'subject' : 'Rimborso effettuato -Moovy',
+            'html' : mailSubject
+            };
+            transporter.sendMail(mailOpt, function(error, info){
+                if (error) {
+                  console.log(error);
+                } else {
+                  console.log('Email sent: ' + info.response);
+                }
+              });
+
+
+    } catch (error) {
+        
         throw error;
+        
     }
 };
 
-controller.getRimborso= async(req,res)=>{
-    res.render('/amministratore/Rimborso.ejs');
-}
-
-controller.postRimborso=async(req,res)=>{
-    var dbConnection=dbPool;
-
-    try{
-        let rimborso= req.body;
-        let importo=req.body.importo;
-        let metodoPagamento=req.body.metodo;
-        await prenotazioneModel.statoRimborso(   ///da aggiungere al model?
-            dbConnection,
-            importo,
-            metodoPagamento
-        );
-
-    }catch(error){
-        throw error;
-    }
-}
 
 module.exports = controller;

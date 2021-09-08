@@ -1,51 +1,54 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <%- include('../partials/head.ejs') %>
-  <style>
-    body{
-      padding: 0px;
-    }
-  </style>
-  <title>Moovy</title>  
+    <%- include('../partials/head.ejs') %>
+    </style>
+    <title>Moovy</title>
 </head>
 <body>
-  <%- include('../partials/navbar.ejs') %>
-    <div class="container mx-auto">
-        <br>
-        <div class="container">
-            <h2>Elenco prenotazioni</h2>
-            <p>Ecco la lista di tutte le prenotazioni </p>            
-            <div>
-              <%
-
-              if((!prenotazioni) || (prenotazioni.length==0)) { 
-                
-                  __append('<div class="section col-12 text-center">Non sono state trovate prenotazioni!</div>');
-                 
-              } 
-              
-  
-              else{
-         
-                  prenotazioni.forEach( (prenotazione) => {  
-                     
-                          __append('<div class="section">')
-                          __append(include("../_partials/elencoamm", prenotazione));
-                          __append('</div>')
-                     
-                  });
-  
-              } 
-                              
-          %> 
-                  
-       
-    </div>
-          </div>
+    <%- include('../partials/navbarAmm.ejs') %>
+   
+    <div class="container mx-auto" style="height: 512px;" >
+      <br>
+    
+    <% if(!prenotazioni|| prenotazioni.length == 0) {  %>  
+    
+      <div class="text-center" style="height: 400px;"><h2><br><br><br><br><br>Non ci sono state prenotazioni nell'ultimo mese</h1></div>
+    
+    <% }  else { %>
+    
+      <div class="container">
+        <h2>Prenotazioni recenti</h2>
+        <p>Ecco la lista di tutte le prenotazioni recenti, seleziona quella che vuoi rimborsare</p>           
           
-       
+            <table class="table table-bordered table-bordered-success table-hover">
+                <thead>
+                  <tr>
+                    <th>ID prenotazione</th>
+                    <th>Riferimento cliente</th>
+                    <th>Data </th>
+                    <th>Stato</th>
+                    <th>Importo totale</th>                   
+                  </tr>
+                </thead>
+                <tbody>
+                  <% prenotazioni.forEach( (prenotazione)=>{ %>
+                  <tr>
+                    <td><a href="/utente/amministratore/AreaPersonaleAmministratore/rimborso/<%= prenotazione.id_prenotazione %>/effettuaRimborso"><%= prenotazione.id_prenotazione %></a></td>
+                    <td><%= prenotazione.ref_cliente%></td>
+                    <td><%= prenotazione.data_ritiro%></td>
+                    <td><%= prenotazione.stato_prenotazione%></td>
+                    <td><%= prenotazione.prezzo_finale%></td>
+                  </tr>
+                  <% }) %>
+                </tbody>
+              </table>
+    <% } %>   
+        
     </div>
-    <%- include('../partials/footer.ejs') %>
+    </div>
+
+<!--footer-->   
+<%- include('../partials/footer.ejs') %>
 </body>
 </html>

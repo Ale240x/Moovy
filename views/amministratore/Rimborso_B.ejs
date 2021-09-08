@@ -10,62 +10,74 @@
   <title>Moovy</title>
 </head>
 <body>
-  <%- include('../partials/navbar.ejs') %>
+  <%- include('../partials/navbarAmm.ejs') %>
     <div class="container"  style="padding: 5%;">
        <br>      
        <h2>Rimborso cliente</h2>  
        <br>
         <div class="card border-success  card-body text-lg-center" >
-            <form>
-                <div class="row">
-                  <div class="col-6">
-                    <div class="form-outline">
+          <form action="/utente/amministratore/AreaPersonaleAmministratore/rimborso/<%= idp %>/effettuaRimborso/effettuato" method="POST">
+                 <div class="col-6"  >  
+                    <div class="form-outline ">
                         <label class="form-label ">Inserisci importo rimborso</label>
                         <div class="form-group">
-                          <div class="input-group mb-3">
-                            <span class="input-group-text">€</span>
-                            <input type="number" class="form-control text-md-right" id="rimborso" >
-                            <span class="input-group-text">.00</span>
-                          </div>
+                          <div class=" mb-3 my-3" style="max-width: 580px;">
+                            <input type="number" id="rimborso" name="rimborso" class="form-control form-control-md" placeholder="rimborso">
                         </div>
-                      </div>                    
+                        </div>
+                      </div> 
+                                         
   
                   </div>
-                  <%
+                  <% if(!carte||carte.length == 0) {  %>  
+    
+                    <div class="text-center" style="height: 400px;"><h2><br><br><br><br><br>Non ci sono state prenotazioni nell'ultimo mese</h1></div>
+                  
+                  <% }  else { %>
+                  
+                    <div class="container">
+                    
 
-              if((!carte) || (carte.length==0)) { 
-                
-                  __append('<div class="section col-12 text-center">Non sono state trovati metodi di pagamento</div>');
-                 
-              } 
-              
-  
-              else{
-         
-                  carte.forEach( (carta) => {  
-                     
-                          __append('<div class="section">')
-                          __append(include("../_partials/elencarte", carte));
-                          __append('</div>')
-                     
-                  });
-  
-              } 
-                              
-          %> 
-                <br>                        
+                                  <div class="col-6 ">
+                                    <div class="form-outline">
+                                        <label class="form-label ">Inserisci metodo pagamento</label>
+                                        <div class="input-group mb-3">
+                                            <select class="custom-select" id="scelta_carta" name="scelta_carta">
+                                            
+                                              <option selected>Seleziona carta</option>
+                                              <% carte.forEach( (carta)=>{ %>
+                                              <% ultime_cifre = carta.numero_carta.slice(-4); %>
+                                              
+                                              <option value="<%= carta.numero_carta%>">Carta che termina con ****<%= ultime_cifre %></option>  
+                                              <% }) %>              
+                                            </select>
+                                          </div>
+                                        </div>                  
+                                  </div>             
+                            
+                                </div>
+                                
+                             
+                            </div>
+                  <% } %>  
+                <br>  
+                <div class="d-flex justify-content-center">
+                  <button type="submit" class="btn btn-lg  btn-success  align-content-lg-center" 
+                  id="submit">Conferma</button>
+                </div> 
+                          
+                </div> 
                 
   
               </form>   
-              <div class="d-grid gap-2">
-                <button class="btn btn-lg btn-success" type="button">Effettua Rimborso!</button>
-              </div>          
+                     
            
         </div>
-        
+    
     </div>
      
 
     <%- include('../partials/footer.ejs') %>
 </body>
 </html>
+
