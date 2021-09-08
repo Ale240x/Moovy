@@ -46,15 +46,15 @@ router.get("/AreaPersonaleAmministratore/prenotazioniAttive/:id", PrenotazioneAm
 router.get("/AreaPersonaleAmministratore/prenotazioniAttive/:id/eliminaPrenotazione", PrenotazioneAmministratoreController.getCancellaPrenotazione);
 router.get("/AreaPersonaleAmministratore/prenotazioniAttive/:id/modificaPrenotazione", PrenotazioneAmministratoreController.getModificaPrenotazione);
 router.post("/AreaPersonaleAmministratore/prenotazioniAttive/:id/modificaPrenotazione",PrenotazioneAmministratoreController.postModificaPrenotazione);
-/*
-
-
 
 //rimborso
-router.get("/rimborso", PrenotazioniAmministratoreController.getElencoPrenotAmm);
-router.post("/rimborso",PrenotazioniAmministratoreController.postElencoPrenotAmm);
-router.get("/rimborso/:id/effettuaRimborso", PrenotazioniAmministratoreController.getRimborso);
-router.post("/rimborso/:id/effettuaRimborso",PrenotazioniAmministratoreController.postRimborso);
-*/
+router.get("/AreaPersonaleAmministratore/rimborso", PrenotazioneAmministratoreController.getElencoPrenotAmm);
+router.get("/AreaPersonaleAmministratore/rimborso/:id/effettuaRimborso", PrenotazioneAmministratoreController.getRimborso);
+router.post("/AreaPersonaleAmministratore/rimborso/:id/effettuaRimborso/effettuato", PrenotazioneAmministratoreController.postRimborso);
+
+
+
+
+
 
 module.exports= router;

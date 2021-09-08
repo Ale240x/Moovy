@@ -445,5 +445,25 @@ model.getParcheggioAdd = async (dbPool, idAddetto) => {
     }
 };
 
+model.getMetodiPagamento = async (dbPool,id_account) => {
+    
+    try {
+        //console.log("gli account degli impiegati");
+        let query = util.promisify(dbPool.query).bind(dbPool);
+
+        return (await query(`SELECT  
+                                *
+                            FROM 
+                                carte_di_credito 
+                            WHERE ref_account = ? `,
+                            [id_account]));
+                           
+
+    } catch(error) {
+
+        throw error;
+    }
+};
+
 
 module.exports = model;
