@@ -20,19 +20,29 @@
         </ul>
         <ul class="navbar-nav justify-content-end">
             <li class="nav-item">
-                <a class="nav-link" href="/utente/cliente/disconnetti">Logout</a>
+                <a data-confirm ="Vuoi fare logout?" class="nav-link"  id = "logout" href="/utente/cliente/disconnetti">Logout</a>
             </li>
         </ul>
     </div>
 </nav>
-<!--
+
 <script>
-    function logout(){
-        let valore = confirm('Vuoi fare logout?');
-        console.log(valore);
-    }
+   
+var logLinks = document.querySelectorAll('#logout');
+
+for (var i = 0; i < logLinks.length; i++) {
+  logLinks[i].addEventListener('click', function(event) {
+      event.preventDefault();
+
+      var choice = confirm(this.getAttribute('data-confirm'));
+
+      if (choice) {
+        location.href = this.getAttribute('href');
+      }
+  });
+}
+
 </script>
--->
 
 <% if(alert){%>
     <div class="alert <%= alert.style %> alert-dismissible fade show" role="alert">

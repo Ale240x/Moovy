@@ -85,7 +85,7 @@ Altre eventuali informazioni
 
 
     <div class="container my-5 text-center">
-        <a href="/utente/amministratore/AreaPersonaleAmministratore/prenotazioniAttive/<%= prenotazione[0].id_prenotazione %>/eliminaPrenotazione" class="btn btn-success" role="button">Cancella prenotazione</a>
+        <a data-confirm ="Vuoi eliminare questa prenotazione?" class="btn btn-success" id="delete" href="/utente/amministratore/AreaPersonaleAmministratore/prenotazioniAttive/<%= prenotazione[0].id_prenotazione %>/eliminaPrenotazione"role="button">Cancella prenotazione</a>
         <a href="/utente/amministratore/AreaPersonaleAmministratore/prenotazioniAttive/<%= prenotazione[0].id_prenotazione %>/modificaPrenotazione " class="btn btn-success" role="button">Modifica prenotazione</a>
     </div>
     
@@ -93,5 +93,22 @@ Altre eventuali informazioni
      
 <!--footer-->   
 <%- include('../partials/footer.ejs') %>
+<script>
+   
+    var deleteLinks = document.querySelectorAll('#delete');
+        
+      deleteLinks[0].addEventListener('click', function(event) {
+          event.preventDefault();
+    
+          var choice = confirm(this.getAttribute('data-confirm'));
+    
+          if (choice) {
+            location.href = this.getAttribute('href');
+          }
+      });
+    
+    
+    </script>
+
 </body>
 </html>
