@@ -410,17 +410,32 @@ model.modificaDatiImpiegato = async (dbPool, utenteId, nome, cognome, data_di_na
     let query = util.promisify(dbPool.query).bind(dbPool);
 
     try{
-       /* if(
-            !(
-                checkDati.letteraMaiuscola(nome) &&
-                checkDati.letteraMaiuscola(cognome) &&
-                checkDati.isEmail(email) &&
-                checkDati.controlloTel(num_telefono)&&
-                checkDati.controlloPatente(codice_patente)
-            )){}*/
+       
     
         await query('UPDATE account SET nome = ?, cognome = ?, num_telefono = ?, email = ?, ruolo = ? WHERE id_account = ?', 
         [nome, cognome, email,ruolo, data_di_nascita, num_telefono, utenteId]);
+
+        patente = await query(`
+        SELECT *
+        FROM patenti
+        WHERE ref_account = ?
+        `, [utenteId]);
+
+        if(patente[0].tipo_a == 1){
+            tipo_a = 1;
+        }
+        if(patente[0].tipo_b == 1){
+            tipo_b = 1;
+        }
+        if(patente[0].tipo_am == 1){
+            tipo_am = 1;
+        }
+        if(patente[0].tipo_a1 == 1){
+            tipo_a1 = 1;
+        }
+        if(patente[0].tipo_a2 == 1){
+            tipo_a2 = 1;
+        }
     
         await query('UPDATE patenti SET codice_patente = ?, scadenza_patente = ?, tipo_a = ?, tipo_b = ?, tipo_am = ?, tipo_a1 = ?, tipo_a2 = ?  WHERE ref_account = ?', 
         [codice_patente, scadenza_patente, tipo_a, tipo_b, tipo_am, tipo_a1, tipo_a2, utenteId]);
