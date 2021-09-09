@@ -22,8 +22,9 @@
             <input type="text" class="form-control form-control-md" id="cognome" name="cognome" value="<%= impiegato[0].cognome %>" placeholder="Cognome">
         </div>
         <div class="mb-3">
+            <% data_n = impiegato[0].data_di_nascita.toLocaleString().slice(0, 9); %>
             <label for="dataNascita" class="form-label">Data di nascita</label>
-           <input class="form-control" type="text" name="dataNascita" id="dataNascita"  value="<%= impiegato[0].data_di_nascita %>"  readonly>
+           <input class="form-control" type="text" name="dataNascita" id="dataNascita"  value="<%= data_n %>"  readonly>
         </div>
         <div class="mb-3">
             <label for="num_telefono" class="form-label">Numero di cellulare</label>
@@ -44,14 +45,9 @@
         </div>
         <div class="mb-3">
             <div class="form-outline">
-                <label class="form-label" for="data_rilascio">Data di rilascio patente</label>
-                <input type="text" id="data_rilascio" name="data_rilascio" class="form-control form-control-md"  />
-            </div> 
-        </div>  
-        <div class="mb-3">
-            <div class="form-outline">
+                <% scadenza = impiegato[0].scadenza_patente.toLocaleString().slice(0, 9); %>
                 <label class="form-label" for="scadenza_patente">Scadenza patente</label>
-                <input type="text" id="scadenza_patente" name="scadenza_patente" value="<%= impiegato[0].scadenza_patente %>" class="form-control form-control-md"  />
+                <input type="text" id="scadenza_patente" name="scadenza_patente" value="<%= scadenza %>" class="form-control form-control-md"  />
               </div> 
         </div>
         <div class="mb-3;  btn-group text-center" style="width:100%">

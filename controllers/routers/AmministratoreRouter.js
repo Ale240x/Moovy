@@ -29,7 +29,6 @@ router.post("/AreaPersonaleAmministratore/registrazioneImpiegati",Amministratore
 
 //modifica dati impiegati
 router.get("/AreaPersonaleAmministratore/datiImpiegati",AmministratoreController.getDatiImpiegati);
-//router.post("/AreaPersonaleAmministratore/datiImpigati",AmministratoreController.postDatiImpiegati); //NON SERVE
 router.get("/AreaPersonaleAmministratore/datiImpiegati/:id/modificaDatiImpiegati",AmministratoreController.getFormModifica);
 router.post("/AreaPersonaleAmministratore/datiImpiegati/:id/modificaDatiImpiegati",AmministratoreController.postFormModifica);
 

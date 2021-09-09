@@ -99,6 +99,23 @@ controller.getModificaDati = (req, res) => {
 
 controller.postModificaDati = async (req, res) => {  
     var dbPool = req.dbPool;
+    var dati = req.body;
+    
+    if(!dati.tipo_a){
+        dati.tipo_a = 0;
+    }
+    if(!dati.tipo_am){
+        dati.tipo_am = 0;
+    }
+    if(!dati.tipo_a1){
+        dati.tipo_a1 = 0;
+    }
+    if(!dati.tipo_a2){
+        dati.tipo_a2 = 0;
+    }
+    if(!dati.tipo_b){
+        dati.tipo_b = 0;
+    }
     // connessione + richiama autenticazione utente
     try {
        
@@ -119,7 +136,12 @@ controller.postModificaDati = async (req, res) => {
                 req.body.cvv,
                 req.body.scadenza_carta,
                 req.body.codice_patente,
-                req.body.scadenza_patente,                
+                req.body.scadenza_patente,
+                dati.tipo_a,
+                dati.tipo_b,
+                dati.tipo_am,
+                dati.tipo_a1,
+                dati.tipo_a2,          
                 );
         
         

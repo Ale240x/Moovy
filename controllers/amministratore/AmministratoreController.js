@@ -36,6 +36,23 @@ controller.postRegistrazioneImpiegati = async(req,res)=> {
     var dbPool = req.dbPool;
     var data = new Date(req.body.data_di_nascita);
     var scadenza_patente = new Date(req.body.scadenza_patente);
+    var dati = req.body;
+
+    if(!dati.tipo_a){
+        dati.tipo_a = 0;
+    }
+    if(!dati.tipo_am){
+        dati.tipo_am = 0;
+    }
+    if(!dati.tipo_a1){
+        dati.tipo_a1 = 0;
+    }
+    if(!dati.tipo_a2){
+        dati.tipo_a2 = 0;
+    }
+    if(!dati.tipo_b){
+        dati.tipo_b = 0;
+    }
 
     console.log(req.body);
 
@@ -112,40 +129,6 @@ controller.getDatiImpiegati = async(req,res)=>{
 };
 
 
-/*controller.postDatiImpiegati =async(req,res)=>{
-    var dbPool= req.dbPool;
-
-    try{
-        console.log(req.body.id_account);
-        let impiegato = await accountModel.getAccount(dbPool, req.body.id_account);
-        console.log(impiegato[0].nome);
-
-        req.render('amministratore/FormModifica.ejs',{
-            'nome':impiegato.nome,
-            'cognome':impiegato.cognome,
-            'datadinascita':impiegato.datadinascita,
-            'numerodicellulare':impiegato.numerodicellulare,
-            'email':impiegato.email,
-            'ruolo':impiegato.ruolo,
-            'codicepatente':impiegato.codicepatente,
-            'datadirilascio':impiegato.datadirilascio,
-            'scadenzapatene':impiegato.scadenzapatene,
-            'am':impiegato.am,
-            'a1':impiegato.a1,
-            'a2':impiegato.a2,
-            'b':impiegato.b
-        });
-            
-        }catch(error){
-            req.session.alert={
-                'style':'alert-warining',
-                'message': error.message
-            }
-            res.redirect('/amministratore/AreaPersonaleAmministratore');
-    
-        }         
-};
-*/
 
 controller.getFormModifica=async(req,res)=>{
     var dbPool =req.dbPool;
@@ -156,7 +139,7 @@ controller.getFormModifica=async(req,res)=>{
     try{
 
         var impiegato = await accountModel.getImpiegato(dbPool, id_account);
-
+        console.log(impiegato);
         res.render("amministratore/FormModifica.ejs",{
             impiegato: impiegato
         });

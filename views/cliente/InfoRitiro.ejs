@@ -13,8 +13,14 @@
             <legend style="text-align:center; font-size:150%;">Ritiro Veicolo</legend>
         <div class="card my-3 text-center">
             <div class="card-body">
-                <h5 class="card-title">Posizione del veicolo</h5>
-                <p class="card-text"><%= veicolo[0].posizione %></p>
+                <h5 class="card-title">Luogo di ritiro</h5>
+                <% if(veicolo[0].posizione != ''){ %>
+                    <p class="card-text"><%= veicolo[0].posizione %></p>
+               
+                <% } else{ %>
+                    <p class="card-text"><%= veicolo[0].ref_parcheggio %></p>
+                <% } %>
+                
             </div>
         </div>
         <div class=" mb-3 my-3" style="max-width: 580px;">

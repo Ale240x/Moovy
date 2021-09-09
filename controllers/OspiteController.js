@@ -29,10 +29,28 @@ controller.postRegistrazioneCliente = async (req, res) => {
 
     var dbPool = req.dbPool;
     var data = new Date(req.body.data_di_nascita);
+    var dati = req.body;
     var scadenza_patente = new Date(req.body.scadenza_patente);
     console.log(req.body);
     console.log(data);
 
+    if(!dati.tipo_a){
+        dati.tipo_a = 0;
+    }
+    if(!dati.tipo_am){
+        dati.tipo_am = 0;
+    }
+    if(!dati.tipo_a1){
+        dati.tipo_a1 = 0;
+    }
+    if(!dati.tipo_a2){
+        dati.tipo_a2 = 0;
+    }
+    if(!dati.tipo_b){
+        dati.tipo_b = 0;
+    }
+
+    
     try{
 
            await accountModel.registrazioneCliente( 

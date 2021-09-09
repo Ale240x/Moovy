@@ -43,14 +43,14 @@ CREATE TABLE `account` (
 --
 
 INSERT INTO `account` (`id_account`, `ruolo`, `nome`, `cognome`, `data_di_nascita`, `num_telefono`, `password`, `email`) VALUES
-(1, 'Amministratore', 'Mario', 'Rossi', '1992-07-15', '3281234567', 'Password1', 'amministratore@mail.it'),
-(2, 'Addetto', 'Giuseppe', 'Verdi', '1994-07-01', '3771234567', 'Password1', 'addetto2@mail.it'),
-(3, 'Addetto', 'Francesco', 'Neri', '1997-04-03', '3213216547', 'Password1', 'addetto3@mail.it'),
-(4, 'Cliente', 'Luisa', 'Gialli', '2001-10-25', '3681234567', 'Password1', 'cliente@mail.it'),
-(5, 'Autista', 'Guido', 'Marroni', '1992-09-15', '3331234657', 'Password1', 'autista@mail.it'),
-(6, 'Cliente', 'Gino', 'Fiori', '1993-12-08', '3321234657', 'Password1', 'gino@mail.it'),
-(7, 'Addetto', 'Mario', 'Bianchi', '1997-02-10', '3407654185', 'Password1', 'addetto7@mail.it'),
-(8, 'Addetto', 'Maria', 'Bronte', '1997-03-10', '3407554185', 'Password1', 'addetto8@mail.it'),
+(1, 'Amministratore', 'Mario', 'Rossi', '1992-07-15', '3281234567', '6964f527f011df8756f87c3e8a76884f', 'amministratore@mail.it'),
+(2, 'Addetto', 'Giuseppe', 'Verdi', '1994-07-01', '3771234567', '6964f527f011df8756f87c3e8a76884f', 'addetto2@mail.it'),
+(3, 'Addetto', 'Francesco', 'Neri', '1997-04-03', '3213216547', '6964f527f011df8756f87c3e8a76884f', 'addetto3@mail.it'),
+(4, 'Cliente', 'Luisa', 'Gialli', '2001-10-25', '3681234567', '6964f527f011df8756f87c3e8a76884f', 'cliente@mail.it'),
+(5, 'Autista', 'Guido', 'Marroni', '1992-09-15', '3331234657', '6964f527f011df8756f87c3e8a76884f', 'autista@mail.it'),
+(6, 'Cliente', 'Gino', 'Fiori', '1993-12-08', '3321234657', '6964f527f011df8756f87c3e8a76884f', 'gino@mail.it'),
+(7, 'Addetto', 'Mario', 'Bianchi', '1997-02-10', '3407654185', '6964f527f011df8756f87c3e8a76884f', 'addetto7@mail.it'),
+(8, 'Addetto', 'Maria', 'Bronte', '1997-03-10', '3407554185', '6964f527f011df8756f87c3e8a76884f', 'addetto8@mail.it'),
 (10, 'Cliente', 'Merina', 'Jestin', '2000-07-03', '98876543246', '6964f527f011df8756f87c3e8a76884f', 'merina@mail.it'),
 (14, 'Cliente', 'Irene', 'Pellicane', '1999-09-09', '9836627298', '6964f527f011df8756f87c3e8a76884f', 'irene@mail.it');
 

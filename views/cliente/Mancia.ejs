@@ -43,20 +43,30 @@
 
         $('#conferma').click(function (e){
               var mancia = $('#mancia').val();
-              prezzo_s = (Math.round(Number(sessionStorage.prezzo_stimato)*100)/100);
-              if(mancia > 0){
-                prezzo_t = prezzo_s + Number(mancia);
-                sessionStorage.setItem('prezzo_stimato', prezzo_t);
+              if(sessionStorage.mancia != undefined){
+                $('#importo').html(sessionStorage.prezzo_stimato);
+                $('#prezzo_stimato').attr('value', sessionStorage.prezzo_stimato);
+                e.preventDefault();
+                e.stopPropagation();
               }
               else{
-                sessionStorage.setItem('prezzo_stimato', prezzo_s);
-              }
+                sessionStorage.setItem('mancia', mancia);
+                prezzo_s = (Math.round(Number(sessionStorage.prezzo_stimato)*100)/100);
+                if(mancia > 0){
+                    prezzo_t = prezzo_s + Number(mancia);
+                    sessionStorage.setItem('prezzo_stimato', prezzo_t);
+                }
+                else{
+                    sessionStorage.setItem('prezzo_stimato', prezzo_s);
+                }
+                
+                $('#append').append('<br><p>Importo totale:</p>');
+                $('#importo').html(sessionStorage.prezzo_stimato);
+                $('#prezzo_stimato').attr('value', sessionStorage.prezzo_stimato);
+                e.preventDefault();
+                e.stopPropagation();
+                }
               
-              $('#append').append('<br><p>Importo totale:</p>');
-              $('#importo').html(sessionStorage.prezzo_stimato);
-              $('#prezzo_stimato').attr('value', sessionStorage.prezzo_stimato);
-              e.preventDefault();
-              e.stopPropagation();
           })  
       </script>
 </body>

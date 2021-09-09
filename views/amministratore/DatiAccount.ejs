@@ -38,7 +38,7 @@
                   <tbody>
                     <% accounts.forEach( (account)=>{ %>
                     <tr>
-                      <td><a href="/utente/amministratore/AreaPersonaleAmministratore/datiAccounts/<%=account.id_account %>/eliminaAccount" ><%= account.id_account %></a></td>
+                      <td><a  data-confirm =" Vuoi eliminare questo account?" id="delete" href="/utente/amministratore/AreaPersonaleAmministratore/datiAccounts/<%=account.id_account %>/eliminaAccount" ><%= account.id_account %></a></td>
                       <td><%= account.cognome %></td>
                       <td><%= account.nome %></td>
                       <td><%= account.ruolo %></td>
@@ -58,7 +58,19 @@
   </footer>
 
 
-
+<script>
+  var deleteLinks = document.querySelectorAll('#delete');
+        
+        deleteLinks[0].addEventListener('click', function(event) {
+            event.preventDefault();
+      
+            var choice = confirm(this.getAttribute('data-confirm'));
+      
+            if (choice) {
+              location.href = this.getAttribute('href');
+            }
+        });
+</script>
 
 </body>
 </html>
