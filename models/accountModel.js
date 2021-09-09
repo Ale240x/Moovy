@@ -99,13 +99,13 @@ model.getAccountsFiltrati = async (dbPool, ruolo) => {
         //console.log("gli account degli impiegati");
         let query = util.promisify(dbPool.query).bind(dbPool);
 
-        let sql = 'SELECT * FROM account'
+        let sql = 'SELECT * FROM account WHERE  NOT ruolo =  \'Amministratore\' '
         
         if(ruolo != ''){
-            sql += 'WHERE ruolo = \'' + ruolo +'\'';
+            sql += ' AND ruolo = ?  ';
         }
              
-        return await query(sql);
+        return await query(sql,[ruolo]);
 
     } catch(error) {
 
@@ -118,17 +118,15 @@ model.login = async (dbPool, email, clearPassword) => {
 
     try {
 
-        if(!(
-            checkDati.isEmail(email)
-            )){
-            throw {message:  'Email non valida'}
-        }
-
         let query = util.promisify(dbPool.query).bind(dbPool);
 
         let utenteId = (await query(
             'SELECT id_account FROM account WHERE email = ?', 
             [email]));
+        if(!utenteId || utenteId.length==0){
+            throw {message:  'Email non valida'};
+
+        }
         
         //let realPassword = (await query(
         //    'SELECT password FROM account WHERE id_account = ?', 
@@ -142,12 +140,13 @@ model.login = async (dbPool, email, clearPassword) => {
             [email]));
         
         //console.log(utenteId[0].id_account);
+        let cryptPass = crittografo.cryptPass(clearPassword);
 
-        let autenticated = (realPassword[0].password == clearPassword);
+        let autenticated = (realPassword[0].password == cryptPass);
        // console.log("controllo effettuato!");
         if(!autenticated){
             //console.log("autenticazione fallita")
-            throw {message : `Autenticazione fallita`};
+            throw {message : `Password errata!`};
         }
         else{
            // console.log("Autenticato con successo!")
@@ -205,7 +204,7 @@ model.registrazioneCliente = async (dbPool, nome, cognome, email, data_di_nascit
             )){ throw {'message' : 'Dati inseriti non validi'}; 
         }*/
 
-        //let cryptPass = crittografo.cryptPass(clearPassword);
+        let cryptPass = crittografo.cryptPass(Password);
 
         let ruolo = "Cliente";
         console.log("sono nel account model");
@@ -219,7 +218,7 @@ model.registrazioneCliente = async (dbPool, nome, cognome, email, data_di_nascit
                 cognome,
                 data_di_nascita,
                 num_telefono,
-                Password,
+                cryptPass,
                 email
             ]
         );
@@ -285,13 +284,18 @@ model.registrazioneImpiegato = async (dbPool, ruolo, nome, cognome, email, data_
 
             )){ throw {'message' : 'Dati inseriti non validi'}; 
         }
+         */
 
-        let cryptPass = crittografo.cryptPass(clearPassword);
-        */
+        let cryptPass = crittografo.cryptPass(Password);
+        
         
         await query(
             `INSERT INTO account
+<<<<<<< HEAD
             (ruolo, nome, cognome, email, data_di_nascita, num_telefono, Password) 
+=======
+            (ruolo, nome, cognome, email, data_di_nascita,  num_telefono, Password) 
+>>>>>>> 97a978de0e927a4f6e76f5eef4f8acae5f96b027
             VALUES (?, ?, ?, ?, ?, ?, ?)`, 
             [
                 ruolo, 
@@ -300,8 +304,8 @@ model.registrazioneImpiegato = async (dbPool, ruolo, nome, cognome, email, data_
                 email,
                 data_di_nascita,
                 num_telefono,
-                //cryptPass,
-                Password
+                cryptPass,
+               
             ]
         );
         let id = (await query(

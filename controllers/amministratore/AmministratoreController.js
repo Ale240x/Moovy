@@ -218,16 +218,14 @@ controller.getFormFiltraggio = (req,res) =>{
 
 controller.postFormFiltraggio = async(req,res)=>{
     var dbPool= req.dbPool;
-
+   // console.log(req.body.ruolo);
     try{ 
        var accounts =  await accountModel.getAccountsFiltrati( //account filtrati metodo da aggiugere al model account 
             dbPool,
-            req.body.nome,
-            req.body.cognome,
             req.body.ruolo,
             );
         
-       // console.log(accounts);
+        console.log(accounts);
 
         res.render('amministratore/DatiAccount.ejs',{
             accounts : accounts,

@@ -288,7 +288,8 @@ ALTER TABLE `carte_di_credito`
 -- Limiti per la tabella `parcheggi`
 --
 ALTER TABLE `parcheggi`
-  ADD CONSTRAINT `ref_addetto` FOREIGN KEY (`ref_addetto`) REFERENCES `account` (`id_account`);
+  ADD CONSTRAINT `ref_addetto` FOREIGN KEY (`ref_addetto`) REFERENCES `account` (`id_account`) ON DELETE SET NULL ;
+  
 
 --
 -- Limiti per la tabella `patenti`
