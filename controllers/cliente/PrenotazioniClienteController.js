@@ -139,15 +139,12 @@ controller.postRiepilogo = async (req, res) =>{
 
     req.session.prenotazione.prezzo_stimato = info.prezzo_stimato.split(' ')[0];
     
-    if(!info.mancia){
-        info.mancia = 0;
-    }
     var pre = req.session.prenotazione;
 
     if(info.luogo_partenza){ //se è stato richiesto un autista
         res.redirect('/utente/cliente/Riepilogo/Mancia');
     }
-    else if((pre.tipo_veicolo == 'Automobile' || pre.tipo_veicolo == 'Moto') && !info.mancia){
+    else if(pre.tipo_veicolo == 'Automobile' || pre.tipo_veicolo == 'Moto'){
         
         if(!checkPatente(utente, pre.patente_richiesta)){
             //res.render('cliente/FormPatente.ejs');
@@ -158,11 +155,8 @@ controller.postRiepilogo = async (req, res) =>{
                 console.log('check patente è andato a buon fine');
                 prenotazioneId = await prenotazioneModel.aggiungiPrenotazione( dbPool, utente[0].id_account, pre.autista, pre.tipo_veicolo, pre.ref_veicolo, pre.mancia, pre.data_ritiro, pre.data_riconsegna, pre.luogo_ritiro, pre.luogo_riconsegna, pre.prezzo_stimato);
                         req.session.prenotazione.id = prenotazioneId;
-                        res.render('cliente/Pagamento.ejs',{
-                            'prenotazioneId' : prenotazioneId ,
-                            'prezzo_stimato' : pre.prezzo_stimato,
-                            'utente' : utente
-                        });
+                        req.session.prenotazione.stato_autista = null;
+                        res.redirect('/utente/cliente/Riepilogo/Pagamento');
             } catch(error) {
                 req.session.alert = {
                     
@@ -179,11 +173,10 @@ controller.postRiepilogo = async (req, res) =>{
         try {
             prenotazioneId = await prenotazioneModel.aggiungiPrenotazione( dbPool, utente[0].id_account, pre.autista, pre.tipo_veicolo, pre.ref_veicolo, pre.mancia, pre.data_ritiro, pre.data_riconsegna, pre.luogo_ritiro, pre.luogo_riconsegna, pre.prezzo_stimato);
                     req.session.prenotazione.id = prenotazioneId;
-                    res.render('cliente/Pagamento.ejs',{
-                        'prenotazioneId' : prenotazioneId ,
-                        'prezzo_stimato' : pre.prezzo_stimato,
-                        'utente' : utente
-                    });
+                    req.session.prenotazione.prezzo_totale = pre.prezzo_stimato;
+                    req.session.prenotazione.stato_autista = null;
+
+                    res.redirect('/utente/cliente/Riepilogo/Pagamento');
         } catch(error) {
             req.session.alert = {
                 
@@ -194,9 +187,7 @@ controller.postRiepilogo = async (req, res) =>{
         }
     } 
 };
-controller.getPagamento = (req, res) => {  
-    res.render('cliente/Pagamento.ejs');  
-};
+
 
 controller.getMancia = (req,res) => {
     res.render('cliente/Mancia.ejs');
@@ -211,7 +202,10 @@ controller.postMancia = async(req, res) =>{
 
     if(info.mancia && Number(info.mancia) > 0){
         req.session.prenotazione.mancia = info.mancia;
-        req.session.prenotazione.prezzo_totale = prezzo_stimato + info.mancia;
+        req.session.prenotazione.prezzo_totale = Number(prezzo_stimato) + Number(info.mancia);
+    }
+    else{
+        req.session.prenotazione.prezzo_totale = prezzo_stimato;
     }
     
     var pre = req.session.prenotazione;
@@ -219,11 +213,9 @@ controller.postMancia = async(req, res) =>{
     try {
         prenotazioneId = await prenotazioneModel.aggiungiPrenotazione( dbPool, utente[0].id_account, pre.autista, pre.tipo_veicolo, pre.ref_veicolo, pre.mancia, pre.data_ritiro, pre.data_riconsegna, pre.luogo_ritiro, pre.luogo_riconsegna, pre.prezzo_stimato);
                         req.session.prenotazione.id = prenotazioneId;
-                        res.render('cliente/Pagamento.ejs',{
-                            'prenotazioneId' : prenotazioneId ,
-                            'prezzo_stimato' : pre.prezzo_stimato,
-                            'utente' : utente
-                        });
+                        req.session.prenotazione.stato_autista = 'Da confermare';
+                        
+                        res.redirect('/utente/cliente/Riepilogo/Pagamento');
 
     } catch(error) {
         req.session.alert = {
@@ -250,11 +242,10 @@ controller.postAggiungiPatente = async (req,res) =>{
 
         prenotazioneId = await prenotazioneModel.aggiungiPrenotazione( dbPool, utente[0].id_account, pre.ref_autista, pre.tipo_veicolo, pre.ref_veicolo, pre.mancia, pre.data_ritiro, pre.data_riconsegna, pre.luogo_ritiro, pre.luogo_riconsegna, pre.prezzo_stimato);
                 req.session.prenotazione.id = prenotazioneId;
-                res.render('cliente/Pagamento.ejs',{
-                    'prenotazioneId' : prenotazioneId ,
-                    'prezzo_stimato' : pre.prezzo_totale,
-                    'utente' : utente
-                });
+                req.session.prenotazione.prezzo_totale = pre.prezzo_stimato;
+                req.session.prenotazione.stato_autista = null;
+
+                res.redirect('/utente/cliente/Riepilogo/Pagamento');
 
     } catch(error){
         
@@ -264,58 +255,83 @@ controller.postAggiungiPatente = async (req,res) =>{
             'message' : error.message
     
         }
-        throw error;
     }
 };
 
+controller.getPagamento = (req, res) => {  
+    var utente = req.session.utente;
+    var pre = req.session.prenotazione;
+    console.log('prezzo_tot: '+pre.prezzo_totale);
+   
+    res.render('cliente/Pagamento_B.ejs',
+    { 
+        numero_carta: utente[0].numero_carta, prezzo_totale: pre.prezzo_totale
+    });
+    
+};
+
+controller.postPagamento = (req, res) =>{
+    
+    var pre = req.session.prenotazione;
+    var ref_carta = req.body.ref_carta; //metodo pagamento selezionato
+
+    if(ref_carta == 'nuovo_metodo'){
+        res.redirect('/utente/cliente/Riepilogo/Pagamento/NuovoMetodo');
+    }
+    else{
+        req.session.prenotazione.ref_carta = ref_carta;
+        res.redirect('/utente/cliente/Riepilogo/Pagamento/StatoPagamento');
+    }
+}
+
 controller.getNuovoMetodoPagamento = (req,res) => {
-    res.render("cliente/NuovoMetodo.ejs");   
+    res.render("cliente/NuovoMetodo_B.ejs");   
 };
 
 controller.postNuovoMetodoPagamento = async (req,res) =>{
     var dbPool = req.dbPool;
     var utente = req.session.utente;
+    var dati = req.body;
+    req.session.prenotazione.ref_carta = dati.numero_carta;
 
+    if(dati.salva == '1'){ //si deve salvare il nuovo metodo
+        try {
+            await accountModel.aggiornaMetodoDiPagamento(dbPool, dati.numero_carta, utente[0].id_account, dati.nome_intestatario, dati.cognome_intestatario, dati.scadenza_carta, dati.cvv);
+            res.redirect('/utente/cliente/Riepilogo/Pagamento/StatoPagamento');
+        } 
+        catch (error){
+            req.session.alert = {
+            
+                'style' : 'alert-warning',
+                'message' : error.message
+        
+            }
+            throw error;
+        }
+    }
+
+};
+
+controller.getStatoPagamento = async (req,res) => {
+    var dbPool = req.dbPool;
+    var pre = req.session.prenotazione;
 
     try{
-
-    await prenotazioneModel.modificaDatiClienti(dbPool,utente.id_account,req.body.numero_carta, req.body.scadenza_carta, req.body.cvv);
-        //nome e cognome dell'intestatario??  questo metodo non esiste!!
-    }catch(error){
-        
+        await prenotazioneModel.confermaPrenotazione(dbPool, pre.id, pre.ref_carta);
+        res.render("cliente/StatoPagamento_B.ejs",
+        { stato_autista: pre.stato_autista });
+  
+    } catch (error) {
+            
         req.session.alert = {
             
             'style' : 'alert-warning',
             'message' : error.message
-    
-        }
-    }    
 
-};
+        }  
 
-controller.getStatoPagamento = (req,res) => {
-    res.render("cliente/StatoPagamento.ejs");   
-};
-
-controller.postStatoPagamento = async (req,res) => {
-
-    var dbPool = req.dbPool;
-    var prenotazione =req.body;
-
-    try{
-        await prenotazioneModel.confermaPrenotazione(dbPool,prenotazione.id_prenotazione,prenotazione.ref_carta);
-
-  
-} catch (error) {
-        
-    req.session.alert = {
-        
-        'style' : 'alert-warning',
-        'message' : error.message
-
-    }  
-
-}
+    }
+       
 };
 
 //Regione Ritiro Veicolo

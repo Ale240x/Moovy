@@ -11,6 +11,7 @@ router.use ("/utente", UtenteRouter);
 
 router.use("", (req,res,next) =>{
     var user = req.session.utente;
+    var pre = req.session.prenotazione;
     
     if(!user){
         next();  

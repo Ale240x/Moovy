@@ -353,6 +353,7 @@ model.aggiungiPatenteC = async(dbPool, ref_account, codice_patente, scadenza_pat
     }
 };
 
+
 //modifica dati Cliente
 model.modificaDatiCliente = async (dbPool,utenteId, nome, cognome,data_di_nascita, num_telefono,email,ruolo,  numero_carta, nome_intestatario, cognome_intestatario ,cvv , scadenza_carta,codice_patente, scadenza_patente, tipo_a, tipo_b, tipo_am, tipo_a1, tipo_a2) => {
 
@@ -375,7 +376,7 @@ model.modificaDatiCliente = async (dbPool,utenteId, nome, cognome,data_di_nascit
         await query('UPDATE patenti SET codice_patente = ?, scadenza_patente = ?, tipo_a = ? , tipo_b = ?, tipo_am = ?, tipo_a1 = ?, tipo_a2 = ?  WHERE ref_account = ?', 
         [codice_patente, scadenza_patente, tipo_a, tipo_b, tipo_am, tipo_a1, tipo_a2, utenteId]);
 
-        await query('UPDATE carte_di_credito SET numero_carta = ?,nome_intestatario = ?, cognome_intestatario = ?, cvv = ?,  scadenza_carta = ? WHERE ref_account = ?', 
+        await query('UPDATE carte_di_credito SET numero_carta = ?, nome_intestatario = ?, cognome_intestatario = ?, cvv = ?, scadenza_carta = ? WHERE ref_account = ?', 
         [ numero_carta, nome_intestatario, cognome_intestatario ,cvv , scadenza_carta, utenteId]);
 
     } catch (error) {
@@ -445,25 +446,19 @@ model.getParcheggioAdd = async (dbPool, idAddetto) => {
     }
 };
 
-model.getMetodiPagamento = async (dbPool,id_account) => {
-    
+model.aggiornaMetodoDiPagamento = async (dbPool, numero_carta, ref_account, nome_intestatario, cognome_intestatario, scadenza_carta, cvv)=>{
     try {
-        //console.log("gli account degli impiegati");
+
         let query = util.promisify(dbPool.query).bind(dbPool);
 
-        return (await query(`SELECT  
-                                *
-                            FROM 
-                                carte_di_credito 
-                            WHERE ref_account = ? `,
-                            [id_account]));
-                           
+        
+        await query('UPDATE carte_di_credito SET numero_carta = ?, nome_intestatario = ?, cognome_intestatario = ?, cvv = ?, scadenza_carta = ? WHERE ref_account = ?', 
+        [ numero_carta, nome_intestatario, cognome_intestatario ,cvv , scadenza_carta, ref_account]);
 
-    } catch(error) {
-
+    } catch (error) {
+        
         throw error;
     }
 };
-
 
 module.exports = model;

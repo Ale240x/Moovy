@@ -10,6 +10,7 @@ var router = express.Router();
 
 router.use("", (req, res, next) =>{
     var utente = req.session.utente;
+    var pre = req.session.prenotazione;
     var locals = res.locals;
 
     if(utente){
@@ -17,7 +18,7 @@ router.use("", (req, res, next) =>{
         next();  
     }
     else{
-        res.redirect("/"); //se invece facciamo redirect a /autenticazione ?
+        res.redirect("/autenticazione"); //se invece facciamo redirect a /autenticazione ?
     }
 });
 

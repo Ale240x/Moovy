@@ -21,7 +21,23 @@ controller.getDisconnetti = (req, res) => {
     res.redirect("/"); //ospite
 };
 controller.getAreaPersonaleCliente = (req, res) => {  
-    res.render('cliente/areaPersonaleC.ejs');   
+    console.log('arriva dentro area personale');
+    var pre = req.session.prenotazione;
+    console.log('prenotazione: '+pre.prezzo_stimato);
+    if(!pre){
+        prezzo_stimato = null;
+        prezzo_totale = null;
+
+        res.render('cliente/areaPersonaleC.ejs',
+        { prezzo_stimato: prezzo_stimato,
+        prezzo_totale: prezzo_totale}); 
+    }
+    else{
+        res.render('cliente/areaPersonaleC.ejs',
+        { prezzo_stimato: pre.prezzo_stimato,
+        prezzo_totale: pre.prezzo_totale}); 
+    }
+      
 };
 
 //per visualizzare storico prenotazioni

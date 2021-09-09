@@ -15,13 +15,14 @@
             </div>
             <div class="col-md p-3">
                 <form action="/TipoVeicoli/FormA/RisultatiRicerca/<%= veicolo[0].id_veicolo %>/InfoVeicolo/Riepilogo" method="GET">
-                    <p style="display: none;" id="id_v"><%= veicolo[0].id_veicolo %></p>
+                    <p style="display: none;" id="id_v" name="id_veicolo"><%= veicolo[0].id_veicolo %></p>
                     <h3 id="nome_veicolo"><%= veicolo[0].nome_veicolo %></h3>
                     <br>
                     <% let descr = veicolo[0].descrizione.split('-'); %>
                     <% for(row in descr){ %>
                         <h5><%= descr[row] %><br></h5>
                     <% } %>
+                    <input  id="prezzo_stimato" name="prezzo_stimato" style="display: none;" type="text">
                     <h5 style="display: none;" id="patente_richiesta"><%= veicolo[0].patente_richiesta %></h5>
                     <h4 id="tariffa" align="right">Prezzo orario: <%= veicolo[0].tariffa %> €</h4>
                     <br>
@@ -47,6 +48,8 @@
             tariffa = Number(document.getElementById('tariffa').innerHTML.split(' ')[2]);
             prezzo_stimato = calcolaPrezzo(sessionStorage.data_ritiro, sessionStorage.data_riconsegna, tariffa);
             sessionStorage.setItem('prezzo_stimato', prezzo_stimato);
+            $('#prezzo_stimato').attr('value', prezzo_stimato);
+
         }
 
         function calcolaPrezzo(data_ritiro, data_riconsegna, tariffa){
@@ -56,9 +59,6 @@
             console.log('d1: '+d1+'\nd2 :'+d2+'\ndurata_prenotazione :'+durata_prenotazione);
             return (Math.round(tariffa * durata_prenotazione * 100) / 100);
         }
-            /*for(prop in veicolo){
-                sessionStorage.setItem(prop, veicolo[prop]);
-            };*/
     </script>
 </body>
 </html>

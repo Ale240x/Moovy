@@ -181,7 +181,7 @@ model.modificaPrenotazione = async (dbPool, id_prenotazione, data_riconsegna, lu
     }
 };
 
-model.setPrezzoFinale = async (dbPool, id_prenotazione, prezzo_finale) => {
+model.setPrezzoFinale = async (dbPool, id_prenotazione, prezzo_finale) => { //forse non serve
 
     try{
         let query = util.promisify(dbPool.query).bind(dbPool);
