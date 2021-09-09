@@ -314,12 +314,38 @@ model.aggiungiPatenteC = async(dbPool, ref_account, codice_patente, scadenza_pat
 
     try{
         let query = util.promisify(dbPool.query).bind(dbPool);
+        patente = await query(`
+        SELECT *
+        FROM patenti
+        WHERE ref_account = ? AND codice_patente = ?
+        `, [ref_account, codice_patente]);
+
+        if(patente || patente.length != 0){ //se il cliente ha già inserito una patente
+
+            if(patente[0].tipo_a == 1){
+                tipo_a = 1;
+            }
+            if(patente[0].tipo_b == 1){
+                tipo_b = 1;
+            }
+            if(patente[0].tipo_am == 1){
+                tipo_am = 1;
+            }
+            if(patente[0].tipo_a1 == 1){
+                tipo_a1 = 1;
+            }
+            if(patente[0].tipo_a2 == 1){
+                tipo_a2 = 1;
+            }
+            
+        }
+
         await query(`
                 UPDATE patenti
                 SET scadenza_patente = ?, tipo_a = ?, tipo_b = ?, 
                 tipo_am = ?, tipo_a1 = ?, tipo_a2 = ?
                 WHERE codice_patente = ? AND ref_account = ?
-                `, [scadenza_patente, tipo_a, tipo_b, tipo_am, tipo_a1, tipo_a2, codice_patente, ref_account]);
+                `, [scadenza_patente, tipo_a, tipo_b, tipo_am, tipo_a1, tipo_a2, codice_patente, ref_account]);   
             
     }
     catch(error){

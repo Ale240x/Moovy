@@ -24,32 +24,37 @@ model.getPrenotazione = async (dbPool, prenotazioneId) => {
 
 
 
-model.aggiungiPrenotazione = async (dbPool, ref_cliente, ref_autista, tipo_veicolo, ref_veicolo, mancia, data_ritiro, data_riconsegna, luogo_ritiro, luogo_riconsegna, prezzo_stimato) => {
+model.aggiungiPrenotazione = async (dbPool, ref_cliente, autista, tipo_veicolo, ref_veicolo, mancia, data_ritiro, data_riconsegna, luogo_ritiro, luogo_riconsegna, prezzo_stimato) => {
 
     try{
         let query = util.promisify(dbPool.query).bind(dbPool);
-
+        var prezzo_s = Number(prezzo_stimato);
         var stato_prenotazione = 'Non Pagato';
 
-        if(ref_autista == 1){ //il cliente ha richiesto un autista, altrimenti sarebbe 'null' (poi verrà inserito come null perchè dovrà essere aggiornato quando un autista accetta la corsa)
+        if(autista == '1'){ //il cliente ha richiesto un autista, altrimenti sarebbe 'null' (poi verrà inserito come null perchè dovrà essere aggiornato quando un autista accetta la corsa)
             var stato_autista = 'Da confermare';
         }
-        if(mancia > 0){
-            var prezzo_finale = prezzo_stimato + mancia;
+        else{
+            var stato_autista = null;
+        }
+        if(Number(mancia) > 0){
+            var prezzo_finale = Number(prezzo_stimato) + Number(mancia);
         }
         else{
-            var prezzo_finale = prezzo_stimato;
+            
+            var prezzo_finale = Number(prezzo_stimato);
         }
 
         PrenotazioneId = (await query(`
                 INSERT INTO prenotazioni
-                    (ref_cliente, ref_autista, tipo_veicolo, ref_veicolo, mancia, stato_prenotazione, stato_autista, data_ritiro, data_riconsegna, luogo_ritiro, luogo_riconsegna, prezzo_stimato, prezzo_finale) 
+                    (ref_cliente, ref_autista, tipo_veicolo, ref_veicolo, mancia, ref_carta, stato_prenotazione, stato_autista, data_ritiro, data_riconsegna, luogo_ritiro, luogo_riconsegna, prezzo_stimato, prezzo_finale) 
                 VALUES
-                    (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 `,
-                [ref_cliente, null, tipo_veicolo, ref_veicolo, mancia, stato_prenotazione, stato_autista, data_ritiro, data_riconsegna, luogo_ritiro, luogo_riconsegna, prezzo_stimato, prezzo_finale]
+                [ref_cliente, null, tipo_veicolo, ref_veicolo, mancia, 'carta prova', stato_prenotazione, stato_autista, data_ritiro, data_riconsegna, luogo_ritiro, luogo_riconsegna, prezzo_s, prezzo_finale]
             )).insertId;
         console.log('Prenotazione creata con successo con stato "Non Pagato"');
+        console.log('id_prenotazione: '+PrenotazioneId);
         return PrenotazioneId;
     }
     catch(error){
