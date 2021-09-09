@@ -161,6 +161,23 @@ controller.getFormModifica=async(req,res)=>{
 controller.postFormModifica=async(req,res)=>{
     var dbPool=req.dbPool;
    // console.log(req.params.id);
+   var dati = req.body;
+
+    if(!dati.tipo_a){
+        dati.tipo_a = 0;
+    }
+    if(!dati.tipo_am){
+        dati.tipo_am = 0;
+    }
+    if(!dati.tipo_a1){
+        dati.tipo_a1 = 0;
+    }
+    if(!dati.tipo_a2){
+        dati.tipo_a2 = 0;
+    }
+    if(!dati.tipo_b){
+        dati.tipo_b = 0;
+    }
     try{ 
         await accountModel.modificaDatiImpiegato(
             dbPool,
@@ -173,6 +190,13 @@ controller.postFormModifica=async(req,res)=>{
             req.body.ruolo,
             req.body.codice_patente,
             req.body.scadenza_patente,
+            req.body.tipo_a,
+            req.body.tipo_b,
+            req.body.tipo_am,
+            req.body.tipo_a1,
+            req.body.tipo_a2
+            
+
             );
             req.session.alert = {
                 'style' : 'alert-success',
