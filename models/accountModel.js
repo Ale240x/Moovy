@@ -167,11 +167,12 @@ model.recuperoPassword = async (dbPool, utenteId, nuovaPassword) => {
 
     try{
         let query = util.promisify(dbPool.query).bind(dbPool);
+        
 
-       // let newClearPassword = crittografo.cryptPass(nuovaPassword);
+        let cryptPass = crittografo.cryptPass(nuovaPassword);
         
         await query('UPDATE account SET password = ? WHERE id_account = ?', 
-        [nuovaPassword, utenteId]
+        [cryptPass, utenteId]
         );
     } catch (error) {
         
@@ -189,20 +190,17 @@ model.registrazioneCliente = async (dbPool, nome, cognome, email, data_di_nascit
        /* if(!(email == (await query('SELECT a.email FROM account AS a WHERE a.email = ?', [email]))
 
         ))throw {'message' : 'Email già registrata.'}; 
-        
-        if(
-            !(
-                checkDati.letteraMaiuscola(nome) &&
-                checkDati.letteraMaiuscola(cognome) &&
-                checkDati.isEmail(email) &&
-                checkDati.controlloTel(num_telefono)&& //serve?
-                checkDati.controlloPassword(clearPassword) &&
-                checkDati.controlloPatente(codice_patente) &&
-                checkDati.controlloCarta(numero_carta) &&
-                checkDati.isInt(cvv)
-
-            )){ throw {'message' : 'Dati inseriti non validi'}; 
         }*/
+
+        let utenteId = (await query(
+            'SELECT id_account FROM account WHERE email = ?', 
+            [email]));
+        if(utenteId || utenteId.length != 0){
+            throw {message:  'Email già registrata!'};
+
+        }
+        
+
 
         let cryptPass = crittografo.cryptPass(Password);
 
@@ -211,7 +209,7 @@ model.registrazioneCliente = async (dbPool, nome, cognome, email, data_di_nascit
         await query(
             `INSERT INTO account
             (ruolo, nome, cognome,data_di_nascita, num_telefono, password, email) 
-            VALUES (?, ?, ?, ?, ?, ?,?)`, 
+            VALUES (?, ?, ?, ?, ?, ?, ?)`, 
             [
                 'Cliente',
                 nome,

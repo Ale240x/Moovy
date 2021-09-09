@@ -32,7 +32,9 @@ controller.postRegistrazioneCliente = async (req, res) => {
     var scadenza_patente = new Date(req.body.scadenza_patente);
     console.log(req.body);
     console.log(data);
+
     try{
+
            await accountModel.registrazioneCliente( 
            dbPool,
            req.body.nome,
@@ -188,7 +190,7 @@ try{
     console.log(utente);
     var id_account= utente[0].id_account;
     console.log(id_account);
-   // recuperoPasswordEmail(req.transporter,email, codice);
+    recuperoPasswordEmail(req.transporter,email, codice);
     
     res.render('general/CodiceP.ejs',{
         codice: codice,
@@ -229,16 +231,19 @@ controller.postCodice =(req,res)=>{
   
                 'style' : 'alert-warning',
                 'message' : 'codice inserito non è valido!',
-            
             };
         
-            res.render('/recuperaPass/codice');
+            res.render('general/CodiceP.ejs',{
+                id_account: id_account,
+                codice : codice,
+            })
         }
 
     
 
 
 };
+
 
 
 controller.postNuovaPass = async (req,res)=>{
