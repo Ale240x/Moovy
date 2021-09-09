@@ -31,6 +31,7 @@ controller.postRegistrazioneCliente = async (req, res) => {
     var data = new Date(req.body.data_di_nascita);
     var scadenza_patente = new Date(req.body.scadenza_patente);
     console.log(req.body);
+    console.log(data);
     try{
            await accountModel.registrazioneCliente( 
            dbPool,
@@ -77,7 +78,9 @@ controller.postRegistrazioneCliente = async (req, res) => {
       if(error.code == "ER_DUP_ENTRY"){ //se c'è duplicazione email
           alert.message = "email già in uso";
       }
+      
       res.redirect('/');
+      throw error;
 
     }
 };
@@ -147,12 +150,13 @@ controller.postAutenticazione = async (req, res) => {
   
     } catch(error) { 
     
-        let alert = {
-            'style' : 'alert-danger',
-            'message' : error.message
-        }
-        console.log(error);
-        console.log(error.message);
+        req.session.alert = {
+  
+            'style' : 'alert-success',
+            'message' : error.message,
+        
+        };
+      
         res.redirect('/autenticazione');
   
     }
