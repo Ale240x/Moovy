@@ -8,29 +8,6 @@ const { info } = require('console');
 
 var controller = {}; 
 
-//funzione che controlla se ci sono le condizioni per il rimborso
-function checkRimborso(prenotazione,datacorrente){
-    
-    if(getOre(prenotazione.data_ritiro,datacorrente)>2){
-        return true;
-       
-    }
-    else{
-        return false;
-    }
-
-};
-
-//Funzione che calcola prezzo
-function calcolaPrezzo(pre,veicolo){
-
-    ore= getOre((pre.data_ritiro,pre.data_riconsegna));
-    importo = ore * veicolo.tariffa;
-
-return importo;
-};
-
-
 
 //Regione Ricerca Veicolo
 controller.getRicercaTipoVeicoli = (req, res) => {  
