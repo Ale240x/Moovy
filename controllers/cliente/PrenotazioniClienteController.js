@@ -298,6 +298,7 @@ controller.postNuovoMetodoPagamento = async (req,res) =>{
     if(dati.salva == '1'){ //si deve salvare il nuovo metodo
         try {
             await accountModel.aggiornaMetodoDiPagamento(dbPool, dati.numero_carta, utente[0].id_account, dati.nome_intestatario, dati.cognome_intestatario, dati.scadenza_carta, dati.cvv);
+            await aggiornaSessioneUtente(req.dbPool, req.session);
             res.redirect('/utente/cliente/Riepilogo/Pagamento/StatoPagamento');
         } 
         catch (error){
@@ -392,14 +393,27 @@ controller.postRitiroVeicolo = async (req, res) => {
         if (id_veicolo == codice){
 
             await prenotazioneModel.setStatoPrenotazione(dbPool, prenotazione[0].id_prenotazione ,stato);
-        } 
+
+            req.session.alert = {
+                'style' : 'alert-success',
+                'message' : 'Veicolo ritirato con successo!'
+            };
+
+            res.redirect('/utente/cliente/AreaPersonaleCliente');
+
+        } else{ 
 
         req.session.alert = {
-            'style' : 'alert-success',
-            'message' : 'Veicolo ritirato con successo!'
+            'style' : 'alert-warning',
+            'message' : 'Codice veicolo errato!'
         };
 
+
         res.redirect('/utente/cliente/AreaPersonaleCliente');
+
+        
+        }   
+        
        
     }
     catch(error){
@@ -693,6 +707,19 @@ controller.getEliminaPrenotazione = async (req,res) => {
 
 };
 
+async function aggiornaSessioneUtente(dbPool, session){
+
+    try {
+
+        session.utente = await accountModel.getAccount(dbPool, session.utente[0].id_account);
+        
+        
+    } catch(error) {
+
+        throw error;
+
+    }
+};
 
 
 

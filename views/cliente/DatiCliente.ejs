@@ -80,31 +80,31 @@
             <div class="dropdown-menu " >
             <a class="dropdown-item ">
             <div class="custom-control custom-checkbox ">
-            <input type="checkbox" class="custom-control-input" id="tipo_am"  name="tipo_am"  value ="<%= utente[0].tipo_am %>"  >
+            <input type="checkbox" class="patente" id="tipo_am"  name="tipo_am"  value ="<%= utente[0].tipo_am %>"  >
             <label class="custom-control-label" for="tipo_am"  >AM</label>
             </div>
             </a>
             <a class="dropdown-item" href="#">
             <div class="custom-control custom-checkbox">
-            <input type="checkbox" class="custom-control-input" id="tipo_a"  name="tipo_a"  value ="<%= utente[0].tipo_a %>" >
-            <label class="custom-control-label"for="tipo_a"  >A</label>
+            <input type="checkbox" class="patente" id="tipo_a"  name="tipo_a"  value ="<%= utente[0].tipo_a %>" >
+            <label class="custom-control-label" for="tipo_a"  >A</label>
             </div>
             </a>
             <a class="dropdown-item" href="#">
             <div class="custom-control custom-checkbox">
-            <input type="checkbox" class="custom-control-input" id="tipo_a1"  name="tipo_a1"  value ="<%= utente[0].tipo_a1 %>">
+            <input type="checkbox" class="patente" id="tipo_a1"  name="tipo_a1"  value ="<%= utente[0].tipo_a1 %>">
             <label class="custom-control-label" for="tipo_a1"  >A1</label>
             </div>
             </a>
             <a class="dropdown-item" href="#">
             <div class="custom-control custom-checkbox">
-            <input type="checkbox" class="custom-control-input" id="tipo_a2"  name="tipo_a2"  value ="<%= utente[0].tipo_a2 %>">                
+            <input type="checkbox" class="patente" id="tipo_a2"  name="tipo_a2"  value ="<%= utente[0].tipo_a2 %>">                
             <label class="custom-control-label" for="tipo_a2"  >A2</label>
             </div>
             </a>
             <a class="dropdown-item" href="#">
             <div class="custom-control custom-checkbox">
-            <input type="checkbox" class="custom-control-input" id="tipo_b"  name="tipo_b"  value ="<%= utente[0].tipo_b %>"  >
+            <input type="checkbox" class="patente" id="tipo_b"  name="tipo_b"  value ="<%= utente[0].tipo_b %>"  >
             <label class="custom-control-label" for="tipo_b" >B</label>
             </div>
             </a>
@@ -116,26 +116,6 @@
         </div>
       </form>
 
-<!--<script>
-$(document).ready ( ()=>{
-
-    $("#conferma").on('input', () => {
-        am= $('#AM');
-        a1= $('#A1');
-        a2= $('#A2');
-        a= $('#A');
-        b= $('#B');
-        $(am.val()== '1').each(function () {
-            var ischecked = $(this).is(":checked");
-            if (ischecked) {
-                checkbox_value += $(this).val() + ",";
-            }
-        });
-        alert(checkbox_value);
-    });
-    
-})  
-</script> -->
       
 <!--footer--> 
 <%- include('../partials/footer.ejs') %>
