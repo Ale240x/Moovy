@@ -301,7 +301,7 @@ ALTER TABLE `patenti`
 --
 ALTER TABLE `prenotazioni`
   ADD CONSTRAINT `ref_autista` FOREIGN KEY (`ref_autista`) REFERENCES `account` (`id_account`),
-  ADD CONSTRAINT `ref_carta` FOREIGN KEY (`ref_carta`) REFERENCES `carte_di_credito` (`numero_carta`),
+  ADD CONSTRAINT `ref_carta` FOREIGN KEY (`ref_carta`) REFERENCES `carte_di_credito` (`numero_carta`) ON UPDATE CASCADE,
   ADD CONSTRAINT `ref_cliente` FOREIGN KEY (`ref_cliente`) REFERENCES `account` (`id_account`),
   ADD CONSTRAINT `ref_veicolo` FOREIGN KEY (`ref_veicolo`) REFERENCES `veicoli` (`id_veicolo`);
 

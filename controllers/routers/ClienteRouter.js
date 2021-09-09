@@ -65,12 +65,10 @@ router.post("/Riepilogo/Mancia", PrenotazioniClienteController.postMancia);
 router.get("/Riepilogo/FormPatente", PrenotazioniClienteController.getPatente);
 router.post("/Riepilogo/FormPatente", PrenotazioniClienteController.postAggiungiPatente);
 
-router.get("/Riepilogo/Pagamento",PrenotazioniClienteController.getPagamento);
-router.get("/Riepilogo/Pagamento/NuovoMetodo",PrenotazioniClienteController.getNuovoMetodoPagamento);
-router.post("/Riepilogo/Pagamento/NuovoMetodo",PrenotazioniClienteController.postNuovoMetodoPagamento);
-router.get("/Riepilogo/Pagamento/StatoPagamento",PrenotazioniClienteController.getStatoPagamento);
-router.post("/Riepilogo/Pagamento/StatoPagamento",PrenotazioniClienteController.postStatoPagamento);
-
-
+router.get("/Riepilogo/Pagamento", PrenotazioniClienteController.getPagamento);
+router.post("/Riepilogo/Pagamento", PrenotazioniClienteController.postPagamento);
+router.get("/Riepilogo/Pagamento/NuovoMetodo", PrenotazioniClienteController.getNuovoMetodoPagamento);
+router.post("/Riepilogo/Pagamento/NuovoMetodo", PrenotazioniClienteController.postNuovoMetodoPagamento);
+router.get("/Riepilogo/Pagamento/StatoPagamento", PrenotazioniClienteController.getStatoPagamento);
 
 module.exports = router;

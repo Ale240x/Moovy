@@ -13,58 +13,42 @@
     <%- include('../partials/navbarClie.ejs') %>
     <div class="container"  style="padding: 5%;">
         <div class="row">
-            <div class="col">
+          <div class="col">
             <h3>Importo totale da pagare:</h3>  
-        </div>
-            <div  class="col">                
-                    <h3  id="importo" value="<%= prenotazione.prezzo_stimato %>"></h3>   
-            </div>
-        
+          </div>
+          <div  class="col">                
+            <h3  id="importo"><%= prezzo_totale %> €</h3>   
+          </div>
         </div>
         <br>
 
         <div class="card border-success  card-body text-lg-center" style="padding: 3%;" >
-            <form>
+            <form action="/utente/cliente/Riepilogo/Pagamento" method="POST">  
                 <div class="row">                
-                  <div class="col-6 ">
-                    <div class="form-outline">
-                        <label class="form-label ">Seleziona metodo pagamento</label>
-                        <%
-
-                        if((!carte) || (carte.length==0)) { 
-                          
-                            __append('<div class="section col-12 text-center">Non sono stati trovati metodi di pagamento</div>');
-                           
-                        } 
-                        
-            
-                        else{
-                   
-                            carte.forEach( (carta) => {  
-                               
-                                    __append('<div class="section">')
-                                    __append(include("../partials/elencocarte.ejs", carte));
-                                    __append('</div>')
-                               
-                            });
-            
-                        } 
-                                        
-                    %> 
-                        </div>                  
-                  </div>  
-                  <div class="col-6 ">
-                    <label class="form-label ">Aggiungi metodo pagamento</label>
-                    <div class="d-grid gap-2">
-                        <button class="btn btn-block btn-success " type="button">Nuovo metodo di pagamento</button>
-                      </div>
-                                 
-                  </div>            
+                  <div class="form-outline col-6">
+                    <label class="form-label ">Seleziona metodo pagamento</label>
+                  </div>
                 </div>
-              </form>             
-           
+
+                <% if(numero_carta != '0000000000000000'){ %>
+                    <div class="custom-control custom-radio">
+                      <% ultime_cifre = numero_carta.slice(-4); %>
+                      <input type="radio" class="custom-control-input" id="<%= numero_carta %>" name="ref_carta" 
+                      value="<%= numero_carta %>" onclick="$('#button').html('Procedi al pagamento');" required>
+                      <label class="custom-control-label" for="<%= numero_carta %>">
+                        Carta che termina con ****<%= ultime_cifre %></label>
+                    </div>
+                <% } %>
+                    <div class="custom-control custom-radio">
+                      <input type="radio" class="custom-control-input" id="nuovo_metodo" name="ref_carta" 
+                      value="nuovo_metodo" onclick="$('#button').html('Conferma');" required>
+                      <label class="custom-control-label" for="nuovo_metodo">Nuovo metodo di pagamento</label>
+                    </div> 
+                    <div class="mx-auto px-4 text-right">
+                      <button id="button" type="submit" class="btn btn-success">Conferma</button>
+                    </div>
+            </form>             
         </div>
-        
     </div>
      
 <%- include('../partials/footer.ejs') %>
