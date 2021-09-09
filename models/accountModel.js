@@ -99,13 +99,13 @@ model.getAccountsFiltrati = async (dbPool, ruolo) => {
         //console.log("gli account degli impiegati");
         let query = util.promisify(dbPool.query).bind(dbPool);
 
-        let sql = 'SELECT * FROM account'
+        let sql = 'SELECT * FROM account WHERE  NOT ruolo =  \'Amministratore\' '
         
         if(ruolo != ''){
-            sql += 'WHERE ruolo = \'' + ruolo +'\'';
+            sql += ' AND ruolo = ?  ';
         }
              
-        return await query(sql);
+        return await query(sql,[ruolo]);
 
     } catch(error) {
 
