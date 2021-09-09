@@ -291,11 +291,7 @@ model.registrazioneImpiegato = async (dbPool, ruolo, nome, cognome, email, data_
         
         await query(
             `INSERT INTO account
-<<<<<<< HEAD
             (ruolo, nome, cognome, email, data_di_nascita, num_telefono, Password) 
-=======
-            (ruolo, nome, cognome, email, data_di_nascita,  num_telefono, Password) 
->>>>>>> 97a978de0e927a4f6e76f5eef4f8acae5f96b027
             VALUES (?, ?, ?, ?, ?, ?, ?)`, 
             [
                 ruolo, 
