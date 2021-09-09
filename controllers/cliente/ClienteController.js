@@ -23,10 +23,10 @@ controller.getDisconnetti = (req, res) => {
 controller.getAreaPersonaleCliente = (req, res) => {  
     console.log('arriva dentro area personale');
     var pre = req.session.prenotazione;
-    console.log('prenotazione: '+pre.prezzo_stimato);
+    
     if(!pre){
-        prezzo_stimato = null;
-        prezzo_totale = null;
+        let prezzo_stimato = null;
+        let prezzo_totale = null;
 
         res.render('cliente/areaPersonaleC.ejs',
         { prezzo_stimato: prezzo_stimato,

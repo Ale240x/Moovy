@@ -255,6 +255,7 @@ controller.postAggiungiPatente = async (req,res) =>{
             'message' : error.message
     
         }
+        throw error;
     }
 };
 

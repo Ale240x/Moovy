@@ -93,18 +93,19 @@ model.getAccountsImpiegati = async (dbPool) => {
     }
 };
 
-model.getAccountsFiltrati = async (dbPool,nome, cognome, ruolo) => {
+model.getAccountsFiltrati = async (dbPool, ruolo) => {
     
     try {
         //console.log("gli account degli impiegati");
         let query = util.promisify(dbPool.query).bind(dbPool);
 
-        return (await query(`SELECT  
-                                *
-                            FROM 
-                                account AS a
-                            WHERE a.nome = ? OR a.cognome = ? OR a.ruolo = ? OR a.ruolo= ?  OR a.ruolo= ? OR a.ruolo= ?`,
-                            [nome,cognome,ruolo, 'Autista','Addetto', 'Cliente']));
+        let sql = 'SELECT * FROM account'
+        
+        if(ruolo != ''){
+            sql += 'WHERE ruolo = \'' + ruolo +'\'';
+        }
+             
+        return await query(sql);
 
     } catch(error) {
 
@@ -207,10 +208,10 @@ model.registrazioneCliente = async (dbPool, nome, cognome, email, data_di_nascit
         //let cryptPass = crittografo.cryptPass(clearPassword);
 
         let ruolo = "Cliente";
-        console.log("sono nel account model")
+        console.log("sono nel account model");
         await query(
             `INSERT INTO account
-            (ruolo, nome, cognome,data_di_nascita, num_telefono, Password, email) 
+            (ruolo, nome, cognome,data_di_nascita, num_telefono, password, email) 
             VALUES (?, ?, ?, ?, ?, ?,?)`, 
             [
                 'Cliente',
@@ -228,13 +229,25 @@ model.registrazioneCliente = async (dbPool, nome, cognome, email, data_di_nascit
             console.log(id[0].id_account);
         
       // dati patente
+      if(codice_patente == ''){
+        codice_patente = '000000';
+        scadenza_patente = '0000-00-00';
+        tipo_a = 0;
+        tipo_b = 0;
+        tipo_am = 0;
+        tipo_a1 = 0;
+        tipo_a2 = 0;
+      }
         await query(
             `INSERT INTO patenti
             (codice_patente, scadenza_patente, tipo_a, tipo_b, tipo_am, tipo_a1, tipo_a2, ref_account)            
             VALUES (?, ?, ?, ?, ?, ?, ?, ?)`, 
             [codice_patente, scadenza_patente, tipo_a, tipo_b, tipo_am, tipo_a1, tipo_a2, id[0].id_account]
         );
-            
+        
+        if(numero_carta == ''){
+            numero_carta = '0000000000000000';
+          }
         //dati carta 
         await query(
             `INSERT INTO carte_di_credito
@@ -317,10 +330,10 @@ model.aggiungiPatenteC = async(dbPool, ref_account, codice_patente, scadenza_pat
         patente = await query(`
         SELECT *
         FROM patenti
-        WHERE ref_account = ? AND codice_patente = ?
-        `, [ref_account, codice_patente]);
+        WHERE ref_account = ?
+        `, [ref_account]);
 
-        if(patente || patente.length != 0){ //se il cliente ha già inserito una patente
+        if(patente[0].codice_patente != '000000'){ //se il cliente ha già inserito una patente
 
             if(patente[0].tipo_a == 1){
                 tipo_a = 1;
@@ -343,8 +356,8 @@ model.aggiungiPatenteC = async(dbPool, ref_account, codice_patente, scadenza_pat
         await query(`
                 UPDATE patenti
                 SET scadenza_patente = ?, tipo_a = ?, tipo_b = ?, 
-                tipo_am = ?, tipo_a1 = ?, tipo_a2 = ?
-                WHERE codice_patente = ? AND ref_account = ?
+                tipo_am = ?, tipo_a1 = ?, tipo_a2 = ?, codice_patente = ?
+                WHERE ref_account = ?
                 `, [scadenza_patente, tipo_a, tipo_b, tipo_am, tipo_a1, tipo_a2, codice_patente, ref_account]);   
             
     }
