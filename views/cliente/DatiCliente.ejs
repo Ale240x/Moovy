@@ -73,44 +73,44 @@
                 <input type="date" id="scadenza_patente" name="scadenza_patente" placeholder="dd-mm-yyyy" value="<%= scadenza_p %>" class="form-control form-control-md"  />
               </div> 
         </div>
-        <!--
+        
         <div class="mb-3;  btn-group text-center" style="width:100%">
             <button class="btn dropdown-toggle  btn-success " style="width:100%" type="button" data-toggle="dropdown"
                aria-haspopup="true" aria-expanded="false">Tipi</button>                       
             <div class="dropdown-menu " >
             <a class="dropdown-item ">
             <div class="custom-control custom-checkbox ">
-            <input type="checkbox" class="custom-control-input" id="AM" pattern="^[01]" value ="<%= utente[0].tipo_am %>"  >
-            <label class="custom-control-label" for="AM"  >AM</label>
+            <input type="checkbox" class="custom-control-input" id="tipo_am"  name="tipo_am"  value ="<%= utente[0].tipo_am %>"  >
+            <label class="custom-control-label" for="tipo_am"  >AM</label>
             </div>
             </a>
             <a class="dropdown-item" href="#">
             <div class="custom-control custom-checkbox">
-            <input type="checkbox" class="custom-control-input" id="A" value ="<%= utente[0].tipo_a %>" >
-            <label class="custom-control-label"for="A"  >A</label>
+            <input type="checkbox" class="custom-control-input" id="tipo_a"  name="tipo_a"  value ="<%= utente[0].tipo_a %>" >
+            <label class="custom-control-label"for="tipo_a"  >A</label>
             </div>
             </a>
             <a class="dropdown-item" href="#">
             <div class="custom-control custom-checkbox">
-            <input type="checkbox" class="custom-control-input" id="A1" value ="<%= utente[0].tipo_a1 %>">
-            <label class="custom-control-label" for="A1"  >A1</label>
+            <input type="checkbox" class="custom-control-input" id="tipo_a1"  name="tipo_a1"  value ="<%= utente[0].tipo_a1 %>">
+            <label class="custom-control-label" for="tipo_a1"  >A1</label>
             </div>
             </a>
             <a class="dropdown-item" href="#">
             <div class="custom-control custom-checkbox">
-            <input type="checkbox" class="custom-control-input" id="A2" value ="<%= utente[0].tipo_a2 %>">                
-            <label class="custom-control-label" for="A2"  >A2</label>
+            <input type="checkbox" class="custom-control-input" id="tipo_a2"  name="tipo_a2"  value ="<%= utente[0].tipo_a2 %>">                
+            <label class="custom-control-label" for="tipo_a2"  >A2</label>
             </div>
             </a>
             <a class="dropdown-item" href="#">
             <div class="custom-control custom-checkbox">
-            <input type="checkbox" class="custom-control-input" id="B" value ="<%= utente[0].tipo_b %>"  >
-            <label class="custom-control-label" for="B" >B</label>
+            <input type="checkbox" class="custom-control-input" id="tipo_b"  name="tipo_b"  value ="<%= utente[0].tipo_b %>"  >
+            <label class="custom-control-label" for="tipo_b" >B</label>
             </div>
             </a>
             </div>
         </div>
-        -->
+        
         <div class="container my-5 text-center">
             <button type="submit" id ="conferma"  class="btn btn-success"style="">Conferma</button>
         </div>
