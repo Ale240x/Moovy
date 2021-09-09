@@ -373,8 +373,8 @@ model.modificaDatiCliente = async (dbPool,utenteId, nome, cognome,data_di_nascit
         await query('UPDATE account SET nome = ?, cognome = ?, num_telefono = ? WHERE id_account = ?', 
         [nome, cognome, num_telefono,utenteId]);
     
-        await query('UPDATE patenti SET codice_patente = ?, scadenza_patente = ?  WHERE ref_account = ?', 
-        [codice_patente, scadenza_patente, utenteId]);
+        await query('UPDATE patenti SET codice_patente = ?, scadenza_patente = ?, tipo_a = ? , tipo_b = ?, tipo_am = ?, tipo_a1 = ?, tipo_a2 = ?  WHERE ref_account = ?', 
+        [codice_patente, scadenza_patente, tipo_a, tipo_b, tipo_am, tipo_a1, tipo_a2, utenteId]);
 
         await query('UPDATE carte_di_credito SET numero_carta = ?, nome_intestatario = ?, cognome_intestatario = ?, cvv = ?, scadenza_carta = ? WHERE ref_account = ?', 
         [ numero_carta, nome_intestatario, cognome_intestatario ,cvv , scadenza_carta, utenteId]);
@@ -387,7 +387,7 @@ model.modificaDatiCliente = async (dbPool,utenteId, nome, cognome,data_di_nascit
 };
 
 //modifica dati impiegati 
-model.modificaDatiImpiegato = async (dbPool, utenteId, nome, cognome, data_di_nascita, num_telefono , email,ruolo, codice_patente, scadenza_patente,tipi_patente) => {
+model.modificaDatiImpiegato = async (dbPool, utenteId, nome, cognome, data_di_nascita, num_telefono , email,ruolo, codice_patente, scadenza_patente, tipo_a, tipo_b, tipo_am, tipo_a1, tipo_a2) => {
 
     let query = util.promisify(dbPool.query).bind(dbPool);
 
@@ -404,8 +404,8 @@ model.modificaDatiImpiegato = async (dbPool, utenteId, nome, cognome, data_di_na
         await query('UPDATE account SET nome = ?, cognome = ?, num_telefono = ?, email = ?, ruolo = ? WHERE id_account = ?', 
         [nome, cognome, email,ruolo, data_di_nascita, num_telefono, utenteId]);
     
-        await query('UPDATE patenti SET codice_patente = ?, scadenza_patente = ?  WHERE ref_account = ?', 
-        [codice_patente, scadenza_patente, utenteId]);
+        await query('UPDATE patenti SET codice_patente = ?, scadenza_patente = ?, tipo_a = ?, tipo_b = ?, tipo_am = ?, tipo_a1 = ?, tipo_a2 = ?  WHERE ref_account = ?', 
+        [codice_patente, scadenza_patente, tipo_a, tipo_b, tipo_am, tipo_a1, tipo_a2, utenteId]);
 
     } catch (error) {
 

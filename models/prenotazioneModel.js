@@ -150,17 +150,14 @@ model.annullaPrenotazione = async (dbPool, id_prenotazione) => {
 model.getStoricoPrenotazioni = async (dbPool, ref_cliente) => {
     try{
         let query = util.promisify(dbPool.query).bind(dbPool);
-        results =  await query(`
+        return(  await query(`
                 SELECT *
                 FROM prenotazioni
                 WHERE ref_cliente = ?
                 `, [ref_cliente]
-                );
+         ));
         
-        if(results.length == 0){
-            throw {'message' : 'Non hai ancora effettuato nessuna prenotazione'};
-        }
-        return results;
+       
     }
     catch(error){
         throw error;
@@ -205,14 +202,14 @@ model.getPrenotazione = async (dbPool, ref_prenotazione) => {
 
     try{
         let query = util.promisify(dbPool.query).bind(dbPool);
-        result =  await query(`
+        return(  await query(`
                 SELECT *
                 FROM prenotazioni
                 WHERE id_prenotazione = ? 
                 `, [ref_prenotazione]
-                );
+        ));
 
-        return result;
+       
     }
     catch(error){
         throw error;
@@ -223,19 +220,14 @@ model.getPrenotazioneDelVeicolo = async (dbPool, ref_veicolo) => {
 
     try{
         let query = util.promisify(dbPool.query).bind(dbPool);
-        result =  await query(`
+        return (  await query(`
                 SELECT *
                 FROM 
                     prenotazioni 
                 WHERE ref_veicolo = ? 
                 `, [ref_veicolo]
-                );
+                ));
        
-
-        if(result.length == 0){
-            throw {'message' : 'Questa prenotazione non esiste'};
-        }
-        return result;
     }
     catch(error){
         throw error;
@@ -246,14 +238,14 @@ model.getPrenotazioniAttiveC = async (dbPool, ref_cliente) => { //prenotazioni a
 
     try{
         let query = util.promisify(dbPool.query).bind(dbPool);
-        results =  await query(`
+        return(  await query(`
                 SELECT *
                 FROM prenotazioni
                 WHERE ref_cliente = ? AND (stato_prenotazione = ? OR stato_prenotazione = ?)
                 `, [ref_cliente, 'Pagato', 'Veicolo ritirato']
-                );
+                ));
 
-        return results;
+        
     }
     catch(error){
         throw error;
@@ -264,18 +256,14 @@ model.getPrenotazioniAttiveA = async (dbPool) => { //prenotazioni attive amminis
 
     try{
         let query = util.promisify(dbPool.query).bind(dbPool);
-        results =  await query(`
+        return( await query(`
                 SELECT p.*, a.nome, a.cognome
                 FROM prenotazioni AS p, account AS a
                 WHERE p.ref_cliente = a.id_account 
                 AND (stato_prenotazione = ? OR stato_prenotazione = ?)`, 
                 ['Pagato', 'Veicolo ritirato']
-                );
+                ));
 
-        if(results.length == 0){
-            throw {'message' : 'Non esistono prenotazioni attive'};
-        }
-        return results;
     }
     catch(error){
         throw error;
@@ -347,14 +335,14 @@ model.getVeicolo = async (dbPool, id_veicolo) =>{
 
     try{
         let query = util.promisify(dbPool.query).bind(dbPool);
-        results =  (await query(`
+        return (await query(`
                 SELECT *
                 FROM veicoli
                 WHERE id_veicolo = ?
                 `, [id_veicolo]
                 ));
         
-        return results;
+        
     }
     catch(error){
         throw error;
