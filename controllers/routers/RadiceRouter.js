@@ -7,8 +7,8 @@ var router = express.Router();
 
 router.use("", (req, res, next) =>{
     var locals = res.locals;
-    locals.alert =req.session.alert; //alert non è definito
-    delete req.session.alert;  //delete??
+    locals.alert = req.session.alert;
+    delete req.session.alert;
     next();
 });
 //radice reinderizza o a ospite o utente
