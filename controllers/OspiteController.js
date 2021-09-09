@@ -84,9 +84,8 @@ controller.postRegistrazioneCliente = async (req, res) => {
 
 
 controller.getAutenticazione = (req, res) => { 
-    //var referer = req.get('referer').split('3000')[1];
-    res.render('general/loginForm.ejs' 
-  /*{ 'referer' : referer }*/);   
+
+    res.render('general/loginForm.ejs');   
 };
 
 controller.postAutenticazione = async (req, res) => {
@@ -99,9 +98,9 @@ controller.postAutenticazione = async (req, res) => {
         req.session.utente = await accountModel.login(req.dbPool, attempt.email, attempt.password); 
         //console.log('utente: ' +req.session.utente);
         //res.redirect(referer);
-
+        console.log(req.session.prenotazione);
         if(req.session.utente[0].ruolo == "Cliente"){ // Cliente 
-                    
+         
             req.session.alert = {
   
                 'style' : 'alert-info',
@@ -109,8 +108,8 @@ controller.postAutenticazione = async (req, res) => {
             
             };
             //res.render('cliente/areaPersonaleC.ejs');
-            res.redirect('back');
-            //res.redirect('/utente/cliente/AreaPersonaleCliente'); 
+            //res.redirect('back');
+            res.redirect('/utente/cliente/AreaPersonaleCliente'); 
         }
         else if(req.session.utente[0].ruolo == "Amministratore"){
            
@@ -283,7 +282,7 @@ controller.getFormA = (req, res) => {
     req.session.prenotazione = {'id': undefined};
     prenotazione = req.session.prenotazione;
     prenotazione.tipo_veicolo = tipo_veicolo;
-    res.render('general/FormRicercaA.ejs', { 'tipo_veicolo' : prenotazione.tipo_veicolo });
+    res.render('general/FormRicercaA.ejs', { 'tipo_veicolo' : tipo_veicolo });
 };
 
 
@@ -353,6 +352,8 @@ controller.getInfoVeicolo = async(req,res) =>{
 //Mostra schermata riepilogo con veicolo selezionato e i filtri 
 controller.getRiepilogo = async(req,res) =>{
     id_veicolo = req.params.id;
+    prezzo_stimato = req.query.prezzo_stimato;
+    req.session.prenotazione.prezzo_stimato = prezzo_stimato;
     res.render('general/RiepilogoPrenotazione.ejs'), { id_veicolo: id_veicolo };
 };
 

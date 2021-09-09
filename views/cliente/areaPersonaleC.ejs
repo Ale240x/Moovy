@@ -10,8 +10,21 @@
     <!--Area personale-->
 
     <div class="row">
-        <div class="container mx-auto card card-body" style="width: 516px;">             
-          <h1>Area personale <%= utente[0].nome%></h1>
+        <div class="container mx-auto card card-body" style="width: 516px;"> 
+          <div class="row">
+            <div class="col-md-8 text-left">
+              <h1>Area personale <%= utente[0].nome%></h1>
+            </div>
+            <% if(prezzo_stimato && !prezzo_totale){ %>
+              <div class="col-md-4 content-right">
+                <button class="btn btn-success"><a href="/utente/cliente/Riepilogo" style="color: white; text-decoration: none;">
+                  Continua Prenotazione ></a></button>
+              </div>
+            <% } %>
+            
+            
+          </div>            
+          
           <br>
 
           <div class="row d-flex justify-content-center">

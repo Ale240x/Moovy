@@ -7,6 +7,7 @@ var router = express.Router();
 
 router.use("", (req,res,next) =>{
     var utente = req.session.utente;
+    var pre = req.session.prenotazione;
 
     //console.log(utente[0].ruolo);
 
@@ -14,7 +15,7 @@ router.use("", (req,res,next) =>{
         next();  
     }
     else{
-        res.redirect("/");
+        res.redirect("/autenticazione");
     }
 });
 
