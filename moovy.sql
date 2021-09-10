@@ -51,8 +51,8 @@ INSERT INTO `account` (`id_account`, `ruolo`, `nome`, `cognome`, `data_di_nascit
 (6, 'Cliente', 'Gino', 'Fiori', '1993-12-08', '3321234657', '6964f527f011df8756f87c3e8a76884f', 'gino@mail.it'),
 (7, 'Addetto', 'Mario', 'Bianchi', '1997-02-10', '3407654185', '6964f527f011df8756f87c3e8a76884f', 'addetto7@mail.it'),
 (8, 'Addetto', 'Maria', 'Bronte', '1997-03-10', '3407554185', '6964f527f011df8756f87c3e8a76884f', 'addetto8@mail.it'),
-(10, 'Cliente', 'Merina', 'Jestin', '2000-07-03', '98876543246', '6964f527f011df8756f87c3e8a76884f', 'merina@mail.it'),
-(14, 'Cliente', 'Irene', 'Pellicane', '1999-09-09', '9836627298', '6964f527f011df8756f87c3e8a76884f', 'irene@mail.it');
+(10, 'Cliente', 'Lucia', 'Bianchi', '2000-07-03', '98876543246', '6964f527f011df8756f87c3e8a76884f', 'lucia@mail.it'),
+(14, 'Cliente', 'Marta', 'Russo', '1999-09-09', '9836627298', '6964f527f011df8756f87c3e8a76884f', 'marta@mail.it');
 
 -- --------------------------------------------------------
 
@@ -74,10 +74,11 @@ CREATE TABLE `carte_di_credito` (
 --
 
 INSERT INTO `carte_di_credito` (`numero_carta`, `ref_account`, `nome_intestatario`, `cognome_intestatario`, `scadenza_carta`, `cvv`) VALUES
-('carta prova', 1, 'Admin', 'Admin', '02/30', 0),
-('8600123456791231', 4, 'Luisa', 'Gialli', '07/24', 123),
-('5243678902635432', 10, 'Merina', 'Jestin', '09/2027', 654),
-('0000000000000000', 14, '', '', '', 0);
+('carta prova', 1, 'Admin', 'Admin', '02/2030', 0),
+('8600123456791231', 4, 'Luisa', 'Gialli', '07/2024', 123),
+('5243678902635432', 10, 'Lucia', 'Bianchi', '09/2027', 654),
+('1234567890123456', 14, 'Marta', 'Russo', '08/2024', 365)
+('1234567890123456', 6, 'Gino ', 'Fiori', '08/2024', 283);
 
 -- --------------------------------------------------------
 
@@ -123,10 +124,15 @@ CREATE TABLE `patenti` (
 --
 
 INSERT INTO `patenti` (`codice_patente`, `scadenza_patente`, `tipo_a`, `tipo_b`, `tipo_am`, `tipo_a1`, `tipo_a2`, `ref_account`) VALUES
-('023944', '2023-03-01', 1, 1, 1, 1, 1, 4),
-('014643', '2025-01-01', 0, 1, 1, 0, 0, 6),
-('UI7483920P', '2020-09-05', 0, 1, 0, 0, 0, 10),
-('000000', '0000-00-00', 0, 0, 0, 0, 0, 14);
+('AB0239441O', '2023-03-01', 1, 1, 1, 1, 1, 4),
+('LK0146434M', '2025-01-01', 0, 1, 1, 0, 0, 6),
+('UI7483920P', '2024-09-05', 0, 1, 0, 0, 0, 10),
+('LK0546434M', '2025-01-01', 0, 1, 0, 0, 0, 14),
+('AB1728390M', '2023-09-05', 1, 1, 1, 1, 1, 2),
+('UC7883920P', '2023-08-05', 1, 1, 1, 1, 1, 3),
+('AM7483720P', '2023-07-05', 0, 1, 1, 0, 0, 5),
+('UI7483920Z', '2023-06-05', 1, 1, 1, 1, 1, 7),
+('UN7489920P', '2023-05-05', 1, 1, 1, 1, 1, 8);
 
 -- --------------------------------------------------------
 
@@ -153,17 +159,6 @@ CREATE TABLE `prenotazioni` (
   `motivo_ritardo` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Dumping data for table `prenotazioni`
---
-
-INSERT INTO `prenotazioni` (`id_prenotazione`, `ref_cliente`, `ref_autista`, `tipo_veicolo`, `ref_veicolo`, `mancia`, `ref_carta`, `stato_prenotazione`, `stato_autista`, `data_ritiro`, `data_riconsegna`, `luogo_ritiro`, `luogo_riconsegna`, `prezzo_stimato`, `prezzo_finale`, `motivo_ritardo`) VALUES
-(1, 10, NULL, 'Bicicletta', 652964, NULL, '5243678902635432', 'Rimborsato', NULL, '2021-09-10 00:47:00', '2021-09-12 20:47:00', 'Parcheggio Oreto', 'Parcheggio Roma', 88, 136, NULL),
-(2, 10, NULL, 'Automobile', 283649, 10, 'carta prova', 'Non pagato', 'Da confermare', '2021-09-10 12:00:00', '2021-09-11 13:00:00', '', '', 12.51, 22.51, NULL),
-(3, 10, NULL, 'Automobile', 283649, 10, 'carta prova', 'Non pagato', 'Da confermare', '2021-09-10 12:00:00', '2021-09-11 13:00:00', '', '', 0, 10, NULL),
-(4, 10, NULL, 'Automobile', 283649, 10, 'carta prova', 'Non pagato', 'Da confermare', '2021-09-10 12:00:00', '2021-09-11 13:00:00', '', '', 0, 10, NULL),
-(5, 10, NULL, 'Automobile', 172946, NULL, '5243678902635432', 'Rimborsato', NULL, '2021-09-10 23:09:00', '2021-09-11 13:09:00', 'Parcheggio Oreto', 'Parcheggio Basile', 56, 56, NULL);
-
 -- --------------------------------------------------------
 
 --
@@ -175,13 +170,6 @@ CREATE TABLE `sessions` (
   `expires` int(11) UNSIGNED NOT NULL,
   `data` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `sessions`
---
-
-INSERT INTO `sessions` (`session_id`, `expires`, `data`) VALUES
-('erNWYtEQdJ2KXqq7dtIm2aMYrGp8Jp7L', 1631301406, '{\"cookie\":{\"originalMaxAge\":null,\"expires\":null,\"httpOnly\":true,\"path\":\"/\"},\"utente\":[{\"id_account\":10,\"ruolo\":\"Cliente\",\"nome\":\"Merina\",\"cognome\":\"Jestin\",\"data_di_nascita\":\"2000-07-02T22:00:00.000Z\",\"num_telefono\":\"98876543246\",\"password\":\"6964f527f011df8756f87c3e8a76884f\",\"email\":\"merina@mail.it\",\"numero_carta\":\"5243678902635432\",\"ref_account\":10,\"nome_intestatario\":\"Merina\",\"cognome_intestatario\":\"Jestin\",\"scadenza_carta\":\"09/2027\",\"cvv\":654,\"codice_patente\":\"UI7483920P\",\"scadenza_patente\":\"2020-09-04T22:00:00.000Z\",\"tipo_a\":0,\"tipo_b\":1,\"tipo_am\":0,\"tipo_a1\":0,\"tipo_a2\":0}],\"prenotazione\":{\"tipo_veicolo\":\"Automobile\",\"autista\":\"null\",\"luogo_partenza\":\"\",\"luogo_arrivo\":\"\",\"luogo_ritiro\":\"Parcheggio Oreto\",\"luogo_riconsegna\":\"Parcheggio Basile\",\"data_ritiro\":\"2021-09-10 23:09:00\",\"data_riconsegna\":\"2021-09-11 13:09:00\",\"modello_auto\":\"Utilitaria\",\"ref_veicolo\":\"172946\",\"patente_richiesta\":\"tipo_b\",\"prezzo_stimato\":\"56\",\"id\":5,\"prezzo_totale\":\"56\",\"stato_autista\":null,\"ref_carta\":\"5243678902635432\"}}');
 
 -- --------------------------------------------------------
 

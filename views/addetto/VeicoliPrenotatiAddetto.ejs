@@ -33,7 +33,7 @@
                   <tbody>
                     <% veicoli.forEach( (veicolo)=>{ %>
                     <tr>
-                      <td><a href="/utente/addetto/veicoliPrenotati/<%= veicolo.id_veicolo %>/InfoRitiro" ><%= veicolo.id_veicolo %></a></td>
+                      <td><a href="/utente/addetto/veicoliPrenotati/<%= veicolo.id_prenotazione %>/InfoRitiro" ><%= veicolo.id_veicolo %></a></td>
                       <td><%= veicolo.tipo_veicolo %></td>
                       <td><%= veicolo.id_prenotazione %></td>
                     </tr>
