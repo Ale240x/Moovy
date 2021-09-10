@@ -1,6 +1,5 @@
 const { copyFileSync } = require("fs");
 const util = require("util");
-const checkDati = require('../utilities/checkDati');
 const crittografo = require('../utilities/crittografo');
 
 var model = {};

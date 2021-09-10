@@ -5,7 +5,7 @@ const debug = require('debug')('moovy:server');
 const http = require('http');
 const fs = require('fs');
 
-//var port = normalizePort(process.env.PORT || '3000');
+
 app.set('port', 3000);
 
 var server = http.createServer(app);
