@@ -25,6 +25,7 @@
               <table class="table table-bordered table-bordered-success table-hover">
                   <thead>
                     <tr>
+                      <th>ID Prenotazione</th>
                       <th>ID Veicolo</th>
                       <th>Tipo Veicolo</th>
                       <th>Luogo Ritiro</th>                      
@@ -33,7 +34,8 @@
                   <tbody>
                     <% veicoli.forEach( (veicolo)=>{ %>
                     <tr>
-                      <td><a href="/utente/autista/veicoliPrenotati/<%= veicolo.id_veicolo %>/InfoRitiro" ><%= veicolo.id_veicolo %></a></td>
+                      <td><a href="/utente/autista/veicoliPrenotati/<%= veicolo.id_prenotazione %>/InfoRitiro" ><%= veicolo.id_prenotazione %></a></td>
+                      <td><%= veicolo.id_veicolo %></td>
                       <td><%= veicolo.tipo_veicolo %></td>
                       <td><%= veicolo.luogo_ritiro %></td>
                     </tr>

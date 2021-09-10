@@ -128,9 +128,9 @@ controller.getInfoRitiro = async(req,res)=>{
         var dbPool= req.dbPool;
         var id= req.params.id;
         try {
-            var veicolo = await prenotazioneModel.getVeicolo(dbPool,id);
+            var prenot_veicolo = await prenotazioneModel.getVeicoloDaPrenotazione(dbPool,id);
             res.render("autista/InfoRitiro.ejs",{
-                veicolo: veicolo,           
+                veicolo: prenot_veicolo,           
             });
 
         }catch (error){
@@ -140,21 +140,21 @@ controller.getInfoRitiro = async(req,res)=>{
 
 controller.postInfoRitiro= async (req, res) => { 
     var dbPool = req.dbPool;
-
+    var id_veicolo = req.body.id_veicolo;
     try{
         var codice = req.body.codiceVeicolo;
-        var id_veicolo= req.params.id;
+        var id_prenotazione= req.params.id;
         
        // console.log(codice);
        // console.log(id_veicolo);
-        var prenotazione = await prenotazioneModel.getPrenotazioneDelVeicolo(dbPool,id_veicolo);
+        
         var stato = "Veicolo Ritirato";
 
        // console.log(prenotazione);
 
         if (id_veicolo == codice){
 
-            await prenotazioneModel.setStatoPrenotazione(dbPool, prenotazione[0].id_prenotazione ,stato);
+            await prenotazioneModel.setStatoPrenotazione(dbPool, id_prenotazione ,stato);
         } 
 
         req.session.alert = {

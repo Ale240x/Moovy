@@ -188,7 +188,7 @@ controller.postMancia = async(req, res) =>{
     var pre = req.session.prenotazione;
 
     try {
-        prenotazioneId = await prenotazioneModel.aggiungiPrenotazione( dbPool, utente[0].id_account, pre.autista, pre.tipo_veicolo, pre.ref_veicolo, pre.mancia, pre.data_ritiro, pre.data_riconsegna, pre.luogo_ritiro, pre.luogo_riconsegna, pre.prezzo_stimato);
+        prenotazioneId = await prenotazioneModel.aggiungiPrenotazione( dbPool, utente[0].id_account, pre.autista, pre.tipo_veicolo, pre.ref_veicolo, pre.mancia, pre.data_ritiro, pre.data_riconsegna, pre.luogo_partenza, pre.luogo_arrivo, pre.prezzo_stimato);
                         req.session.prenotazione.id = prenotazioneId;
                         req.session.prenotazione.stato_autista = 'Da confermare';
                         

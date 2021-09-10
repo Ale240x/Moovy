@@ -494,4 +494,24 @@ model.aggiornaMetodoDiPagamento = async (dbPool, numero_carta, ref_account, nome
     }
 };
 
+model.getMetodiPagamento = async (dbPool,id_account) => {
+    
+    try {
+        
+        let query = util.promisify(dbPool.query).bind(dbPool);
+
+        return (await query(`SELECT  
+                                *
+                            FROM 
+                                carte_di_credito 
+                            WHERE ref_account = ? `,
+                            [id_account]));
+                           
+
+    } catch(error) {
+
+        throw error;
+    }
+};
+
 module.exports = model;

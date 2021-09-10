@@ -331,6 +331,23 @@ model.cercaVeicolo = async (dbPool, sel) => {
     }
 };
 
+model.getVeicoloDaPrenotazione = async(dbPool, id_prenotazione) =>{
+    try{ 
+        let query = util.promisify(dbPool.query).bind(dbPool);
+         return (await query(`
+                SELECT p.*, v.*
+                FROM prenotazioni AS p, veicoli AS v
+                WHERE p.ref_veicolo = v.id_veicolo AND
+                p.id_prenotazione = ?
+                `, [id_prenotazione]
+            ));
+ 
+    }
+    catch(error){
+        throw error;
+    }
+}
+
 model.getVeicolo = async (dbPool, id_veicolo) =>{
 
     try{

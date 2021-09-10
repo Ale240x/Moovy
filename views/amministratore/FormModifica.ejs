@@ -45,9 +45,9 @@
         </div>
         <div class="mb-3">
             <div class="form-outline">
-                <% scadenza = impiegato[0].scadenza_patente.toLocaleString().slice(0, 9); %>
+                
                 <label class="form-label" for="scadenza_patente">Scadenza patente</label>
-                <input type="text" id="scadenza_patente" name="scadenza_patente" value="<%= scadenza %>" class="form-control form-control-md"  />
+                <input type="date" id="scadenza_patente" name="scadenza_patente" value="<%= impiegato[0].scadenza_patente %>" class="form-control form-control-md"  />
               </div> 
         </div>
         <div class="mb-3;  btn-group text-center" style="width:100%">

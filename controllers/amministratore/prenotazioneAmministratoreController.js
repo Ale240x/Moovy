@@ -46,7 +46,7 @@ controller.getInfoPrenotAmm =async (req,res)=>{
     //console.log(id_prenotazione);
     try{
         var prenotazione = await prenotazioneModel.getPrenotazione(dbPool,id_prenotazione);
-        //console.log(prenotazione);
+        console.log(prenotazione);
         res.render("amministratore/InfoPrenotAmm.ejs",{
             prenotazione: prenotazione,
         });
@@ -107,6 +107,7 @@ controller.getModificaPrenotazione=async(req,res)=>{
 
 controller.postModificaPrenotazione = async(req,res)=>{
     var dbPool=req.dbPool;
+    var data = new Date(req.body.data_riconsegna);
     try{ 
 
       // console.log(req.params.id); 
@@ -116,7 +117,7 @@ controller.postModificaPrenotazione = async(req,res)=>{
        await prenotazioneModel.modificaPrenotazione(
             dbPool,
             req.params.id,
-            req.body.data_riconsegna,
+            data,
             req.body.luogo_riconsegna,
             );
             req.session.alert = {

@@ -60,7 +60,8 @@ controller.getInfoVeicoloDaRitirare = async(req,res)=>{
         var dbPool= req.dbPool;
         var id= req.params.id;
         try {
-            var veicolo = await prenotazioneModel.getVeicolo(dbPool,id);
+            var veicolo = await prenotazioneModel.getVeicoloDaPrenotazione(dbPool,id);
+            console.log(veicolo);
             res.render("addetto/InfoRitiro.ejs",{
                 veicolo: veicolo,           
             });
@@ -72,21 +73,22 @@ controller.getInfoVeicoloDaRitirare = async(req,res)=>{
 
 controller.postRitiroVeicolo = async (req, res) => { 
     var dbPool = req.dbPool;
+    var id_veicolo = req.body.id_veicolo;
 
     try{
         var codice = req.body.codiceVeicolo;
-        var id_veicolo= req.params.id;
+        var id_prenotazione= req.params.id;
         
        // console.log(codice);
        // console.log(id_veicolo);
-        var prenotazione = await prenotazioneModel.getPrenotazioneDelVeicolo(dbPool,id_veicolo);
+        
         var stato = "Veicolo Ritirato";
 
        // console.log(prenotazione);
 
         if (id_veicolo == codice){
 
-            await prenotazioneModel.setStatoPrenotazione(dbPool, prenotazione[0].id_prenotazione ,stato);
+            await prenotazioneModel.setStatoPrenotazione(dbPool, id_prenotazione ,stato);
         } 
 
         req.session.alert = {
@@ -213,21 +215,5 @@ controller.postModificaLuogo = async(req,res) =>{
 
 };
 
-
-
-
-
-
-/*async function aggiornaSessionePrenotazioni(dbConnection, session, utenteId, stato_prenotazione){
-
-    try {
-        
-        return (session.prenotazioniadd = await prenotazioneModel.getPrenotazioniC(dbConnection, utenteId, stato_prenotazione));
-        
-    } catch(error) {
-
-        throw error;
-    }
-};*/
 
 module.exports =controller;

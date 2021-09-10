@@ -7,18 +7,7 @@
       <body>
         <%- include('../partials/navbarAmm.ejs') %>
         <!--Navbar-->
-<!--
-Luogo ritiro
-Luogo riconsegna
-Data ritiro
-Data riconsegna
-Ritardi e/o imprevisti
-Prezzo totale 
-Informazioni veicolo
-Informazioni autista(facoltativo)
-Stato
-Altre eventuali informazioni
---->
+
 <form action="/utente/amministratore/AreaPersonaleAmministratore/prenotazioniAttive/<%= prenotazione[0].id_prenotazione %>" method="GET" >
     <div class="container card-bordered card-bordered-success my-5 text-center " style="max-width: 580px;">
 
@@ -40,10 +29,7 @@ Altre eventuali informazioni
             <input type="text" id="data_ritiro" value="<%= prenotazione[0].data_ritiro %>" class="form-control form-control-md" readonly/>
         </div> 
     </div>  
-    <div class=" mb-3 my-3" style="max-width: 580px;">
-        <label for="tempoStimato" class="form-label">Orario di ritiro</label>
-        <input type="time" class="form-control form-control-md" value="" readonly >
-    </div>
+    
 </div>
 <div class="col-md-6 mb-4">
     <div class="mb-3">
@@ -52,10 +38,7 @@ Altre eventuali informazioni
             <input type="text" id="data_riconsegna" class="form-control form-control-md" value="<%= prenotazione[0].data_riconsegna %>"  readonly/>
         </div> 
     </div>  
-    <div class=" mb-3 my-3" style="max-width: 580px;">
-        <label for="tempoStimato" class="form-label">Orario di riconsegna</label>
-        <input type="time" class="form-control form-control-md" value=""  readonly >
-    </div>
+    
 </div>
 </div>
     <div class="mb-3">
@@ -63,8 +46,8 @@ Altre eventuali informazioni
         <input type="text" class="form-control form-control-md" id="tipo_veicolo" value="<%= prenotazione[0].tipo_veicolo %>"  readonly>
     </div>
     <div class="mb-3">
-        <label for="prezzoTotale" class="form-label">Modello veicolo</label>
-        <input type="text" class="form-control form-control-md" value=""  readonly>
+        <label for="prezzoTotale" class="form-label">Id veicolo</label>
+        <input type="text" class="form-control form-control-md" value="<%= prenotazione[0].ref_veicolo %>"  readonly>
     </div>
     <div class="mb-3">
         <label for="autista" class="form-label">Autista</label>

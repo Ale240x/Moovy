@@ -7,14 +7,15 @@
         <%- include('../partials/navbarAdd.ejs') %>
   <!--Navbar-->
 
-<!--INDICARE LA POSIZIONE DEL VEICOLO INTERROGANDO DBMS--->
-    <form action="/utente/addetto/veicoliPrenotati/<%= veicolo[0].id_veicolo %>/InfoRitiro" method="POST" >
+
+    <form action="/utente/addetto/veicoliPrenotati/<%= veicolo[0].id_prenotazione %>/InfoRitiro" method="POST" >
         <div class="container my-5 text-center" style="max-width: 580px;">
             <legend style="text-align:center; font-size:150%;">Ritiro Veicolo</legend>
         <div class="card my-3 text-center">
             <div class="card-body">
-                <h5 class="card-title">Posizione del veicolo</h5>
-                <p class="card-text"><%= veicolo[0].posizione %></p>
+                <h5 class="card-title">Luogo di ritiro</h5>
+                <p class="card-text"><%= veicolo[0].luogo_ritiro %></p>
+                <input style="display: none;" type="text" id="id_veicolo" name ="id_veicolo" value="<%= veicolo[0].id_veicolo %>">
             </div>
         </div>
         <div class=" mb-3 my-3" style="max-width: 580px;">
