@@ -437,7 +437,7 @@ controller.getModificaLuogo = async (req, res) =>{
     var dbPool = req.dbPool;
 
     try {
-        var prenotazione = await prenotazioneModel.getPrenotazioneDelVeicolo(dbPool,id_veicolo);
+        var prenotazione = await prenotazioneModel.getPrenotazioneDelVeicoloRitirato(dbPool,id_veicolo);
         res.render('cliente/ModificaLuogo_B.ejs', {
             prenotazione : prenotazione[0],
             id_veicolo : id_veicolo

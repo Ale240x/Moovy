@@ -17,10 +17,6 @@ controller.getDisconnetti = (req, res) => {
     res.redirect("/");
 };
 
-//logout page??
-controller.getLogout = (req, res) => {  
-    res.render('general/Logout.ejs');   
-};
 
 
 
@@ -139,7 +135,7 @@ controller.getModificaLuogo = async (req, res) =>{
     var dbPool = req.dbPool;
 
     try {
-        var prenotazione = await prenotazioneModel.getPrenotazioneDelVeicolo(dbPool,id_veicolo);
+        var prenotazione = await prenotazioneModel.getPrenotazioneDelVeicoloRitirato(dbPool,id_veicolo);
         res.render('addetto/ModificaLuogo_B.ejs', {
             prenotazione : prenotazione[0],
             id_veicolo : id_veicolo

@@ -206,7 +206,9 @@ controller.getModificaLuogo = async (req, res) =>{
     var dbPool = req.dbPool;
 
     try {
-        var prenotazione = await prenotazioneModel.getPrenotazioneDelVeicolo(dbPool,id_veicolo);
+       
+        var prenotazione = await prenotazioneModel.getPrenotazioneDelVeicoloRitirato(dbPool,id_veicolo);
+        
         res.render('autista/ModificaLuogo_B.ejs', {
             prenotazione : prenotazione[0],
             id_veicolo : id_veicolo
@@ -228,7 +230,7 @@ controller.postModificaLuogo = async(req,res) =>{
     var idVeicolo = req.params.id;
 
     try{
-        var prenotazioneV = await prenotazioneModel.getPrenotazioneDelVeicolo(dbPool,idVeicolo);
+        var prenotazioneV = await prenotazioneModel.getPrenotazioneDelVeicoloRitirato(dbPool,idVeicolo);
      
         if(nuovoluogo != prenotazioneV[0].luogo_riconsegna){
         await prenotazioneModel.modificaLuogoRiconsegna(dbPool,prenotazioneV[0].id_prenotazione, nuovoluogo);
