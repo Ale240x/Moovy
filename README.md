@@ -1,17 +1,50 @@
 # Moovy
 
-Progetto per Programmazione web & mobile e Ingegneria del software
+Progetto MOOVY per Programmazione web & mobile e Ingegneria del software
 
-#il file zip
-il file zip inviato al docente contiene una cartella Moovy e Documentazione.
--La cartella Moovy contiene il codice e moovy.sql che contiene db da importare su localhost/phpmyadmin
--La Documetazione contiene Requirement Analysis Document(RAD), System Design Document(SDD) e Object Design Document.ù
+ 
+Forniamo al docente un file zip contenente una cartella Moovy e l'intera documentazione del progetto.
+- La cartella Moovy contiene il codice della web app e il file moovy.sql, contenente il db da importare su localhost/phpmyadmin.
+- La Documentazione è composta dal Requirement Analysis Document(RAD), System Design Document(SDD) e Object Design Document(ODD).
 
-# installazione
---avviare il server Apache e MySQL dal XAMPP Control Panel
---l'applicazione viene avviata con il comando "nodemon ./bin/www"
+Ecco le credenziali dei vari tipi di account con cui accedere alla web app:
+- Cliente: cliente@mail.it
+- Amministratore:amministratore@mail.it
+- Autista: autista@mail.it
+- Addetto: addetto2@mail.it
+
+la password per tutti è “Password1@”."
+
+# Installazione
+- Avvii il server Apache e MySQL dal XAMPP Control Panel
+
+- Imposti il middleware del database "dbMiddleware" con le sue corrette credenziali.
+ 
+- Avvii l'applicativo tramite il comando "nodemon ./bin/www"
+
+- Attenda l'avvio dell'applicativo
+
+Il server è in ascolto sulla porta 3000.
+
+Sono stati installati vari modules, già contenuti nella cartella node modules. Nel caso di errore potrebbe essere oppurtuno installarli usando i  seguenti comandi:
+- npm install express
+- npm install express-session
+- npm install ejs
+- npm install md5
+- npm install express-mysql-session
+- npm install nodemailer
+- npm install @turf/distance
+- npm install bootstrap
+- npm install mapbox-gl
 
 
 
-??
-Sessione Utente: La gestione della sessione utente è stata affidata al modulo "express-session".??
+
+
+
+
+
+
+
+
+
