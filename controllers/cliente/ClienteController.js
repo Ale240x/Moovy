@@ -8,10 +8,7 @@ var controller = {}; //assegna al controller un valore nullo
 controller.getSchermataIniziale = (req, res) => {  
     res.render('cliente/HomeAutenticatoCliente.ejs');   
 };
-//logout.ejs non serve? 
-controller.getLogout = (req, res) => {  
-    res.render('general/logout.ejs');   
-};
+
 
 //Regione Disconnetti
 controller.getDisconnetti = (req, res) => {

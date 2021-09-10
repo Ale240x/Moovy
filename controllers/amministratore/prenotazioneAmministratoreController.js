@@ -2,8 +2,7 @@ const accountModel = require('../../models/accountModel');
 const prenotazioneModel = require('../../models/prenotazioneModel');
 const util = require("util");
 const { render } = require('ejs');
-//const { SSL_OP_ALLOW_UNSAFE_LEGACY_RENEGOTIATION } = require('constants');
-////const convertitore = require('');
+
 
 var controller ={};
 
@@ -202,7 +201,7 @@ controller.postRimborso=async(req,res)=>{
         await prenotazioneModel.setStatoPrenotazione(dbPool,idPrenotazione,'Rimborsato');
         await prenotazioneModel.setPrezzoFinale(dbPool,idPrenotazione,prezzo_finale);
         //invia email per avvisare rimborso
-        //AvvisoRimborso(req.transporter,utente[0],carta,importo,idPrenotazione);
+        AvvisoRimborso(req.transporter,utente[0],carta,importo,idPrenotazione);
         req.session.alert = {
             
             'style' : 'alert-success',

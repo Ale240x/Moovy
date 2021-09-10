@@ -18,7 +18,7 @@ router.use("", (req, res, next) =>{
         next();  
     }
     else{
-        res.redirect("/autenticazione"); //se invece facciamo redirect a /autenticazione ?
+        res.redirect("/autenticazione");
     }
 });
 

@@ -1,7 +1,7 @@
 const accountModel = require('../../models/accountModel');
 const { modificaLuogoRiconsegna } = require('../../models/prenotazioneModel');
 const prenotazioneModel = require('../../models/prenotazioneModel');
-////const convertitore = require('');
+
 
 var controller={};
 //Area Personale Autista
@@ -303,7 +303,7 @@ async function confermaCorsaCliente(transporter,id_prenotazione,email,clientenom
 
 };
 
-//????
+
 async function aggiornaSessionePrenotazioni(dbPool, session,id_account, stato_prenotazione){
 
     try {

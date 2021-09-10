@@ -1,7 +1,6 @@
 const accountModel = require('../../models/accountModel');
 const prenotazioneModel = require('../../models/prenotazioneModel');
 const util = require("util");
-//const convertitore = require('../../utilities/Convertitore');  // Per gestire le date
 const { render } = require('ejs');
 const { info } = require('console');
 
@@ -125,7 +124,7 @@ controller.postRiepilogo = async (req, res) =>{
         
         if(!checkPatente(utente, pre.patente_richiesta)){
             //res.render('cliente/FormPatente.ejs');
-            res.redirect('/utente/cliente/Riepilogo/FormPatente'); // è questo il redirect che non funziona
+            res.redirect('/utente/cliente/Riepilogo/FormPatente'); 
         }
         else{
             try {

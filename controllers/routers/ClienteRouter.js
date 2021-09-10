@@ -22,7 +22,7 @@ router.use("", (req,res,next) =>{
 
 //Regione SchermataInizialeCliente
 router.get("/", ClienteController.getSchermataIniziale);
-router.get("/logout", ClienteController.getLogout);
+
 router.get("/disconnetti", OspiteController.getDisconnetti);
 
 //Regione AreaPersonale

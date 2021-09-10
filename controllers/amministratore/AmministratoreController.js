@@ -250,14 +250,7 @@ controller.postFormFiltraggio = async(req,res)=>{
 };
 
 
-/*controller.getDatiAccount = (req, res) => { 
-    let id= req.params.id; 
-   // console.log("sono su get " + id);
-    res.render('amministratore/Elimina.ejs',{
-        id : id,
-    });   
-}; 
-*/
+
 controller.getDatiAccount = async (req, res) => {  
         var dbPool= req.dbPool;
         try{
