@@ -42,6 +42,8 @@
                             <div class="col-sm-4 mx-auto">
                                 <label for="nome_veicolo">Veicolo</label>
                                 <input id="nome_veicolo" name="nome_veicolo" class="form-control" type="text" readonly>
+                                <input style="display: none;" id="tipo_veicolo" name="tipo_veicolo" class="form-control" type="text" readonly>
+                                <input style="display: none;" id="patente_richiesta" name="patente_richiesta" class="form-control" type="text" readonly>
                             </div>
                             <div class="col-sm-4 mx-auto">
                                 <label for="prezzo_stimato">Prezzo stimato</label>
@@ -83,6 +85,8 @@
         $('#data_ritiro').attr('value', sessionStorage.data_ritiro.replace('T', '  '));
         $('#data_riconsegna').attr('value', sessionStorage.data_riconsegna.replace('T', '  '));
         $('#nome_veicolo').attr('value', sessionStorage.nome_veicolo);
+        $('#tipo_veicolo').attr('value', sessionStorage.tipo_veicolo);
+        $('#patente_richiesta').attr('value', sessionStorage.patente_richiesta);
         $('#prezzo_stimato').attr('value', sessionStorage.prezzo_stimato + ' €');
     </script>
 
